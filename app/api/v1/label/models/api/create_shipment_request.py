@@ -2,8 +2,8 @@ from pydantic import BaseModel, Field
 from typing import Optional
 
 from app.api.v1.common.models.base_models import GlueyApiServices
-from app.api.v1.label.models.carrier_request import CarrierRequestModel
-from app.api.v1.label.models.shipment_request import ShipmentRequestModel
+from app.api.v1.label.models.api.carrier_request import CarrierRequestModel
+from app.api.v1.label.models.api.shipment_request import ShipmentRequestModel
 
 class CreateShipmentRequest(BaseModel):
     """The request model for creating a shipment only, without printing a label."""

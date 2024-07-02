@@ -3,7 +3,6 @@
 {% block extra_head %}
 <style>
     .markdown-content {
-        margin-top: 50px;
         padding: 20px;
         background-color: #fff;
         border-radius: 8px;
@@ -65,8 +64,8 @@
 
 {% block content %}
 <div class="markdown-content">
-    <h1 class="content-title">Webhook Retry Logic</h1>
-    <p>Gluey's webhooks wait 30 seconds for a response after delivering a message. After 30 seconds, if the endpoint hasn’t responded, the message is queued for retry. Gluey's webhooks use an exponential backoff retry policy for event delivery. Gluey's webhooks retry delivery on the following schedule on a best effort basis:</p>
+    <h1 class="content-title">Webhook Retry Policy</h1>
+    <p>Gluey's webhooks await a response for 30 seconds after dispatching a message. If there's no response within this timeframe, the message is set to be retried. The retry mechanism follows an exponential backoff strategy, attempting delivery again at the following intervals:</p>
     
     <ul>
         <li>10 seconds</li>
@@ -81,16 +80,16 @@
         <li>Every 12 hours up to 24 hours</li>
     </ul>
     
-    <p>If the endpoint responds within 3 minutes, Gluey's webhooks attempt to remove the event from the retry queue on a best effort basis, but duplicates may still be received.</p>
+    <p>If a response is received within 3 minutes, Gluey's webhooks will try to remove the event from the retry queue, although duplicates might still occur since we operate on an <span class="email-link">at least once</span> basis.</p>
     
-    <p>Gluey's webhooks add a small randomization to all retry steps and may opportunistically skip certain retries if an endpoint is consistently unhealthy, down for a long period, or appears to be overwhelmed.</p>
+    <p>There is a slight jitter (randomisation) added to each retry interval, and some retries may be skipped if the endpoint remains unhealthy, is down for an extended period, or seems overloaded.</p>
     
-    <h2 class="content-title">90-days DLQ (Dead-Letter Queue)</h2>
-    <p>After 24 hours, the event will be dead-lettered and stay in the dead-letter queue for 90 days until it is finally removed.</p>
-    <p>After 24 hours, Gluey can still retrigger all the the events too you but you have to request this manually from <a href="mailto:engineering@gluey.ai" class="email-link">engineering@gluey.ai</a>.</p>
+    <h2 class="content-title">90-Day Dead-Letter Queue (DLQ)</h2>
+    <p>After 24 hours, undelivered events are moved to a dead-letter queue, where they remain for 90 days before being deleted.</p>
+    <p>Gluey can manually reattempt to send all events within this period upon request. For such requests, contact <a href="mailto:engineering@gluey.ai" class="email-link">engineering@gluey.ai</a>.</p>
     
     <h2 class="content-title">Delayed Delivery</h2>
-    <p>As an endpoint experiences delivery failures, Gluey begins to delay the delivery and retry of events to that endpoint. For example, if the first 10 events published to an endpoint fail, Gluey assumes that the endpoint is experiencing issues and will delay all subsequent retries and new deliveries for some time - in some cases up to several hours.</p>
-    <p>Without back-off and delay of delivery to unhealthy endpoints, Gluey's retry policy and volume capabilities can easily overwhelm a system.</p>
+    <p>If an endpoint repeatedly fails to deliver, Gluey will start delaying the delivery and retries of events to that endpoint. For instance, if the first 10 events to an endpoint fail, Gluey will delay further retries and new deliveries to prevent overwhelming the system, sometimes for several hours.</p>
+    <p>This delay helps to prevent Gluey's retry policy and delivery volume from overloading systems with persistent issues.</p>
 </div>
 {% endblock %}

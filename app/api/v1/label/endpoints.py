@@ -3,13 +3,13 @@ from fastapi import APIRouter, Depends, Query, status
 from app.api.v1.common.headers import common_headers
 from app.api.v1.common.models.base_models import Document
 from app.api.v1.label.models.base_models import LabelFormat
-from app.api.v1.label.models.create_shipment_request import CreateShipmentRequest
-from app.api.v1.label.models.create_shipment_with_labels_request import CreateShipmentWithLabelsDocumentsRequest
-from app.api.v1.label.models.create_shipment_with_labels_response import CreateShipmentWithLabelsDocumentsResponse
-from app.api.v1.label.models.get_labels_for_shipment_response import GetLabelsForShipmentResponse
-from app.api.v1.label.models.print_documents_for_shipment_request import PrintDocumentsForShipmentRequest
-from app.api.v1.label.models.shipment import Shipment
-from app.api.v1.label.models.shipment_only_response import ShipmentOnlyResponseModel
+from app.api.v1.label.models.api.create_shipment_request import CreateShipmentRequest
+from app.api.v1.label.models.api.create_shipment_with_labels_request import CreateShipmentWithLabelsDocumentsRequest
+from app.api.v1.label.models.api.create_shipment_with_labels_response import CreateShipmentWithLabelsDocumentsResponse
+from app.api.v1.label.models.api.get_labels_for_shipment_response import GetLabelsForShipmentResponse
+from app.api.v1.label.models.api.print_documents_for_shipment_request import PrintDocumentsForShipmentRequest
+from app.api.v1.label.models.api.shipment import Shipment
+from app.api.v1.label.models.api.shipment_only_response import ShipmentOnlyResponseModel
 
 from app.api.v1.label.http_responses.payloads import http_create_shipment_response, http_get_shipment_response, http_delete_shipment_response, http_get_labels_response, http_get_documents_response, http_create_shipment_labels_response
 

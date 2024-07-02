@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Query
 
 from app.api.v1.common.headers import common_headers
-from app.api.v1.pudo.models.pudo import PudoPoint
+from app.api.v1.pudo.models.api.pudo import PudoPoint
 
 from app.api.v1.pudo.http_responses.payloads import http_get_pudo_response
 
