@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<style>
+    .markdown-content {
+        margin-top: 50px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    h1, h2, h3 {
+        color: #333;
+    }
+
+    p, ul {
+        line-height: 1.6;
+        color: #666;
+    }
+
+    ul {
+        padding-left: 20px;
+        margin-bottom: 20px;
+    }
+
+    li {
+        margin-bottom: 10px;
+    }
+
+    pre {
+        background: #f0f0f0;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+        width: 300px;
+    }
+
+    code {
+        font-family: 'Courier New', Courier, monospace;
+        background: #f9f9f9;
+        padding: 2px 4px;
+        border-radius: 4px;
+        color: #d63384;
+    }
+
+    a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    .email-link {
+        font-weight: bold;
+        color: #007bff;
+    }
+
+    .email-link:hover {
+        text-decoration: underline;
+    }
+
+    .highlight-post {
+        color: #d63384;
+        font-weight: bold;
+    }
+
+    .highlight-get {
+        color: #28a745;
+        font-weight: bold;
+    }
+
+    .highlight-delete {
+        color: #dc3545;
+        font-weight: bold;
+    }
+
+    .highlight-brace {
+        color: #fd7e14;
+    }
+
+    .endpoints-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .endpoints-list li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+
+    .endpoints-list .method {
+        width: 70px;
+        text-align: right;
+        margin-right: 10px;
+        font-weight: bold;
+    }
+
+    .endpoints-list .endpoint {
+        flex-grow: 1;
+    }
+
+    .content-title {
+        border-bottom: 2px solid #007bff;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="markdown-content">
+    <h1 class="content-title">Getting Started</h1>
+    <p>In order to get started with Gluey, you need to request credentials. Send an email to <span class="email-link">engineering@gluey.ai</span> and we will help you.</p>
+
+    <h2 class="content-title">Environments</h2>
+    <p>We use two primary environments to launch integrations:</p>
+
+    <h3>Sandbox (Test):</h3>
+    <pre><code>https://api-sandbox.gluey.ai</code></pre>
+
+    <h3>Production:</h3>
+    <pre><code>https://api.gluey.ai</code></pre>
+
+    <h2 class="content-title">Github</h2>
+    <p><em>[coming_soon]</em></p>
+    <p>We host these docs publicly on Github. If you think we should make a change, make a pull request and suggest what we can do better to improve our endpoints.</p>
+
+    <h2 class="content-title">Endpoint Overview</h2><br>
+
+    <h3 class="content-title">Single Shipment Endpoints:</h3>
+    <ul class="endpoints-list">
+        <li><span class="method highlight-post">POST</span><span class="endpoint">/shipments</span></li>
+        <li><span class="method highlight-get">GET</span><span class="endpoint">/shipments/<span class="highlight-brace">{id}</span></span></li>
+        <li><span class="method highlight-delete">DELETE</span><span class="endpoint">/shipments/<span class="highlight-brace">{id}</span></span></li>
+        <li><span class="method highlight-get">GET</span><span class="endpoint">/shipments/<span class="highlight-brace">{id}</span>/labels</span></li>
+        <li><span class="method highlight-post">POST</span><span class="endpoint">/shipments/<span class="highlight-brace">{id}</span>/documents</span></li>
+        <li><span class="method highlight-post">POST</span><span class="endpoint">/shipment_with_labels_documents</span></li>
+        <li><span class="method highlight-post">POST</span><span class="endpoint">/shipments/<span class="highlight-brace">{id}</span>/manifests</span></li>
+        <li><span class="method highlight-get">GET</span><span class="endpoint">/shipments/<span class="highlight-brace">{id}</span>/manifests/<span class="highlight-brace">{manifest_id}</span></span></li>
+        <li><span class="method highlight-get">GET</span><span class="endpoint">/shipments/<span class="highlight-brace">{id}</span>/track</span></li>
+    </ul>
+
+    <h3 class="content-title">Batch Endpoints:</h3>
+    <ul class="endpoints-list">
+        <li><span class="method highlight-post">POST</span><span class="endpoint">/manifests</span></li>
+        <li><span class="method highlight-get">GET</span><span class="endpoint">/manifests/<span class="highlight-brace">{manifest_id}</span></span></li>
+        <li><span class="method highlight-post">POST</span><span class="endpoint">/tracking</span></li>
+        <li><span class="method highlight-get">GET</span><span class="endpoint">/pudo</span></li>
+    </ul>
+</div>
+{% endblock %}
