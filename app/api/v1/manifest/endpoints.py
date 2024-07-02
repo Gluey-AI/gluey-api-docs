@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, status
 
 from app.api.v1.common.headers import common_headers
-from app.api.v1.manifest.models.get_manifest_response import GetManifestResponse
-from app.api.v1.manifest.models.manifest_shipment_request import ManifestShipmentRequest
-from app.api.v1.manifest.models.manifest_shipment_response import ManifestShipmentResponse
-from app.api.v1.manifest.models.manifest_shipments_request import ManifestShipmentsRequest
-from app.api.v1.manifest.models.manifest_shipments_response import ManifestShipmentsResponse
+from app.api.v1.manifest.models.api.get_manifest_response import GetManifestResponse
+from app.api.v1.manifest.models.api.manifest_shipment_request import ManifestShipmentRequest
+from app.api.v1.manifest.models.api.manifest_shipment_response import ManifestShipmentResponse
+from app.api.v1.manifest.models.api.manifest_shipments_request import ManifestShipmentsRequest
+from app.api.v1.manifest.models.api.manifest_shipments_response import ManifestShipmentsResponse
 
 from app.api.v1.manifest.http_responses.payloads import http_create_manifest_response, http_get_manifest_response
 

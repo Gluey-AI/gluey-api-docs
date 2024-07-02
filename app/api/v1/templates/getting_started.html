@@ -3,7 +3,6 @@
 {% block extra_head %}
 <style>
     .markdown-content {
-        margin-top: 50px;
         padding: 20px;
         background-color: #fff;
         border-radius: 8px;
@@ -108,13 +107,46 @@
         display: inline-block;
         margin-bottom: 20px;
     }
+
+    .github-link {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        color: #007bff;
+        font-weight: bold;
+    }
+
+    .github-link img {
+        width: 30px;
+        height: 30px;
+        margin-right: 8px;
+    }
+
+    .github-link:hover {
+        text-decoration: underline;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="markdown-content">
     <h1 class="content-title">Getting Started</h1>
-    <p>In order to get started with Gluey, you need to request credentials. Send an email to <span class="email-link">engineering@gluey.ai</span> and we will help you.</p>
+    <p>In order to get started with Gluey, you need to request credentials. Send an email to <a href="mailto:engineering@gluey.ai" class="email-link">engineering@gluey.ai</a> and we will help you. You will need two things:</p>
+    <ul>
+        <li><span class="email-link">x-key</span> - an api key to include in the header and which authenticate you in the APIs.</li>
+        <li><span class="email-link">account_number</span> - your account ID which you need when you subscribe to our webhooks.</li>
+    </ul>
+
+    <h2 class="content-title">Feedback</h2>
+    <p>We welcome any feedback on how we can improve both endpoints and documentation.</p>
+    <p>You can give us feedback in several ways:</p>
+    <ul>
+        <li>The first is to create a pull request / issue 
+            <a href="https://github.com/Gluey-AI/gluey-api-docs" target="_blank" class="github-link">in our docs repo on&nbsp;<img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo">
+            </a>where we host this developer portal.
+        </li>
+        <li>The second option is to email <a href="mailto:engineering@gluey.ai" class="email-link">engineering@gluey.ai</a> with your feedback.</li>
+    </ul>
 
     <h2 class="content-title">Environments</h2>
     <p>We use two primary environments to launch integrations:</p>
@@ -124,10 +156,6 @@
 
     <h3>Production:</h3>
     <pre><code>https://api.gluey.ai</code></pre>
-
-    <h2 class="content-title">Github</h2>
-    <p><em>[coming_soon]</em></p>
-    <p>We host these docs publicly on Github. If you think we should make a change, make a pull request and suggest what we can do better to improve our endpoints.</p>
 
     <h2 class="content-title">Endpoint Overview</h2><br>
 
@@ -150,6 +178,20 @@
         <li><span class="method highlight-get">GET</span><span class="endpoint">/manifests/<span class="highlight-brace">{manifest_id}</span></span></li>
         <li><span class="method highlight-post">POST</span><span class="endpoint">/tracking</span></li>
         <li><span class="method highlight-get">GET</span><span class="endpoint">/pudo</span></li>
+    </ul>
+
+    <h3 class="content-title">Webhook Subscriptions:</h3>
+    <ul class="endpoints-list">
+        <li><span class="method highlight-post">POST</span><span class="endpoint">/accounts/<span class="highlight-brace">{account_number}</span>/webhooks/shipment/subscriptions</span></li>
+        <li><span class="method highlight-delete">DELETE</span><span class="endpoint">/accounts/<span class="highlight-brace">{account_number}</span>/webhooks/shipment/subscriptions</span></li>
+        <li><span class="method highlight-post">POST</span><span class="endpoint">/accounts/<span class="highlight-brace">{account_number}</span>/webhooks/tracking/subscriptions</span></li>
+        <li><span class="method highlight-delete">DELETE</span><span class="endpoint">/accounts/<span class="highlight-brace">{account_number}</span>/webhooks/tracking/subscriptions</span></li>
+    </ul>
+
+    <h3 class="content-title">Webhooks:</h3>
+    <ul class="endpoints-list">
+        <li><span class="method highlight-event">EVENT</span><span class="endpoint">/webhooks/shipment</span></li>
+        <li><span class="method highlight-event">EVENT</span><span class="endpoint">/webhooks/tracking</span></li>
     </ul>
 </div>
 {% endblock %}

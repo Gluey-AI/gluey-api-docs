@@ -3,8 +3,8 @@ from typing import Optional
 
 from app.api.v1.common.models.base_models import GlueyApiServices
 from app.api.v1.label.models.base_models import CommercialInvoice, LabelRequest
-from app.api.v1.label.models.carrier_request import CarrierRequestModel
-from app.api.v1.label.models.shipment_request import ShipmentRequestModel
+from app.api.v1.label.models.api.carrier_request import CarrierRequestModel
+from app.api.v1.label.models.api.shipment_request import ShipmentRequestModel
 
 class AdditionalDocuments(BaseModel):
     """The additional documents you can request Gluey to generate for a shipment"""

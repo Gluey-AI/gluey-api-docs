@@ -3,7 +3,8 @@ from typing import Optional
 from pydantic import BaseModel, Field
 
 class TrackingLevel(str, Enum):
-    """At what level the carrier supports tracking events, e.g. 'shipment' or 'parcel'. For shipment-level tracking, the carrier only supports tracking events at the shipment level, and hence parcels are not individually trackable."""
+    """At what level the carrier supports tracking events, e.g. 'shipment' or 'parcel'. For shipment-level tracking, individual parcels in a multi-parcel shipment are not individually trackable."""
+
     SHIPMENT = "shipment"
     """The carrier only supports shipment-level tracking events, and hence parcels are not individually trackable."""
     PARCEL = "parcel"

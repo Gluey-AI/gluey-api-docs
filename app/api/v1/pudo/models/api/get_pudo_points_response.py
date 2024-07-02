@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 
-from app.api.v1.pudo.models.pudo import PudoPoint
+from app.api.v1.pudo.models.api.pudo import PudoPoint
 
 class GetPudoPointsResponse(BaseModel):
     """The response model to get all the pudo points for a carrier / country."""
