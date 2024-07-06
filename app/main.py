@@ -128,7 +128,7 @@ async def redoc(request: Request):
 @app.get("/openapi-{schema_type}.json", include_in_schema=False)
 async def gluey_openapi(schema_type: str):
     if schema_type == "label":
-        openapi_schema = get_openapi_schema("Label API", "API endpoints to create shipments and print labels in Gluey.", "label", labels_documents_router.routes, label_webhook_router.routes)
+        openapi_schema = get_openapi_schema("Label API", "API endpoints to create shipments and print labels in Gluey.", "label", labels_documents_router.routes)
     elif schema_type == "manifest":
         openapi_schema = get_openapi_schema("Manifest API", "API endpoints to manifest shipments in Gluey.", "manifest", manifest_router.routes)
     elif schema_type == "tracking":
