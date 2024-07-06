@@ -1,0 +1,56 @@
+milestone,event,sub_event,detailed_explanation
+in_transit,departure_airport,other,The carrier has sent a tracking event acknowledging that the shipment / parcel is at the origin airport but without sufficient detail to determine what sub_event category it fits.
+in_transit,departure_airport,en_route,The shipment / parcel is enroute to the departure (origin) airport for an international flight.
+in_transit,departure_airport,handed_over,The shipment / parcel have been handed over to an airline from where it will depart the origin country. This event is typically triggered from the carrier side to denote they have left the parcel with the airline at the airport.
+in_transit,departure_airport,take_off,The shipment / parcel have departed the airport in the origin country (i.e. the flight itself have taken off).
+in_transit,stopover_airport,other,The carrier has sent a tracking event acknowledging that the shipment / parcel is at a stopover airport but without sufficient detail to determine what sub_event category it fits.
+in_transit,stopover_airport,landing,The shipment / parcel have arrived at a stopover airport (i.e. the flight itself have landed).
+in_transit,stopover_airport,take_off,The shipment / parcel have departed the stopover airport (i.e. the flight itself have taken off).
+in_transit,destination_airport,other,The carrier has sent a tracking event acknowledging that the shipment / parcel is at the destination airport but without sufficient detail to determine what sub_event category it fits.
+in_transit,destination_airport,landing,The shipment / parcel have arrived at the final airport (i.e. the flight itself have landed).
+in_transit,destination_airport,collected,The shipment / parcel have been collected at the destination airport.
+in_transit,departure_seaport,other,The carrier has sent a tracking event acknowledging that the shipment / parcel is at the origin sea port but without sufficient detail to determine what sub_event category it fits.
+in_transit,departure_seaport,en_route,The shipment / parcel is enroute to the departure (origin) sea port for an international voyage.
+in_transit,departure_seaport,handed_over,The shipment / parcel have been unloaded at the sea port / handed over to an shipping company from where it will depart the origin country. This event is typically triggered from the carrier side to denote they have left the parcel with the shipping company at the port.
+in_transit,departure_seaport,loaded_onto_vessel,The shipment / parcel have been loaded onto a naval vessel and is ready to set sail.
+in_transit,departure_seaport,set_sail,The shipment / parcel have departed the sea port in the origin country (i.e. the naval vessel itself have set sail).
+in_transit,stopover_seaport,other,The carrier has sent a tracking event acknowledging that the shipment / parcel is at a stopover sea port but without sufficient detail to determine what sub_event category it fits.
+in_transit,stopover_seaport,docked,The shipment / parcel have arrived at a stopover sea port.
+in_transit,stopover_seaport,set_sail,The shipment / parcel have sailed from the stopover sea port.
+in_transit,destination_seaport,other,The carrier has sent a tracking event acknowledging that the shipment / parcel is at the destination sea port but without sufficient detail to determine what sub_event category it fits.
+in_transit,destination_seaport,docked,The shipment / parcel have arrived at the destination (final) sea port.
+in_transit,destination_seaport,unloaded,The shipment / parcel have been collected at the destination sea port
+in_transit,destination_seaport,collected,The shipment / parcel have been collected at the destination sea port
+customs,broker,other,The carrier has sent a tracking event acknowledging that the shipment / parcel is with a customs broker but without sufficient detail to determine what sub_event category it fits.
+customs,broker,arrived,The shipment / parcel have arrived at the customs broker facility.
+customs,broker,departed,The shipment / parcel have departed the customs broker facility.
+customs,broker,ready_for_export,The shipment / parcel is ready for export.
+customs,in_progress,initiated,Customs clearance process has been initiated.
+customs,in_progress,awaiting_documentation,Customs are waiting for required documents to clear the parcel.
+customs,in_progress,documentation_submitted,The required documents have been submitted to customs.
+customs,in_progress,additional_information_provided,The additional information requested by customs has been provided.
+customs,in_progress,under_inspection,The parcel is being inspected by customs.
+customs,in_progress,valuation_under_review,Customs are reviewing the declared value of the parcel.
+customs,in_progress,valuation_approved,The declared value of the parcel has been approved by customs.
+customs,in_progress,valuation_adjusted,The declared value of the parcel has been adjusted by customs.
+customs,in_progress,duty_taxes_paid,Customs duty and taxes have been paid.
+customs,in_progress,compliance_check,The parcel is undergoing compliance checks.
+customs,in_progress,re_export_pending,The parcel is pending re-export.
+customs,in_progress,re_export_completed,The parcel has been re-exported from the country.
+customs,held,other,The parcel is being held by customs for further checks for another reason.
+customs,held,additional_information_requested,Customs have requested additional information to process the parcel.
+customs,held,pending_duty_taxes_payment,Payment of customs duty and taxes is required.
+customs,held,certificate_of_origin,The parcel is held at customs due to missing / invalid certification of origin.
+customs,held,incomplete_documentation,The parcel is held at customs due to incomplete documentation.    
+customs,held,missing_documentation,The parcel is held at customs due to missing documents or information.
+customs,held,subject_to_restrictions,The parcel is held at customs due to restrictions on export / import of the item.
+customs,held,prohibited_items,The parcel is held at customs because it contains prohibited items.
+customs,held,incorrect_valuation,The parcel is held due to incorrect valuation declared.
+customs,exception,other,Any other unspecified customs issue.
+customs,exception,delay,The clearance process is delayed due to customs issues.
+customs,exception,release_failed,The parcel failed to clear customs for unknown reasons.
+customs,finalising,compliance_approved,The parcel has passed compliance checks.
+customs,finalising,release_pending,The parcel is awaiting release after successful inspection or documentation verification.
+customs,cleared,released,The parcel has been released from customs and is ready for further transit.
+customs,special_cases,destroy_pending,The parcel is pending destruction due to non-compliance.
+customs,special_cases,destroy_completed,The parcel has been destroyed due to non-compliance.

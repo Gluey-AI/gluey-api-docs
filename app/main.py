@@ -1,5 +1,10 @@
+from collections import defaultdict
+import csv
+import io
+import json
+
 from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.openapi.utils import get_openapi
 from fastapi.templating import Jinja2Templates
@@ -82,6 +87,89 @@ def get_openapi_schema(openapi_title: str, openapi_desc:str, doc_path:str, route
 
     return openapi_schema
 
+milestone_icons = {
+    "start": "circle-plus",
+    "collection": "truck-ramp-box",
+    "in_transit": "truck",
+    "delivery": "flag-checkered",
+    "post_delivery": "check-circle",
+    "return_to_sender": "warehouse",
+    "exception": "exclamation-circle",
+    "return_centre": "undo",
+    "customs": "hand",
+}
+
+csv_files = {
+    "all_events": "./app/static/all_events.csv",
+    "outbound": "./app/static/outbound.csv",
+    "return": "./app/static/return.csv",
+    "international": "./app/static/international.csv",
+    "exceptions": "./app/static/exceptions.csv",
+}
+
+def read_csv_stream_for_json(file_like):
+    data = []
+    file_like.seek(0)
+    reader = csv.DictReader(file_like)
+    for row in reader:
+        data.append({
+            "milestone": row['milestone'],
+            "event": row['event'],
+            "sub_event": row['sub_event'] or "No Sub Event",
+            "description": row['detailed_explanation']
+        })
+    return data
+
+def read_csv_for_json(file_path: str):
+    data = []
+    with open(file_path, newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            data.append({
+                "milestone": row['milestone'],
+                "event": row['event'],
+                "sub_event": row['sub_event'] or "No Sub Event",
+                "description": row['detailed_explanation']
+            })
+    return data
+
+def read_csv(file_path: str):
+    data = defaultdict(lambda: defaultdict(dict))
+    with open(file_path, newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            milestone = row['milestone']
+            event = row['event']
+            sub_event = row['sub_event'] or "No Sub Event"
+            explanation = row['detailed_explanation']
+            data[milestone][event][sub_event] = explanation
+    return data
+
+def combine_csv_files_in_memory(primary_file: str, international_file: str, exception_file: str):
+    output = io.StringIO()
+    primary_reader = csv.reader(open(primary_file, 'r', newline='', encoding='utf-8'))
+    international_reader = csv.reader(open(international_file, 'r', newline='', encoding='utf-8'))
+    exception_reader = csv.reader(open(exception_file, 'r', newline='', encoding='utf-8'))
+    combined_writer = csv.writer(output)
+
+    header = next(primary_reader)
+    combined_writer.writerow(header)
+
+    for row in primary_reader:
+        combined_writer.writerow(row)
+
+    next(international_reader)
+    next(exception_reader)
+
+    for row in international_reader:
+        combined_writer.writerow(row)
+
+    for row in exception_reader:
+        combined_writer.writerow(row)
+
+    output.seek(0)
+    return output
+
 def __create_template(request: Request, markdown_file: str, title: str):
     with open(f"./app/api/v1/templates/markdown/{markdown_file}", "r") as md_file:
         md_content = md_file.read()
@@ -108,6 +196,51 @@ async def home(request: Request):
 @app.get("/tracking", response_class=HTMLResponse, include_in_schema=False)
 async def home(request: Request):
     return __create_template(request, "tracking.md", "Integrating Tracking From Gluey")
+
+@app.get("/tracking-codes", response_class=HTMLResponse, include_in_schema=False)
+async def get_event_codes(request: Request):
+    all_data = {
+        "all_events": read_csv(csv_files["all_events"]),
+        "outbound": read_csv(csv_files["outbound"]),
+        "return": read_csv(csv_files["return"]),
+        "international": read_csv(csv_files["international"]),
+        "exceptions": read_csv(csv_files["exceptions"]),
+    }
+
+    return templates.TemplateResponse("events.html", {"request": request, "data": all_data, "icons": milestone_icons})
+
+@app.get("/json/{file_name}", response_class=JSONResponse, include_in_schema=False)
+async def get_json(file_name: str):
+    if file_name not in csv_files:
+        return JSONResponse({"error": "File not found"}, status_code=404)
+
+    if file_name == "outbound" or file_name == "return":
+        primary_file = csv_files[file_name]
+        international_file = csv_files["international"]
+        exception_file = csv_files["exceptions"]
+        
+        combined_csv = combine_csv_files_in_memory(primary_file, international_file, exception_file)
+        data = read_csv_stream_for_json(combined_csv)
+        return JSONResponse(data)
+
+    data = read_csv_for_json(csv_files[file_name])
+    return JSONResponse(data)
+
+@app.get("/csv/{file_name}", response_class=StreamingResponse, include_in_schema=False)
+async def get_combined_csv(file_name: str):
+    if file_name not in csv_files:
+        return JSONResponse({"error": "File not found"}, status_code=404)
+    
+    primary_file = csv_files[file_name]
+    international_file = csv_files["international"]
+    exception_file = csv_files["exceptions"]
+    
+    combined_csv = combine_csv_files_in_memory(primary_file, international_file, exception_file)
+    
+    headers = {
+        'Content-Disposition': f'attachment; filename={file_name}.csv'
+    }
+    return StreamingResponse(combined_csv, media_type='text/csv', headers=headers)
 
 @app.get("/api-label", response_class=HTMLResponse, include_in_schema=False)
 async def redoc(request: Request):

@@ -1,0 +1,397 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+    .markdown-content {
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        color: #333;
+        margin: 0;
+    }
+
+    p,
+    ul {
+        line-height: 1.6;
+        color: #666;
+    }
+
+    ul {
+        padding-left: 20px;
+        margin-bottom: 20px;
+    }
+
+    li {
+        margin-bottom: 10px;
+    }
+
+    pre {
+        background: #f0f0f0;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+        width: 300px;
+    }
+
+    code {
+        font-family: 'Courier New', Courier, monospace;
+        background: #f9f9f9;
+        padding: 2px 4px;
+        border-radius: 4px;
+        color: #d63384;
+    }
+
+    a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    .email-link {
+        font-weight: bold;
+        color: #007bff;
+        cursor: pointer;
+    }
+
+    .blue-link {
+        color: #007bff;
+    }
+
+    .blue-link-bold {
+        font-weight: bold;
+        color: #007bff;
+    }
+
+    .email-link:hover {
+        text-decoration: underline;
+    }
+
+    .milestone {
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .milestone h3 {
+        display: inline-block;
+        margin-left: 10px;
+    }
+
+    .milestone i {
+        font-size: 24px;
+        color: #007bff;
+        vertical-align: middle;
+    }
+
+    .milestone-header {
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+    }
+
+    .event {
+        margin-left: 40px;
+        margin-bottom: 10px;
+        position: relative;
+        padding-left: 20px;
+    }
+
+    .milestone::before {
+        content: "";
+        position: absolute;
+        left: 36px;
+        top: 35px;
+        bottom: 0;
+        width: 1px;
+
+        border-left: 2px dashed #ccc;
+    }
+
+    .event::before {
+        content: "";
+        position: absolute;
+        left: 85px;
+        top: 35px;
+        bottom: 0;
+        width: 1px;
+        border-left: 2px dashed #ccc;
+    }
+
+    .sub_events-container {
+        display: grid;
+        grid-template-columns: 400px auto;
+        column-gap: 10px;
+        margin-top: 20px;
+    }
+
+    .sub_event {
+        margin-left: 80px;
+        margin-bottom: 5px;
+        position: relative;
+        padding-left: 20px;
+        width: 300px;
+        text-align: left;
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .explanation {
+        text-align: left;
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .sub_event strong {
+        display: inline-block;
+        width: 180px;
+        margin-left: -180px;
+        vertical-align: top;
+        margin-left: 20px;
+    }
+
+    .event h4 {
+        margin-left: 20px;
+        margin-top: 10px;
+    }
+
+    .download-links-container {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .download-link {
+        margin-bottom: 20px;
+        display: inline-block;
+    }
+</style>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('.email-link').forEach(function (link) {
+            link.addEventListener('click', function () {
+                const section = document.querySelector(link.getAttribute('data-section'));
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="markdown-content">
+    <h1>Tracking Event Codes</h1>
+    <p>To make integration easier, Gluey harmonise all of the carrier's tracking event codes to our own.</p>
+    <p>This section documents all the different codes you can expect to receive from us, divided into sections for your
+        convenience where you can choose to look at the event that best suit your use case:</p>
+    <ul>
+        <li><span class="email-link" data-section="#outbound">Outbound</span> - All the different tracking events
+            related to an outbound shipment. This also includes the exception codes that are shared between outbound and
+            returns.</li>
+        <li><span class="email-link" data-section="#returns">Returns</span> - All the different tracking events related
+            to a return shipment. This also includes the exception codes that are shared between outbound and returns.
+        </li>
+        <li><span class="email-link" data-section="#international">International</span> - Additional tracking event
+            codes related to international shipments. You will receive this for both outbound and return shipments.</li>
+        <li><span class="email-link" data-section="#all-events">All events</span> - A comprehensive list of all
+            outbound, return, exception and international events that we have.</li>
+    </ul>
+    <h2 id="outbound">Structure of Event Codes</h2>
+    <p>Gluey arranges the events into a hierarchy of three levels: milestone, event and sub_event. This is to give customers maximum freedom and flexibility in how much granular detail they wish to use. The different hierarchies are described below:</p>
+    <ul>
+        <li><span class="blue-link-bold">milestone</span> - The top-level of the hierarchy and there exist nine different milestones that can take place during a delivery; <span class="blue-link">start</span>, <span class="blue-link">collection</span>, <span class="blue-link">in_transit</span>, <span class="blue-link">customs</span>, <span class="blue-link">delivery</span>, <span class="blue-link">post_delivery</span>, <span class="blue-link">return_to_sender</span>,<span class="blue-link">exception</span> and <span class="blue-link">return_centre</span>. This is a very broad definition that gives a sense of where in the operational journey a parcel currently is.</li>
+        <li><span class="blue-link-bold">event</span> - The second-level of the hierarchy, and a more granular description of what have happened within a milestone. For example for the milestone 'exception' one event is 'damage_loss' which indicates that the parcel has been either damaged or lost, indicating a claim might be filed.</li>
+        <li><span class="blue-link-bold">sub_event</span> - The third-level of the hierarchy, and the most granular description of what have happened within a milestone. For example for the milestone 'delivery', the event is 'attempt' then the sub_event can be 'access_restricted' which indicates that a delivery attempt was made but since the address was restricted (e.g., gated community, locked building) the carrier was unable to complete the delivery.</li>
+    </ul>
+
+    <h2 id="outbound">Outbound</h2>
+    <p>Below are all tracking events related to an outbound shipment, arranged according to Gluey's milestone, event and
+        sub_event structure. Should you wish to review the tracking event codes in CSV or JSON format you can also do so
+        by downloading the below files:</p>
+    <div class="download-links-container">
+        <a class="download-link" href="/csv/outbound" download>
+            <i class="fas fa-file-csv"></i> CSV
+        </a>
+        <a class="download-link" href="/json/outbound" download>
+            <i class="fas fa-file-alt"></i> JSON
+        </a>
+    </div>
+    {% for milestone, events in data.outbound.items() %}
+    <div class="milestone">
+        <div class="milestone-header">
+            <i class="fas fa-{{ icons[milestone] }}"></i>
+            <h3>{{ milestone }}</h3>
+        </div>
+        {% for event, sub_events in events.items() %}
+        <div class="event">
+            <h4>{{ event }}</h4>
+            {% for sub_event, explanation in sub_events.items() %}
+            <div class="sub_events-container">
+                <div class="sub_event">
+                    <strong>{{ sub_event }}</strong>
+                </div>
+                <div class="explanation">{{ explanation }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+    {% for milestone, events in data.exceptions.items() %}
+    <div class="milestone">
+        <div class="milestone-header">
+            <i class="fas fa-{{ icons[milestone] }}"></i>
+            <h3>{{ milestone }}</h3>
+        </div>
+        {% for event, sub_events in events.items() %}
+        <div class="event">
+            <h4>{{ event }}</h4>
+            {% for sub_event, explanation in sub_events.items() %}
+            <div class="sub_events-container">
+                <div class="sub_event">
+                    <strong>{{ sub_event }}</strong>
+                </div>
+                <div class="explanation">{{ explanation }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+
+    <h2 id="returns">Returns</h2>
+    <p>Below are all tracking events related to an return shipment, arranged according to Gluey's milestone, event and
+        sub_event structure. Should you wish to review the tracking event codes in CSV or JSON format you can also do so
+        by downloading the below files:</p>
+    <div class="download-links-container">
+        <a class="download-link" href="/csv/return" download>
+            <i class="fas fa-file-csv"></i> CSV
+        </a>
+        <a class="download-link" href="/json/return" download>
+            <i class="fas fa-file-alt"></i> JSON
+        </a>
+    </div>
+    {% for milestone, events in data.return.items() %}
+    <div class="milestone">
+        <div class="milestone-header">
+            <i class="fas fa-{{ icons[milestone] }}"></i>
+            <h3>{{ milestone }}</h3>
+        </div>
+        {% for event, sub_events in events.items() %}
+        <div class="event">
+            <h4>{{ event }}</h4>
+            {% for sub_event, explanation in sub_events.items() %}
+            <div class="sub_events-container">
+                <div class="sub_event">
+                    <strong>{{ sub_event }}</strong>
+                </div>
+                <div class="explanation">{{ explanation }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+    {% for milestone, events in data.exceptions.items() %}
+    <div class="milestone">
+        <div class="milestone-header">
+            <i class="fas fa-{{ icons[milestone] }}"></i>
+            <h3>{{ milestone }}</h3>
+        </div>
+        {% for event, sub_events in events.items() %}
+        <div class="event">
+            <h4>{{ event }}</h4>
+            {% for sub_event, explanation in sub_events.items() %}
+            <div class="sub_events-container">
+                <div class="sub_event">
+                    <strong>{{ sub_event }}</strong>
+                </div>
+                <div class="explanation">{{ explanation }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+
+    <h2 id="international">International</h2>
+    <p>Below are all tracking events related to an international shipment, arranged according to Gluey's milestone,
+        event and
+        sub_event structure. Should you wish to review the tracking event codes in CSV or JSON format you can also do so
+        by downloading the below files:</p>
+    <div class="download-links-container">
+        <a class="download-link" href="/csv/international" download>
+            <i class="fas fa-file-csv"></i> CSV
+        </a>
+        <a class="download-link" href="/json/international" download>
+            <i class="fas fa-file-alt"></i> JSON
+        </a>
+    </div>
+    {% for milestone, events in data.international.items() %}
+    <div class="milestone">
+        <div class="milestone-header">
+            <i class="fas fa-{{ icons[milestone] }}"></i>
+            <h3>{{ milestone }}</h3>
+        </div>
+        {% for event, sub_events in events.items() %}
+        <div class="event">
+            <h4>{{ event }}</h4>
+            {% for sub_event, explanation in sub_events.items() %}
+            <div class="sub_events-container">
+                <div class="sub_event">
+                    <strong>{{ sub_event }}</strong>
+                </div>
+                <div class="explanation">{{ explanation }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+
+    <h2 id="all-events">All Events</h2>
+    <p>Below are a summary of all tracking events that you can receive across outbound, return shipments that are both domestic and international shipment.
+        Should you wish to review the tracking event codes in CSV or JSON format you can also do so
+        by downloading the below files:</p>
+    <div class="download-links-container">
+        <a class="download-link" href="/static/all_events.csv" download>
+            <i class="fas fa-file-csv"></i> CSV
+        </a>
+        <a class="download-link" href="/json/all_events" download>
+            <i class="fas fa-file-alt"></i> JSON
+        </a>
+    </div>
+    {% for milestone, events in data.all_events.items() %}
+    <div class="milestone">
+        <div class="milestone-header">
+            <i class="fas fa-{{ icons[milestone] }}"></i>
+            <h3>{{ milestone }}</h3>
+        </div>
+        {% for event, sub_events in events.items() %}
+        <div class="event">
+            <h4>{{ event }}</h4>
+            {% for sub_event, explanation in sub_events.items() %}
+            <div class="sub_events-container">
+                <div class="sub_event">
+                    <strong>{{ sub_event }}</strong>
+                </div>
+                <div class="explanation">{{ explanation }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
