@@ -16,6 +16,7 @@ from markdown.extensions.extra import ExtraExtension
 from markdown.extensions.toc import TocExtension
 from app.api.v1.templates.MermaidExtension import MermaidExtension
 
+from app.api.v1.book.endpoints import router as book_router
 from app.api.v1.label.endpoints import router as labels_documents_router
 from app.api.v1.manifest.endpoints import router as manifest_router
 from app.api.v1.pudo.endpoints import router as pudo_router
@@ -45,6 +46,7 @@ app = FastAPI(
     description="API endpoints for Gluey"
 )
 
+app.include_router(book_router)
 app.include_router(labels_documents_router)
 app.include_router(manifest_router)
 app.include_router(tracking_router)
@@ -242,6 +244,10 @@ async def get_combined_csv(file_name: str):
     }
     return StreamingResponse(combined_csv, media_type='text/csv', headers=headers)
 
+@app.get("/api-book", response_class=HTMLResponse, include_in_schema=False)
+async def redoc(request: Request):
+    return templates.TemplateResponse("redoc.html", {"request": request, "spec_url": "/openapi-book.json", "title": "Book Endpoints"})
+
 @app.get("/api-label", response_class=HTMLResponse, include_in_schema=False)
 async def redoc(request: Request):
     return templates.TemplateResponse("redoc.html", {"request": request, "spec_url": "/openapi-label.json", "title": "Label Endpoints"})
@@ -268,6 +274,8 @@ async def gluey_openapi(schema_type: str):
         openapi_schema = get_openapi_schema("Tracking API", "API endpoints to track shipments in Gluey.", "tracking", tracking_router.routes)
     elif schema_type == "pudo":
         openapi_schema = get_openapi_schema("PUDO API", "API endpoints to get PUDO locations in Gluey.", "pudo",pudo_router.routes)
+    elif schema_type == "book":
+        openapi_schema = get_openapi_schema("Book API", "API endpoints to book appointments with carriers.", "book",book_router.routes)
 
     return openapi_schema
 

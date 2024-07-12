@@ -2,10 +2,10 @@ from pydantic import BaseModel, Field
 from typing import List, Optional
 from datetime import datetime
 
-from app.api.v1.common.models.base_models import Dimensions, MetaData, References, TrackingLevel, Value, Weight, tracking_level_descriptions
+from app.api.v1.common.models.base_models import BaseCollectionTimeWindow, Dimensions, MetaData, References, TrackingLevel, Value, Weight, tracking_level_descriptions
 from app.api.v1.common.utils import get_enum_description
 from app.api.v1.label.models.api.dangerous_goods import ShipmentLevelDangerousGoods
-from app.api.v1.label.models.base_models import Addresses, Barcode, CollectionTimeWindow, ManifestStatus, PackageType, manifest_status_descriptions
+from app.api.v1.label.models.base_models import Addresses, Barcode, ManifestStatus, PackageType, manifest_status_descriptions
 from app.api.v1.label.models.api.carrier import Carrier
 from app.api.v1.label.models.api.customs_clearance import CustomsClearance
 
@@ -46,9 +46,10 @@ class Shipment(BaseModel):
     manifest_status: ManifestStatus = Field(..., description=f"The manifest status of the shipment. It can be one of the following:\n{get_enum_description(ManifestStatus, manifest_status_descriptions)}")
     manifest_id: Optional[str] = Field(None, description="The Gluey manifest id related to the shipment, if applicable and shipment is manifested.")
     eta: Optional[datetime] = Field(None, description="The estimated time of arrival for the shipment as provided by the carrier.")
-    carrier_tracking_id: Optional[str] = Field(None, description="If `tracking_level=shipment`. This is the carriers own tracking id for the shipment, and it means that for multi-parcel shipments the parcels are not individually trackable.")
     carrier: Carrier = Field(..., description="The carrier and carrier service assigned to this shipment.")
-    collection_times: Optional[list[CollectionTimeWindow]] = Field(None, description="A list of times when the shipment can be collected. How to use:\n- If you have a `specific collection time and date`, then provide a single collection time with only the `start` specified.\n- If you have a `single collection time window`, then provide a single collection time with both `start` and `end` specified.\n- If you have `multiple collection time windows` that are acceptable, and the carrier supports it, then provide multiple time windows where all have with both `start` and `end` specified.")
+    carrier_tracking_id: Optional[str] = Field(None, description="If `tracking_level=shipment`. This is the carriers own tracking id for the shipment, and it means that for multi-parcel shipments the parcels are not individually trackable.")
+    carrier_collection_id: Optional[str] = Field(None, description="If a collection has been booked with the carrier. This is the carriers own collection id for the shipment.")
+    collection_times: Optional[list[BaseCollectionTimeWindow]] = Field(None, description="A list of times when the shipment can be collected. How to use:\n- If you have a `specific collection time and date`, then provide a single collection time with only the `start` specified.\n- If you have a `single collection time window`, then provide a single collection time with both `start` and `end` specified.\n- If you have `multiple collection time windows` that are acceptable, and the carrier supports it, then provide multiple time windows where all have with both `start` and `end` specified.")
     dng_declaration: Optional[ShipmentLevelDangerousGoods] = Field(None, description="Optional. Shipment-level details are not mandatory for dangerous goods shipments, but `parcel-level` and `item-level` details are mandatory.")
     customs_clearance: Optional[CustomsClearance] = Field(None, description="Customs clearance details about the shipment. Only applicable to cross-border shipments.")
     references: References = Field(..., description="References for the shipment.")

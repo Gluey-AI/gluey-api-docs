@@ -1,3 +1,4 @@
+from datetime import datetime
 from enum import Enum
 from typing import Optional
 from pydantic import BaseModel, Field
@@ -153,6 +154,11 @@ class References(BaseModel):
     shipper: Optional[str] = Field(None, description="The reference number that the shipper / sender / consignor use for this shipment, typically an order reference or similar.")
     receiver: Optional[str] = Field(None, description="The reference number that the receiver / recipient / consignee of this use shipment.")
     saas_provider: Optional[str] = Field(None, description="The reference number that the OMS / WMS / CMS etc as a third-party software provider use to identify this shipment.")
+
+class BaseCollectionTimeWindow(BaseModel):
+    """Class representing a time window for the collection of a shipment."""
+    start: datetime = Field(..., description="The start date and time of the collection window. The datetime should be in ISO 8601 format with time zone, e.g., `2024-07-12T09:00:00-04:00`.")
+    end: Optional[datetime] = Field(None, description="The end date and time of the collection window. The datetime should be in ISO 8601 format with time zone, e.g., `2024-07-12T12:00:00-04:00`.")
 
 class GlueyPaidApiServices(BaseModel):
     """Gluey operations that come with a surcharge.

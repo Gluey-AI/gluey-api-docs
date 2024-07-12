@@ -278,8 +278,3 @@ class ParcelLockerBaseModel(BaseModel):
 class ParcelLockerResponseModel(ParcelLockerBaseModel):
     """Class representing a parcel locker, including pin code, that the shipment is assigned to and if the code has been generated yet or not."""
     status: ParcelLockerPinCodeStatus = Field(..., description=f"The status of the parcel locker pin code. It can be one of the following:\n{get_enum_description(ParcelLockerPinCodeStatus, parcel_locker_pin_code_status_descriptions)}")
-
-class CollectionTimeWindow(BaseModel):
-    """Class representing a time window for the collection of a shipment."""
-    start: datetime = Field(..., description="The start date and time of the collection window. The datetime should be in ISO 8601 format with time zone, e.g., `2024-07-12T09:00:00-04:00`.")
-    end: Optional[datetime] = Field(None, description="The end date and time of the collection window. The datetime should be in ISO 8601 format with time zone, e.g., `2024-07-12T12:00:00-04:00`.")

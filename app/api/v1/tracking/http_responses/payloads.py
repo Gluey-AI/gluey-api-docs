@@ -1,5 +1,3 @@
-from app.api.v1.common.http_responses.payloads import carrier_api_error
-
 http_get_tracking_response = {
                 200: {
             "description": "Tracking events found",
