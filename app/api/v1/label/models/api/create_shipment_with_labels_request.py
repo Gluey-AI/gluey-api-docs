@@ -2,9 +2,7 @@ from pydantic import BaseModel, Field
 from typing import Optional
 
 from app.api.v1.common.models.base_models import GlueyApiServices
-from app.api.v1.label.models.api.customs_clearance import CustomsClearance
-from app.api.v1.label.models.api.dangerous_goods import ShipmentLevelDangerousGoods
-from app.api.v1.label.models.base_models import CollectionTimeWindow, CommercialInvoice, LabelRequest
+from app.api.v1.label.models.base_models import CommercialInvoice, LabelRequest
 from app.api.v1.label.models.api.carrier_request import CarrierRequestModel
 from app.api.v1.label.models.api.shipment_request import ShipmentRequestModel
 

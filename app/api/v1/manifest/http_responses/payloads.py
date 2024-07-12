@@ -1,4 +1,4 @@
-from app.api.v1.common.http_responses.payloads import carrier_api_error
+from app.api.v1.common.http_responses.payloads import http_502_response
 
 http_create_manifest_response = {
                 201: {
@@ -44,7 +44,7 @@ http_create_manifest_response = {
                 }
             }
         },
-                500: {
+        500: {
             "description": "Internal Server Error",
             "content": {
                 "application/json": {
@@ -54,14 +54,7 @@ http_create_manifest_response = {
                 }
             }
         },
-                502: {
-            "description": "Carrier API Error",
-            "content": {
-                "application/json": {
-                    "example": carrier_api_error
-                }
-            }
-        }
+        502: http_502_response
     }
 
 http_get_manifest_response = {

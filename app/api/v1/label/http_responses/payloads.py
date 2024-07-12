@@ -1,4 +1,4 @@
-from app.api.v1.common.http_responses.payloads import carrier_api_error
+from app.api.v1.common.http_responses.payloads import http_502_response
 
 http_create_shipment_response = {
         202: {
@@ -203,7 +203,7 @@ http_get_labels_response = {
                 }
             }
         },
-                500: {
+        500: {
             "description": "Internal Server Error",
             "content": {
                 "application/json": {
@@ -213,14 +213,7 @@ http_get_labels_response = {
                 }
             }
         },
-                502: {
-            "description": "Carrier API Error",
-            "content": {
-                "application/json": {
-                    "example": carrier_api_error
-                }
-            }
-        }
+        502: http_502_response
     }
 
 http_get_documents_response = {
@@ -318,12 +311,5 @@ http_create_shipment_labels_response = {
                 }
             }
         },
-                502: {
-            "description": "Carrier API Error",
-            "content": {
-                "application/json": {
-                    "example": carrier_api_error
-                }
-            }
-        }
+                502: http_502_response
     }

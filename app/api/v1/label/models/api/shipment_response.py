@@ -38,5 +38,6 @@ class ShipmentResponseModel(BaseModel):
     manifest_status: ManifestStatus = Field(..., description=f"The manifest status of the shipment. It can be one of the following:\n{get_enum_description(ManifestStatus, manifest_status_descriptions)}")
     manifest_id: Optional[str] = Field(None, description="The Gluey manifest id related to the shipment, if applicable and shipment is manifested.")
     carrier_tracking_id: Optional[str] = Field(None, description="If `tracking_level=shipment`. This is the carriers own tracking id for the shipment, and it means that for multi-parcel shipments the parcels are not individually trackable.")
+    carrier_collection_id: Optional[str] = Field(None, description="If a collection has been booked with the carrier. This is the carriers own collection id for the shipment.")
     eta: Optional[datetime] = Field(None, description="The estimated time of arrival for the shipment, if provided by the carrier.")
     parcels: list[ParcelResponseModel] = Field([], description="A list of parcels included in the shipment")
