@@ -114,14 +114,14 @@ class GlueyMilestone(str, Enum):
 class TrackingEventAddress(BaseModel):
     """Class representing an address where a tracking event took place."""
     type: Optional[LocationType] = Field(None, description="A classification of the type of location where the event took place, e.g. 'AIRPORT', 'HUB', 'DEPOT' etc.")
-    name: Optional[str] = Field(None, description="The name of the location")
+    name: str = Field(..., description="The name of the location")
     street: Optional[str] = Field(None, description="The first line of the address")
     street_2: Optional[str] = Field(None, description="The second line of the address")
     postal_code: Optional[str] = Field(None, description="The postal code or ZIP code")
     suburb: Optional[str] = Field(None, description="The suburb or district. Only applicable to specific countries such as Australia and New Zealand.")
-    city: Optional[str] = Field(None, description="The city or town")
+    city: str = Field(..., description="The city or town")
     state: Optional[str] = Field(None, description="The state or province. Only applicable to specific countries such as the US, Canada, Australia etc.")
-    iso_country: Optional[str] = Field(None, description="The ISO 3166-1 alpha-3 ('USA', 'GBR', 'DEU') country code.")
+    iso_country: str = Field(..., description="The ISO 3166-1 alpha-3 ('USA', 'GBR', 'DEU') country code.")
 
 class CarrierLocationCode(BaseModel):
     code: str = Field(..., description="The code of the location, e.g. 'SORLHR536'")

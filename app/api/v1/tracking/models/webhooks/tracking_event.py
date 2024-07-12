@@ -2,7 +2,8 @@ from enum import Enum
 from typing import Optional
 from pydantic import BaseModel, Field
 
-from app.api.v1.common.models.base_models import MetaData, References, TrackingLevel
+from app.api.v1.common.models.base_models import MetaData, References, TrackingLevel, tracking_level_descriptions
+from app.api.v1.common.utils import get_enum_description
 from app.api.v1.tracking.models.base_models import ParcelCondition, TrackingEventCodes, TrackingEventDateTime, TrackingEventDeliveryConfirmation, TrackingEventLocation, TrackingEventPhysicalData
 
 class OtherUpdates(BaseModel):
@@ -22,21 +23,21 @@ class TrackingEvent(BaseModel):
     other: OtherUpdates = Field(None, description="Other updates various updates to the shipment / parcel that the carrier have provided.")
 
 class TrackingEventParcel(BaseModel):
+    carrier_tracking_id: Optional[str] = Field(None, description="Only available when `tracking_level=parcel`. This is the carriers own tracking id for the parcel")
     parcel_id: str = Field(..., description="The ID of the parcel that the tracking event is related to.")
     parcel_uuid_ref: Optional[str] = Field(None, description="Your own unique identifier for the parcel.")
     parcel_meta_data: Optional[list[MetaData]] = Field(None, description="Optional. Meta data tags that was assigned to the parcel when it was created.")
-    parcel_tracking_number: str = Field(..., description="The tracking number of the parcel if available and carrier support parcel-level tracking.")
-    parcel_events: list[TrackingEvent] = Field(..., description="The tracking events that have been received for the parcel.")
+    parcel_events: list[TrackingEvent] = Field(None, description="The tracking events that have been received for the parcel.")
 
 class TrackingData(BaseModel):
-    tracking_level: TrackingLevel = Field(..., description="If tracking_level='shipment' it means the carrier does not provide parcel-level data and property 'parcel_events' will be empty. If tracking_level is 'parcel' they do provide parcel-level data and property 'parcel_events' will have data.")
-    shipment_events: Optional[list[TrackingEvent]] = Field(None, description="If tracking_level='shipment'. The tracking events that have been received are on the shipment-level, i.e. individual parcels in a multi-parcel are not individually trackable.")
-    parcel_events: Optional[list[TrackingEventParcel]] = Field(None, description="If tracking_level='parcel'. The tracking events that have been received a for individual parcels in the shipment.")
+    tracking_level: TrackingLevel = Field(..., description=f"Indicates if parcels can be individually trackable (i.e. the carrier support multi-parcel tracking) or if only the shipment itself can be tracked. It can be one of the following:\n{get_enum_description(TrackingLevel, tracking_level_descriptions)}")
+    carrier_tracking_id: Optional[str] = Field(None, description="If `tracking_level=shipment`. This is the carriers own tracking id for the shipment, and it means that for multi-parcel shipments the parcels are not individually trackable.")
+    shipment_events: Optional[list[TrackingEvent]] = Field(None, description="If `tracking_level=shipment`. The tracking events that have been received are on the shipment-level, i.e. individual parcels in a multi-parcel are not individually trackable.")
+    parcel_events: Optional[list[TrackingEventParcel]] = Field(None, description="If `tracking_level=parcel`. The tracking events that have been received for individual parcels in the shipment.")
 
 class TrackingWebhookEvent(BaseModel):
     shipment_id: str = Field(..., description="The ID of the shipment that the tracking event is related to.")
     shipment_uuid_ref: Optional[str] = Field(None, description="Your own unique identifier for the shipment.")
     shipment_meta_data: Optional[list[MetaData]] = Field(None, description="Optional. Meta data tags that was assigned to the shipment when it was created.")
     shipment_references: References = Field(..., description="The references of the shipment.")
-    shipment_tracking_number: Optional[str] = Field(None, description="The tracking number of the shipment.")
     tracking_data: TrackingData = Field(..., description="All the tracking events received for the shipment or parcels.")

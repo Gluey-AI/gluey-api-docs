@@ -3,166 +3,133 @@ from typing import Optional
 from pydantic import BaseModel, Field
 
 from app.api.v1.common.models.base_models import Dimensions, GeoLocation, MetaData
+from app.api.v1.common.utils import get_enum_description
 
 class PudoPointType(str, Enum):
-    """Enum representing the type of PUDO point."""
     LOCKER = 'locker'
-    """A secure locker where parcels can be picked up or dropped off."""
-    
     STORE = 'store'
-    """A retail store that offers pick-up and drop-off services."""
-    
     POST_OFFICE = 'post_office'
-    """A post office providing PUDO services."""
-    
     SERVICE_POINT = 'service_point'
-    """A dedicated service point for parcel pick-up and drop-off."""
-    
     GAS_STATION = 'gas_station'
-    """A gas station offering PUDO services."""
-    
     CONVENIENCE_STORE = 'convenience_store'
-    """A convenience store providing PUDO services."""
-    
     SUPERMARKET = 'supermarket'
-    """A supermarket with PUDO services."""
-
     MALL = 'mall'
-    """A shopping mall offering PUDO services."""
-    
     LIBRARY = 'library'
-    """A library providing PUDO services."""
-    
     TRANSPORT_HUB = 'transport_hub'
-    """A transportation hub such as a train station or bus station offering PUDO services."""
-    
     UNIVERSITY = 'university'
-    """A university campus providing PUDO services."""
-    
     BUSINESS_CENTER = 'business_center'
-    """A business center offering PUDO services."""
-    
     GYM = 'gym'
-    """A gym offering PUDO services."""
-    
     HOTEL = 'hotel'
-    """A hotel providing PUDO services."""
-    
     PARKING_GARAGE = 'parking_garage'
-    """A parking garage with PUDO services."""
-    
     AIRPORT = 'airport'
-    """An airport offering PUDO services."""
-    
     TRAIN_STATION = 'train_station'
-    """A train station providing PUDO services."""
-    
     COMMUNITY_CENTER = 'community_center'
-    """A community center offering PUDO services."""
-    
     BANK = 'bank'
-    """A bank providing PUDO services."""
-    
     SPORTS_VENUE = 'sports_venue'
-    """A sports venue offering PUDO services."""
-    
     HOSPITAL = 'hospital'
-    """A hospital providing PUDO services."""
+    OTHER = 'other'
+
+pudo_point_type_descriptions = {
+    PudoPointType.LOCKER: "A secure locker where parcels can be picked up or dropped off.",
+    PudoPointType.STORE: "A retail store that offers pick-up and drop-off services.",
+    PudoPointType.POST_OFFICE: "A post office providing PUDO services.",
+    PudoPointType.SERVICE_POINT: "A dedicated service point for parcel pick-up and drop-off.",
+    PudoPointType.GAS_STATION: "A gas station offering PUDO services.",
+    PudoPointType.CONVENIENCE_STORE: "A convenience store providing PUDO services.",
+    PudoPointType.SUPERMARKET: "A supermarket with PUDO services.",
+    PudoPointType.MALL: "A shopping mall offering PUDO services.",
+    PudoPointType.LIBRARY: "A library providing PUDO services.",
+    PudoPointType.TRANSPORT_HUB: "A transportation hub such as a train station or bus station offering PUDO services.",
+    PudoPointType.UNIVERSITY: "A university campus providing PUDO services.",
+    PudoPointType.BUSINESS_CENTER: "A business center offering PUDO services.",
+    PudoPointType.GYM: "A gym offering PUDO services.",
+    PudoPointType.HOTEL: "A hotel providing PUDO services.",
+    PudoPointType.PARKING_GARAGE: "A parking garage with PUDO services.",
+    PudoPointType.AIRPORT: "An airport offering PUDO services.",
+    PudoPointType.TRAIN_STATION: "A train station providing PUDO services.",
+    PudoPointType.COMMUNITY_CENTER: "A community center offering PUDO services.",
+    PudoPointType.BANK: "A bank providing PUDO services.",
+    PudoPointType.SPORTS_VENUE: "A sports venue offering PUDO services.",
+    PudoPointType.HOSPITAL: "A hospital providing PUDO services.",
+    PudoPointType.OTHER: "A PUDO point type that does not fit into the predefined categories."
+}
 
 class PudoPointStatus(str, Enum):
-    """Enum representing the status of the PUDO point."""
     ACTIVE = 'active'
-    """The PUDO point is active and available for use."""
-    
     INACTIVE = 'inactive'
-    """The PUDO point is inactive and not available for use."""
-    
     MAINTENANCE = 'maintenance'
-    """The PUDO point is under maintenance."""
+
+pudo_point_status_descriptions = {
+    PudoPointStatus.ACTIVE: "The PUDO point is active and available for use.",
+    PudoPointStatus.INACTIVE: "The PUDO point is inactive and not available for use.",
+    PudoPointStatus.MAINTENANCE: "The PUDO point is under maintenance."
+}
 
 class PaymentMethod(str, Enum):
-    """Enum representing the payment methods accepted."""
-
     CASH = 'cash'
-    """Physical currency payment."""
-    
     CREDIT_CARD = 'credit_card'
-    """Payment using a credit card."""
-    
     DEBIT_CARD = 'debit_card'
-    """Payment using a debit card."""
-    
     APPLE_PAY = 'apple_pay'
-    """Payment using Apple Pay."""
-    
     GOOGLE_PAY = 'google_pay'
-    """Payment using Google Pay."""
-
     SAMSUNG_PAY = 'samsung_pay'
-    """Payment using Samsung Pay."""
-    
     PAYPAL = 'paypal'
-    """Payment using PayPal."""
-    
     ALIPAY = 'alipay'
-    """Payment using Alipay (China)."""
-    
     WECHAT_PAY = 'wechat_pay'
-    """Payment using WeChat Pay (China)."""
-    
     PAYTM = 'paytm'
-    """Payment using Paytm (India)."""
-    
     MPESA = 'mpesa'
-    """Payment using M-Pesa (Kenya)."""
-    
     BITCOIN = 'bitcoin'
-    """Payment using Bitcoin cryptocurrency."""
-    
     ETHEREUM = 'ethereum'
-    """Payment using Ethereum cryptocurrency."""
-    
     SWISH = 'swish'
-    """Payment using Swish (Sweden)."""
 
+payment_method_descriptions = {
+    PaymentMethod.CASH: "Physical currency payment.",
+    PaymentMethod.CREDIT_CARD: "Payment using a credit card.",
+    PaymentMethod.DEBIT_CARD: "Payment using a debit card.",
+    PaymentMethod.APPLE_PAY: "Payment using Apple Pay.",
+    PaymentMethod.GOOGLE_PAY: "Payment using Google Pay.",
+    PaymentMethod.SAMSUNG_PAY: "Payment using Samsung Pay.",
+    PaymentMethod.PAYPAL: "Payment using PayPal.",
+    PaymentMethod.ALIPAY: "Payment using Alipay (China).",
+    PaymentMethod.WECHAT_PAY: "Payment using WeChat Pay (China).",
+    PaymentMethod.PAYTM: "Payment using Paytm (India).",
+    PaymentMethod.MPESA: "Payment using M-Pesa (Kenya).",
+    PaymentMethod.BITCOIN: "Payment using Bitcoin cryptocurrency.",
+    PaymentMethod.ETHEREUM: "Payment using Ethereum cryptocurrency.",
+    PaymentMethod.SWISH: "Payment using Swish (Sweden)."
+}
+
+class DayOfWeek(str, Enum):
+    MON = 'mon'
+    TUE = 'tue'
+    WED = 'wed'
+    THU = 'thu'
+    FRI = 'fri'
+    SAT = 'sat'
+    SUN = 'sun'
+
+day_of_week_descriptions = {
+    DayOfWeek.MON: "Monday",
+    DayOfWeek.TUE: "Tuesday",
+    DayOfWeek.WED: "Wednesday",
+    DayOfWeek.THU: "Thursday",
+    DayOfWeek.FRI: "Friday",
+    DayOfWeek.SAT: "Saturday",
+    DayOfWeek.SUN: "Sunday"
+}
 
 class PudoAddress(BaseModel):
-    """Class representing an address where a pudo location is."""
-    name: Optional[str] = Field(..., description="The name of the location")
-    street: Optional[str] = Field(..., description="The first line of the address")
+    name: str = Field(..., description="The name of the location")
+    street: str = Field(..., description="The first line of the address")
     street_2: Optional[str] = Field(None, description="The second line of the address")
-    postal_code: Optional[str] = Field(..., description="The postal code or ZIP code")
-    suburb: str = Field(..., description="The suburb or district. Only applicable to specific countries such as Australia and New Zealand.")
-    city: Optional[str] = Field(..., description="The city or town")
+    postal_code: str = Field(..., description="The postal code or ZIP code")
+    suburb: Optional[str] = Field(None, description="The suburb or district. Only applicable to specific countries such as Australia and New Zealand.")
+    city: str = Field(..., description="The city or town")
     state: Optional[str] = Field(None, description="The state or province. Only applicable to specific countries such as the US, Canada, Australia etc.")
-    iso_country: Optional[str] = Field(..., description="The ISO 3166-1 alpha-2 ('US','GB','DE' etc) or alpha-3 ('USA', 'GBR', 'DEU') country code")
+    iso_country: str = Field(..., description="The ISO 3166-1 alpha-2 ('US','GB','DE' etc) or alpha-3 ('USA', 'GBR', 'DEU') country code")
 
 class ContactInformation(BaseModel):
     phone_number: Optional[str] = Field(None, description="The contact phone number for the PUDO point")
     email: Optional[str] = Field(None, description="The contact email address for the PUDO point")
-
-class DayOfWeek(str, Enum):
-    """Enum representing the day of the week."""
-    MONDAY = 'monday'
-    """Monday"""
-    
-    TUESDAY = 'tuesday'
-    """Tuesday"""
-    
-    WEDNESDAY = 'wednesday'
-    """Wednesday"""
-    
-    THURSDAY = 'thursday'
-    """Thursday"""
-    
-    FRIDAY = 'friday'
-    """Friday"""
-    
-    SATURDAY = 'saturday'
-    """Saturday"""
-    
-    SUNDAY = 'sunday'
-    """Sunday"""
 
 class BusinessHours(BaseModel):
     day_of_week: DayOfWeek = Field(..., description="The day of the week, e.g., 'monday', 'tuesday'")
@@ -213,13 +180,11 @@ class PudoUserExperience(BaseModel):
     customer_feedback: Optional[float] = Field(None, description="Customer feedback scores or ratings on a scale from 0 to 5")
 
 class PudoFinTech(BaseModel):
-    """Class representing the financial technology features available at the PUDO point."""
     payment_methods_accepted: Optional[list[PaymentMethod]] = Field(None, description="List of accepted payment methods, e.g., cash, credit card, mobile payments")
     service_fees: Optional[str] = Field(None, description="Details on any service fees charged for PUDO services")
     atm_available: Optional[bool] = Field(None, description="Indicates if an ATM is available at the PUDO point")
 
 class PudoEnvironmentalOptions(BaseModel):
-    """Class representing the environmental options available at the PUDO point."""
     recycling_facilities: Optional[bool] = Field(None, description="Indicates if recycling facilities are available at the PUDO point")
     eco_friendly_packaging: Optional[bool] = Field(None, description="Indicates if eco-friendly packaging options are available")
 
@@ -228,9 +193,8 @@ class PudoPoint(BaseModel):
     carrier_id: str = Field(..., description="The unique carrier identifier for the PUDO point")
     meta_data: Optional[list[MetaData]] = Field(None, description="Vary depending on carrier. Additional data from pudo integration that isn't part of the Gluey standard interface.")
     name: str = Field(..., description="The name of the PUDO point")
-    type: PudoPointType = Field(..., description="The type of PUDO point")
-    status: PudoPointStatus = Field(..., description="The current status of the PUDO point")
-    address_formatted: Optional[str] = Field(None, description="Optional - if provided by the carrier. The address as a formatted string, e.g. '123 Main Street, London, UK, W1A 1AA'.")
+    type: PudoPointType = Field(..., description=f"The type of PUDO point. It can be one of the following:\n{get_enum_description(PudoPointType, pudo_point_type_descriptions)}")
+    status: PudoPointStatus = Field(..., description=f"The current status of the PUDO point. It can be one of the following:\n{get_enum_description(PudoPointStatus, pudo_point_status_descriptions)}")
     address: PudoAddress = Field(..., description="The address of the PUDO point")
     what3words: Optional[str] = Field(None, description="Optional - if provided by carrier. The what3words location of the PUDO point, e.g. 'index.home.raft'.")
     geo: Optional[GeoLocation] = Field(None, description="Optional - if provided by carrier. The geo location of the pudo point, e.g. '51.521251,-0.203586'.")
