@@ -1,9 +1,9 @@
 # Asynchronous Label Generation
-Asynchronous label printing means that the label is printed in a separate process the initial shipment have been created.
+Asynchronous label printing means that the label is printed in a separate process after the initial shipment has been created.
 
 ## Use case / application
 
-1. **Demanding Low Latency Workloads (<100ms)** - Less than 100 ms response time for label printing is required
+1. **Demanding Low Latency Workloads (<100ms)** - Less than 100 ms response time for label printing is required.
 2. **Demanding Volume** - You are printing high volumes of labels and need a system that can scale to high workloads.
 3. **Label can be printed separately from shipment creation** - You do not have a user that is sitting and waiting for a label to be printed, but rather you can allow for the initial shipment to be created minutes, or even hours, before the label is needed.
 
@@ -31,33 +31,33 @@ Below is the integration pattern used for asynchronous label printing, including
 
 ~~~mermaid
 sequenceDiagram
-    participant Customer
-    participant Gluey AI
-    participant Gluey LabelEngine
-    participant Carrier API
+    participant 🏭 Customer
+    participant 🤖 Gluey AI
+    participant 🏷️ Gluey LabelEngine
+    participant 🚚 Carrier API
 
-    Customer->>Gluey AI: (1) POST: Create Shipment (/shipments)
-    Gluey AI->>Gluey AI: (2) Pre-process: Address / Exchange rates etc
-    Gluey AI->>Customer: (3) Response: shipment_id
-    Gluey AI->>Gluey AI: (4) Queue Label Request
+    🏭 Customer->>🤖 Gluey AI: (1) POST: Create Shipment (/shipments)
+    🤖 Gluey AI->>🤖 Gluey AI: (2) Pre-process: Address / Exchange rates etc
+    🤖 Gluey AI->>🏭 Customer: (3) Response: shipment_id
+    🤖 Gluey AI->>🤖 Gluey AI: (4) Queue Label Request
     alt Step (5a) Gluey In-House
-        Note over Gluey AI, Gluey LabelEngine: Gluey Generate In-house
-        Gluey AI->>Gluey LabelEngine: (5a.1) Request Label 
-        Gluey LabelEngine->>Gluey AI: (5a.2) Return Label Data
+        Note over 🤖 Gluey AI, 🏷️ Gluey LabelEngine: Gluey Generate In-house
+        🤖 Gluey AI->>🏷️ Gluey LabelEngine: (5a.1) Request Label 
+        🏷️ Gluey LabelEngine->>🤖 Gluey AI: (5a.2) Return Label Data
     else Step (5b) Carrier API:
-        Note over Gluey AI, Carrier API: Request from Carrier API
-        Gluey AI->>Carrier API: (5b.1) Request Label
-        Carrier API->>Gluey AI: (5b.1) Return Label Data
+        Note over 🤖 Gluey AI, 🚚 Carrier API: Request from Carrier API
+        🤖 Gluey AI->>🚚 Carrier API: (5b.1) Request Label
+        🚚 Carrier API->>🤖 Gluey AI: (5b.1) Return Label Data
     end
-    Gluey AI->>Gluey AI: (6) Convert and Cache Label
+    🤖 Gluey AI->>🤖 Gluey AI: (6) Convert and Cache Label
     alt Step (7a) Webhook
-        Note over Gluey AI, Customer: Gluey Notify Customer
-        Gluey AI->>Customer: (7a.1) POST(Webhook): /webhook/shipment
+        Note over 🤖 Gluey AI, 🏭 Customer: Gluey Notify Customer
+        🤖 Gluey AI->>🏭 Customer: (7a.1) POST(Webhook): /webhook/shipment
     else Step (7b) Polling
-        Note over Gluey AI, Customer: Customer Poll Gluey
-        Customer->>Customer: (7b.1) Trigger label check
-        Customer->>Gluey AI: (7b.2) GET: shipment/{id}/label
-        Gluey AI->>Customer: (7b.3) Response: label / no label
+        Note over 🤖 Gluey AI, 🏭 Customer: Customer Poll Gluey
+        🏭 Customer->>🏭 Customer: (7b.1) Trigger label check
+        🏭 Customer->>🤖 Gluey AI: (7b.2) GET: shipment/{id}/label
+        🤖 Gluey AI->>🏭 Customer: (7b.3) Response: label / no label
     end
 ~~~
 
@@ -65,14 +65,14 @@ sequenceDiagram
 
 1. **POST: Create Shipment (/shipments)** - You as a customer make a POST request towards Gluey to create a shipment. You will receive back a shipment_id but no labels or documents.
     - **Endpoint:** [POST - Create Shipment](https://developer.gluey.ai/api-label#operation/create_shipment_shipments_post)
-2. **Pre-process: Address / Exchange rates etc** - Depending on which Gluey api services you have chosen to use, Gluey will attempt to do some pre-processing of the data such as exchange rate conversion etc.
+2. **Pre-process: Address / Exchange rates etc** - Depending on which Gluey API services you have chosen to use, Gluey will attempt to do some pre-processing of the data such as exchange rate conversion etc.
 3. **Response: shipment_id** - You will receive back a shipment_id but no labels or documents.
-4. **Queue Label Request** - Gluey will now queue the label request towards the carrier and execute it as soon as the rate limit of the carrier api allows for requesting labels. Gluey will now execute the following steps.
+4. **Queue Label Request** - Gluey will now queue the label request towards the carrier and execute it as soon as the rate limit of the carrier API allows for requesting labels. Gluey will now execute the following steps.
 5. **Process Label Request** - Gluey processes the label request, which can follow two different paths:
     - **Step 5a: Gluey In-House** - The label is generated in Gluey through a local implementation.
         - **Step 5a.1: Request Label** - Gluey AI sends the label request to Gluey LabelEngine.
         - **Step 5a.2: Return Label Data** - Gluey LabelEngine processes the request and returns the label data to Gluey AI.
-    - **Step 5b: Carrier API** - Gluey request the label from the carrier's API.
+    - **Step 5b: Carrier API** - Gluey requests the label from the carrier's API.
         - **Step 5b.1: Request Label** - Gluey AI sends the label request to the Carrier API.
         - **Step 5b.2: Return Label Data** - The Carrier API processes the request and returns the label data to Gluey AI.
 6. **Convert and Cache Label** - Gluey AI converts the label data into the required format (JPG, PDF, ZPL200, ZPL300) and caches the label data for low latency retrieval.
