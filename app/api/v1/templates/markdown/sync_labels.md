@@ -4,7 +4,7 @@ Synchronous label printing means that the label is printed in the same call as w
 ## Use case / application
 
 1. **Moderate Latency Requirements (~1-2 seconds)** - An average of 1-2 seconds of latency is acceptable for the workload, and even up to 4-5 seconds in extreme cases.
-2. **Label needs to be printed immediately** - You have a user that is sitting and waiting for a label, qr code or parcel locker pin code to be generated immediately.
+2. **Label needs to be printed immediately** - You have a user that is sitting and waiting for a label, QR code, or parcel locker pin code to be generated immediately.
 
 ## How synchronous label generation works at Gluey
 Gluey provides an efficient process for synchronous label printing, which allows customers to create shipments, generate shipping labels, and receive additional documents and tracking data seamlessly. This process involves several steps to ensure that all necessary information is collected, processed, and communicated effectively.
@@ -21,29 +21,29 @@ Gluey provides an efficient process for synchronous label printing, which allows
 This structured process ensures that customers can efficiently create shipments and receive all the required documentation and tracking information, whether Gluey generates the labels in-house or retrieves them from the carrier's API.
 
 ## How to build the integration
-Below is the integration pattern used for asynchronous label printing, including the relevant endpoints to use, and a step-by-step explanation.
+Below is the integration pattern used for synchronous label printing, including the relevant endpoints to use, and a step-by-step explanation.
 
 ~~~mermaid
 sequenceDiagram
-    participant Customer
-    participant Gluey AI
-    participant Gluey LabelEngine
-    participant Carrier API
+    participant 🏭 Customer
+    participant 🤖 Gluey AI
+    participant 🏷️ Gluey LabelEngine
+    participant 🚚 Carrier API
 
-    Customer->>Gluey AI: (1) POST Create Shipment (/shipment_with_labels_documents)
-    Gluey AI->>Gluey AI: (2) Pre-process: Address / Exchange rates etc
+    🏭 Customer->>🤖 Gluey AI: (1) POST Create Shipment (/shipment_with_labels_documents)
+    🤖 Gluey AI->>🤖 Gluey AI: (2) Pre-process: Address / Exchange rates etc
     alt Step (3a) Gluey In-House
-        Note over Gluey AI, Gluey LabelEngine: Gluey Generate In-house
-        Gluey AI->>Gluey LabelEngine: (3a.1) Request Label 
-        Gluey LabelEngine->>Gluey AI: (3a.2) Return Label Data
+        Note over 🤖 Gluey AI, 🏷️ Gluey LabelEngine: Gluey Generate In-house
+        🤖 Gluey AI->>🏷️ Gluey LabelEngine: (3a.1) Request Label 
+        🏷️ Gluey LabelEngine->>🤖 Gluey AI: (3a.2) Return Label Data
     else Step (3b) Carrier API:
-        Note over Gluey AI, Carrier API: Request from Carrier API
-        Gluey AI->>Carrier API: (3b.1) Request Label
-        Carrier API->>Gluey AI: (3b.1) Return Label Data
+        Note over 🤖 Gluey AI, 🚚 Carrier API: Request from Carrier API
+        🤖 Gluey AI->>🚚 Carrier API: (3b.1) Request Label
+        🚚 Carrier API->>🤖 Gluey AI: (3b.1) Return Label Data
     end
-    Gluey AI->>Gluey AI: (4) Convert Label Format
-    Gluey AI->>Gluey AI: (5) Generate Addititonal Documents
-    Gluey AI-->>Customer: (6) Response: label / documents / tracking data
+    🤖 Gluey AI->>🤖 Gluey AI: (4) Convert Label Format
+    🤖 Gluey AI->>🤖 Gluey AI: (5) Generate Additional Documents
+    🤖 Gluey AI-->>🏭 Customer: (6) Response: label / documents / tracking data
 ~~~
 
 ### Explanation of steps

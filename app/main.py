@@ -188,15 +188,19 @@ async def home(request: Request):
     return templates.TemplateResponse("getting_started.html", {"request": request, "title": "Getting Started"})
 
 @app.get("/async-labels", response_class=HTMLResponse, include_in_schema=False)
-async def home(request: Request):
+async def async_labels(request: Request):
     return __create_template(request, "async_labels.md", "Generating Labels Asynchronously")
 
 @app.get("/sync-labels", response_class=HTMLResponse, include_in_schema=False)
-async def home(request: Request):
+async def sync_labels(request: Request):
     return __create_template(request, "sync_labels.md", "Generating Labels Synchronously")
 
+@app.get("/book", response_class=HTMLResponse, include_in_schema=False)
+async def book(request: Request):
+    return __create_template(request, "book.md", "Book Collections")
+
 @app.get("/tracking", response_class=HTMLResponse, include_in_schema=False)
-async def home(request: Request):
+async def tracking(request: Request):
     return __create_template(request, "tracking.md", "Integrating Tracking From Gluey")
 
 @app.get("/tracking-codes", response_class=HTMLResponse, include_in_schema=False)
