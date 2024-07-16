@@ -1,8 +1,8 @@
 from app.api.v1.common.http_responses.payloads import http_502_response
 
 http_create_shipment_response = {
-        202: {
-            "description": "Shipment accepted for processing in Gluey",
+        201: {
+            "description": "Shipment created in Gluey",
         },
                 400: {
             "description": "Bad Request - Payload malformed",
@@ -161,7 +161,7 @@ http_delete_shipment_response = {
 
 http_get_labels_response = {
                 200: {
-            "description": "Labels found"
+            "description": "Labels printed successfully"
         },
         401: {
             "description": "Unauthorized",

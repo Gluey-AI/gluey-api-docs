@@ -118,27 +118,24 @@ class Barcode(BaseModel):
 
 class DeliveryAddress(BaseAddress):
     name: str = Field(..., description="The name of the recipient such as an individual, company or organization")
-    contact: Optional[Contact] = Field(None, description="The contact person at the address.")
+    contact: Optional[Contact] = Field(None, description="The contact person at the address. Mandatory for collection requests.")
     suburb: Optional[str] = Field(None, description="The suburb or district. Only applicable to specific countries such as Australia and New Zealand.")
     what3words: Optional[str] = Field(None, description="The what3words address of the location. For example 'index.home.raft'")
     geo: Optional[GeoLocation] = Field(None, description="The geographical location of the address.")
 
 class Addresses(BaseModel):
-    shipper: DeliveryAddress = Field(..., description="The address of the from / sender / shipper / consignor. Also the address where to collect, and where to return undeliverable parcels unless alternative addresses are specified in 'undeliverable' and 'collection'.")
-    receiver: DeliveryAddress = Field(..., description="The address of the to / recipient / receiver / consignee to where the shipment is delivered")
-    collection: Optional[DeliveryAddress] = Field(None, description="Optional. Alternative address from where the shipment is from / collected / picked up.")
-    undeliverable: Optional[DeliveryAddress] = Field(None, description="Optional. Alternative address to where the shipment / parcels that cannot be delivered are returned. Typically visible as the sender / return address on the label.")
+    from_address: DeliveryAddress = Field(None, description="Optional. Alternative address from where the shipment is from / collected / picked up.")
+    to_address: DeliveryAddress = Field(..., description="The address of the to / recipient / receiver / consignee to where the shipment is delivered")
+    undeliverable_address: Optional[DeliveryAddress] = Field(None, description="Optional. Alternative address to where the shipment / parcels that cannot be delivered are returned. Typically visible as the sender / return-to address on the label.")
 
 class ManifestStatus(str, Enum):
-    NOT_REQUIRED = 'not_required'
     REQUIRED = 'required'
     OK = 'ok'
     PENDING_GLUEY = 'pending_gluey'
 
 manifest_status_descriptions = {
-    ManifestStatus.NOT_REQUIRED: "The carrier has no separate endpoint / does not require manifesting of shipments.",
     ManifestStatus.REQUIRED: "The carrier requires this shipment to be manifested and a separate call is needed to Gluey's manifesting / close-out endpoint.",
-    ManifestStatus.OK: "The shipment has been successfully manifested / closed-out.",
+    ManifestStatus.OK: "The shipment has been successfully manifested / closed-out or does not require it.",
     ManifestStatus.PENDING_GLUEY: "The shipment is pending manifesting by Gluey."
 }
 

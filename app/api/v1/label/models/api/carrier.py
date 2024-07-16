@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field
 from typing import Optional
 from enum import Enum
 
-from app.api.v1.common.models.base_models import MetaData
+from app.api.v1.common.models.base_models import Dimensions, MetaData, Weight
 from app.api.v1.common.utils import get_enum_description
 
 class GlueyValueAddingServiceClass(str, Enum):
@@ -26,6 +26,7 @@ class GlueyValueAddingServiceClass(str, Enum):
     INSURANCE = "insurance"
     CASH_ON_DELIVERY = "cash_on_delivery"
     ECO_DELIVERY = "eco_delivery"
+    ELECTRIC_VEHICLE = "electric_vehicle"
     BIKE_COURIER = "bike_courier"
     MOTORBIKE_COURIER = "motorbike_courier"
     VEHICLE_WITH_LIFTGATE = "vehicle_with_tail_lift"
@@ -49,6 +50,7 @@ class GlueyValueAddingServiceClass(str, Enum):
     DELIVERY_TIME_WINDOW = "delivery_time_window"
     DELIVERY_TIMED = "delivery_timed"
     DELIVERY_SAME_DAY = "delivery_same_day"
+    DELIVERY_NEXT_DAY = "delivery_next_day"
     DELIVERY_FIXED_DAY = "delivery_fixed_day"
     DELIVERY_WITH_ASSEMBLY = "delivery_with_assembly"
     DELIVERY_WITH_INSTALLATION = "delivery_with_installation"
@@ -185,24 +187,33 @@ class CarrierInstructions(BaseModel):
     goods_instructions: Optional[str] = Field(None, description="Handling instructions for the goods, e.g. 'The blue side up'.")
     recipient_instructions: Optional[str] = Field(None, description="Instructions for the recipient, e.g. 'Transfer to fridge immediately upon arrival'.")
 
+class CarrierServiceRestrictions(BaseModel):
+    max_weight: Optional[Weight] = Field(None, description="The weight restrictions for the parcels that can be shipped with this carrier service.")
+    max_dims: Optional[Dimensions] = Field(None, description="The dimension restrictions for the parcels that can be shipped with this carrier service.")
+    max_pieces: Optional[int] = Field(None, description="The maximum number of pieces allowed for the carrier service, e.g. 5 for 5 pieces / parcels.")
+    max_value: Optional[float] = Field(None, description="The maximum value allowed for the carrier service, e.g. 1000.0 for £1000.")
+    max_value_currency: Optional[str] = Field(None, description="The currency of the maximum value allowed for the carrier service in ISO-Alpha 3 country code, e.g. `GBP` for British Pounds.")
+    standard_insurance: Optional[float] = Field(None, description="The default / standard insurance value the carrier is covering with the carrier service, e.g. 100.0 for £100.")
+    max_insurance: Optional[float] = Field(None, description="The maximum additional insurance excess that the carrier allows for the carrier service, e.g. 1000.0 for £1000.")
+    insurance_currency: Optional[str] = Field(None, description="The currency of the standard / max insurance value the carrier is covering with the carrier service, e.g. `GBP` for British Pounds.")
+
 class ValueAddingService(BaseModel):
-    id: str = Field(..., description="Glueys ID of the value adding service for a particular Carrier Service. This can typically be found in the library of carriers in Gluey is the carriers own ID of the value add, e.g. 'signature', 'age_check'.")
-    name: str = Field(..., description="The carriers own name of the value added service, e.g. 'PreNotice SMS', 'TimeWindow Pickup 13-16'")
+    id: str = Field(..., description="Glueys ID of the value adding service for a particular Carrier Service. This can typically be found in the library of carriers in Gluey is the carriers own ID of the value add, e.g. `signature`, `age_check`.")
+    name: str = Field(..., description="The carriers own name of the value added service, e.g. `PreNotice SMS`, `Hazmat`, `Cash on Delivery`.")
     gluey_classification: GlueyValueAddingServiceClass = Field(..., description=f"Gluey's generalised classification of the value added service to enable comparison across carriers and carrier services. It can be one of the following:\n{get_enum_description(GlueyValueAddingServiceClass, gluey_value_adding_service_class_descriptions)}")
 
 class CarrierService(BaseModel):
-    """Class representing a service provided by a parcel carrier."""
-    id: str = Field(..., description="Glueys ID of the carrier service as found in our carrier library, e.g. 'standard_ground', 'express', 'home_delivery'.")
-    name: str = Field(..., description="The name of the carrier service, e.g. 'Express', 'Standard', 'Economy', 'Parcel'.")
+    carrier_service_id: str = Field(..., description="Glueys ID of the carrier service as found in our carrier library, e.g. `standard_ground`, `express`, `home_delivery`.")
+    name: str = Field(..., description="The name of the carrier service, e.g. `Express`, `Standard`, `Economy`, `Parcel`.")
     direction: Direction = Field(..., description=f"The type of service this is. It can be one of the following:\n{get_enum_description(Direction, direction_descriptions)}")
     region: Region = Field(..., description=f"The region of the carrier service. It can be one of the following:\n{get_enum_description(Region, region_descriptions)}")
     service_type: CarrierServiceType = Field(..., description=f"The type of service this is. It can be one of the following:\n{get_enum_description(CarrierServiceType, carrier_service_type_descriptions)}")
-    value_adding_services: Optional[list[ValueAddingService]] = Field(None, description="Value adding services to use in conjunction with the main carrier service, i.e. for 'home_delivery' this might be things such as 'cash_on_delivery', 'verification_signature', 'insurance' etc.")
+    restrictions: Optional[CarrierServiceRestrictions] = Field(None, description="The restrictions around weight, dimensions etc of parcels that can be allocated to the carrier service.")
+    value_adding_services: Optional[list[ValueAddingService]] = Field([], description="Value adding services to use in conjunction with the main carrier service, i.e. for 'home_delivery' this might be things such as 'cash_on_delivery', 'verification_signature', 'insurance' etc.")
 
 class Carrier(BaseModel):
-    """Class representing a parcel carrier implemented in Gluey."""
-    id: str = Field(..., description="Glueys ID that identifies the carrier in our system, e.g. 'poste_italiane', 'yodel'. The Gluey ID of the carrier as found in the library of carriers in Gluey.")
-    name: str = Field(..., description="The name of the carrier in a user-friendly, e.g. 'FedEx', 'UPS', 'DPD', 'GLS'.")
+    carrier_id: str = Field(..., description="Glueys ID that identifies the carrier in our system, e.g. `poste_italiane`, `yodel`. The Gluey ID of the carrier as found in the library of carriers in Gluey.")
+    name: str = Field(..., description="The name of the carrier in a user-friendly, e.g. `FedEx`, `UPS`, `DPD`, `GLS`.")
     service: CarrierService = Field(..., description="The service you want to use for the carrier.")
     instructions: Optional[CarrierInstructions] = Field(None, description="Will be forwarded to carrier if they support it. Any special instructions for the carrier, e.g. 'Leave at front door', 'Blue side up'.")
     gluey_profile: Optional[str] = Field(None, description="If you maintain contract / account specific meta data for the carrier in Gluey, this is the reference to that configuration (e.g. 'GLY-12345678').")

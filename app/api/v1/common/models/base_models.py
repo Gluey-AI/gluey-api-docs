@@ -153,7 +153,6 @@ class References(BaseModel):
     """Class representing references for the shipment."""
     shipper: Optional[str] = Field(None, description="The reference number that the shipper / sender / consignor use for this shipment, typically an order reference or similar.")
     receiver: Optional[str] = Field(None, description="The reference number that the receiver / recipient / consignee of this use shipment.")
-    saas_provider: Optional[str] = Field(None, description="The reference number that the OMS / WMS / CMS etc as a third-party software provider use to identify this shipment.")
 
 class BaseCollectionTimeWindow(BaseModel):
     """Class representing a time window for the collection of a shipment."""
