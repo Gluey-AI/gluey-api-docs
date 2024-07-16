@@ -1,41 +1,62 @@
-from fastapi import APIRouter, Depends, Path, Query, status
+from fastapi import APIRouter, Body, Depends, Path, Query, status
 
 from app.api.v1.common.headers import common_headers
 from app.api.v1.common.models.base_models import Document
-from app.api.v1.label.models.base_models import LabelFormat
-from app.api.v1.label.models.api.create_shipment_request import CreateShipmentRequest
-from app.api.v1.label.models.api.create_shipment_with_labels_request import CreateShipmentWithLabelsDocumentsRequest
-from app.api.v1.label.models.api.create_shipment_with_labels_response import CreateShipmentWithLabelsDocumentsResponse
-from app.api.v1.label.models.api.get_labels_for_shipment_response import GetLabelsForShipmentResponse
-from app.api.v1.label.models.api.print_documents_for_shipment_request import PrintDocumentsForShipmentRequest
+from app.api.v1.label.models.api.base_shipment_response import BaseShipmentResponseModel
+from app.api.v1.label.models.api.carrier import CarrierService
+from app.api.v1.label.models.api.collection import CarrierServiceCollectionDates, CollectionRequest, ServiceAvailabilityRequest
+from app.api.v1.label.models.api.create_shipment import CreateShipmentRequest
+from app.api.v1.label.models.api.print_label import PrintLabelRequest, PrintLabelSyncResponse
+from app.api.v1.label.models.api.print_documents import PrintDocumentsRequest
 from app.api.v1.label.models.api.shipment import Shipment
-from app.api.v1.label.models.api.shipment_only_response import ShipmentOnlyResponseModel
 
-from app.api.v1.label.http_responses.payloads import http_create_shipment_response, http_get_shipment_response, http_delete_shipment_response, http_get_labels_response, http_get_documents_response, http_create_shipment_labels_response
+from app.api.v1.label.http_responses.payloads import http_create_shipment_response, http_get_shipment_response, http_delete_shipment_response, http_get_labels_response, http_get_documents_response
+from app.api.v1.label.http_responses.request_examples import collection_request_examples, service_availability_request_examples
+from app.api.v1.label.http_responses.response_examples import http_responses_cancel, http_responses_collection_times, http_responses_service_availability
 
 
 router = APIRouter()
 
-@router.post("/shipments", description="Endpoint to create a shipment in Gluey without printing a label.", summary="Create Shipment", responses=http_create_shipment_response, status_code=status.HTTP_202_ACCEPTED)
-async def create_shipment(payload: CreateShipmentRequest, headers: dict = Depends(common_headers)) -> ShipmentOnlyResponseModel:
+@router.post("/shipments", description="Endpoint to create a shipment in Gluey.", summary="Create Shipment", responses=http_create_shipment_response, status_code=status.HTTP_201_CREATED)
+async def create_shipment(payload: CreateShipmentRequest, headers: dict = Depends(common_headers)) -> BaseShipmentResponseModel:
     return
 
-@router.get("/shipments/{id}", description="Endpoint to get a previously created Shipment.", summary="Get Shipment", responses=http_get_shipment_response)
+@router.get("/shipments/{id}", description="Endpoint to get a previously created Shipment.", summary="Get Shipment", tags=['CRUD'], responses=http_get_shipment_response)
 async def get_shipment(id: str = Path(..., description="Glueys own unique identifier of the shipment"), headers: dict = Depends(common_headers)) -> Shipment:
     return
 
-@router.delete("/shipments/{id}", description="Endpoint to cancel / delete a previously created shipment. Allowed until manifesting has taken place.", summary="Cancel Shipment", responses=http_delete_shipment_response, status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/shipments/{id}", description="Endpoint to cancel / delete a previously created shipment.", summary="Cancel Shipment", tags=['CRUD'], responses=http_delete_shipment_response, status_code=status.HTTP_204_NO_CONTENT)
 async def delete_shipment(id: str = Path(..., description="Glueys own unique identifier of the shipment"), headers: dict = Depends(common_headers)):
     return
 
-@router.get("/shipments/{id}/labels", description="Endpoint to fetch labels for all parcels in a shipment.", summary="Get Labels for Shipment", responses=http_get_labels_response)
-async def get_labels(id: str = Path(..., description="Glueys own unique identifier of the shipment"), headers: dict = Depends(common_headers), format: LabelFormat = Query(LabelFormat.ZPL200, description="The format of the labels you want to fetch. Not applicable to paperless services.")) -> GetLabelsForShipmentResponse:
+@router.post("/shipments/{id}/carrier/services", description="Endpoint to check what carrier services are available in Gluey for a specific shipment.", summary="Service Availability", tags=['Service Availability'], responses=http_responses_service_availability, status_code=status.HTTP_200_OK)
+async def service_availability(
+    payload: ServiceAvailabilityRequest = Body(..., openapi_examples=service_availability_request_examples),
+    id: str = Path(..., description="Glueys own unique identifier of the shipment"),
+    headers: dict = Depends(common_headers)) -> list[CarrierService]:
     return
 
-@router.post("/shipments/{id}/documents", description="Endpoint to fetch all documents related to a shipment, or asking Gluey to generate some for you.", summary="Generate Documents for Shipment", responses=http_get_documents_response)
-async def generate_documents(payload: PrintDocumentsForShipmentRequest, id: str = Path(..., description="Glueys own unique identifier of the shipment"), headers: dict = Depends(common_headers)) -> list[Document]:
+@router.post("/shipments/{id}/carrier/collection", description="Endpoint to request all available collection time windows for when a carrier can collect a shipment.", summary="Check Collection Dates", tags=['Service Availability'],responses=http_responses_collection_times, status_code=status.HTTP_200_OK)
+async def request_collection_dates(
+    payload: CollectionRequest = Body(..., openapi_examples=collection_request_examples),
+    id: str = Path(..., description="Glueys own unique identifier of the shipment"),
+    headers: dict = Depends(common_headers)) -> list[CarrierServiceCollectionDates]:
     return
 
-@router.post("/shipment_with_labels_documents", description="Endpoint to create a shipment, print labels for all parcels, and retrieve all documents related to the shipment.", summary="Create Shipment with Labels and Documents", responses=http_create_shipment_labels_response, status_code=status.HTTP_201_CREATED)
-async def shipment_labels_documents(payload: CreateShipmentWithLabelsDocumentsRequest, headers: dict = Depends(common_headers)) -> CreateShipmentWithLabelsDocumentsResponse:
+# @router.post("/shipments/{id}/documents", description="Endpoint to print all documents related to a shipment, or asking Gluey to generate some for you.", summary="Print Documents", tags=['Print & Collect'], responses=http_get_documents_response)
+# async def generate_documents(payload: PrintDocumentsRequest, id: str = Path(..., description="Glueys own unique identifier of the shipment"), headers: dict = Depends(common_headers)) -> list[Document]:
+#     return
+
+@router.post("/shipments/{id}/labels", description="Endpoint to print labels synchronous, and book a collection, for all parcels in a shipment.", summary="Print Labels Sync / Book Collection", tags=['Print & Collect'],responses=http_get_labels_response)
+async def print_labels_sync(request: PrintLabelRequest, id: str = Path(..., description="Glueys own unique identifier of the shipment"), headers: dict = Depends(common_headers)) -> PrintLabelSyncResponse:
+    return
+
+@router.post("/shipments/{id}/labels/async", description="Endpoint to have Gluey process labels, and book a collection, in the background. Printed labels will be pushed via webhook subscribers when available.", summary="Print Labels Async / Book Collection", tags=['Print & Collect'], status_code=status.HTTP_202_ACCEPTED)
+async def print_labels_async(request: PrintLabelRequest, id: str = Path(..., description="Glueys own unique identifier of the shipment"), headers: dict = Depends(common_headers)):
+    return
+
+@router.delete("/shipments/{id}/collection", description="Endpoint to cancel a collection that is booked with the carrier.", summary="Cancel Collection", tags=['Print & Collect'], responses=http_responses_cancel, status_code=status.HTTP_204_NO_CONTENT)
+async def cancel_collection(
+    id: str = Path(..., description="Glueys own unique identifier of the shipment"),
+    headers: dict = Depends(common_headers)):
     return
