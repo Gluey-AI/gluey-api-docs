@@ -35,7 +35,7 @@ async def delete_shipment(id: str = Path(..., description="Glueys own unique ide
     return
 
 
-@router.post("/shipments/{id}/carrier/services", description="Endpoint to check what carrier services are available in Gluey for a specific shipment.", summary="Service Availability", tags=['Service Availability'], responses=http_responses_service_availability, status_code=status.HTTP_200_OK)
+@router.post("/shipments/{id}/carrier/services", description="Endpoint to check what carrier services are available in Gluey for a specific shipment.", summary="Check Service Availability", tags=['Service Availability'], responses=http_responses_service_availability, status_code=status.HTTP_200_OK)
 async def service_availability(
     payload: ServiceAvailabilityRequest = Body(..., openapi_examples=service_availability_request_examples),
     id: str = Path(..., description="Glueys own unique identifier of the shipment"),
@@ -75,14 +75,14 @@ async def print_labels_sync(request: PrintLabelRequest, id: str = Path(..., desc
 async def print_labels_async(request: PrintLabelRequest, id: str = Path(..., description="Glueys own unique identifier of the shipment"), headers: dict = Depends(common_headers)):
     return
 
-@router.post("/shipments/{id}/collection", description="Endpoint to book a collection for a shipment. A pre-requisite is that it has been printed.", summary="Book Collection", tags=['Collect'], responses=http_responses_booking, status_code=status.HTTP_201_CREATED)
+@router.post("/shipments/{id}/collection", description="Endpoint to book a collection for a shipment. A pre-requisite is that it has been printed.", summary="Book", tags=['Collect'], responses=http_responses_booking, status_code=status.HTTP_201_CREATED)
 async def book_collection(
     payload: BookingRequest,
     id: str = Path(..., description="Glueys own unique identifier of the shipment"),
     headers: dict = Depends(common_headers)) -> BookingResponse:
     return
 
-@router.delete("/shipments/{id}/collection", description="Endpoint to cancel a collection that is booked with the carrier.", summary="Cancel Collection", tags=['Collect'], responses=http_responses_cancel, status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/shipments/{id}/collection", description="Endpoint to cancel a collection that is booked with the carrier.", summary="Cancel", tags=['Collect'], responses=http_responses_cancel, status_code=status.HTTP_204_NO_CONTENT)
 async def cancel_collection(
     id: str = Path(..., description="Glueys own unique identifier of the shipment"),
     headers: dict = Depends(common_headers)):
