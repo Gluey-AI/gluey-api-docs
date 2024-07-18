@@ -4,7 +4,7 @@ from app.api.v1.common.headers import common_headers
 from app.api.v1.common.models.base_models import Document
 from app.api.v1.label.models.api.base_shipment_response import BaseShipmentResponseModel
 from app.api.v1.label.models.api.carrier import CarrierService
-from app.api.v1.label.models.api.collection import BookingRequest, BookingResponse, CarrierServiceCollectionDates, CarrierServiceDeliveryDates, CollectionRequest, DeliveryRequest, ServiceAvailabilityRequest
+from app.api.v1.label.models.api.collection import BookingRequest, BookingResponse, CarrierServiceCollectionDates, CarrierServiceDeliveryDates, CarrierServiceTransitTime, CollectionRequest, DeliveryRequest, ServiceAvailabilityRequest, TransitTimeRequest
 from app.api.v1.label.models.api.create_shipment import CreateShipmentRequest
 from app.api.v1.label.models.api.print_label import PrintLabelRequest, PrintLabelSyncResponse
 from app.api.v1.label.models.api.print_documents import PrintDocumentsRequest
@@ -56,15 +56,22 @@ async def request_delivery_dates(
     headers: dict = Depends(common_headers)) -> list[CarrierServiceDeliveryDates]:
     return
 
-# @router.post("/shipments/{id}/documents", description="Endpoint to print all documents related to a shipment, or asking Gluey to generate some for you.", summary="Print Documents", tags=['Print & Collect'], responses=http_get_documents_response)
-# async def generate_documents(payload: PrintDocumentsRequest, id: str = Path(..., description="Glueys own unique identifier of the shipment"), headers: dict = Depends(common_headers)) -> list[Document]:
-#     return
+@router.post("/shipments/{id}/carrier/transit-times", description="Endpoint to check available transit times for the carrier.", summary="Check Transit Times", tags=['Service Availability'], status_code=status.HTTP_200_OK)
+async def request_transit_times(
+    payload: TransitTimeRequest,
+    id: str = Path(..., description="Glueys own unique identifier of the shipment"),
+    headers: dict = Depends(common_headers)) -> list[CarrierServiceTransitTime]:
+    return
 
-@router.post("/shipments/{id}/labels", description="Endpoint to print labels synchronous, and book a collection, for all parcels in a shipment.", summary="Print Labels Sync", tags=['Print'],responses=http_get_labels_response)
+@router.post("/shipments/{id}/documents", description="Endpoint to print all documents related to a shipment", summary="Documents", tags=['Print'], responses=http_get_documents_response)
+async def generate_documents(payload: PrintDocumentsRequest, id: str = Path(..., description="Glueys own unique identifier of the shipment"), headers: dict = Depends(common_headers)) -> list[Document]:
+    return
+
+@router.post("/shipments/{id}/labels", description="Endpoint to print labels synchronous, and book a collection, for all parcels in a shipment.", summary="Labels Sync", tags=['Print'],responses=http_get_labels_response)
 async def print_labels_sync(request: PrintLabelRequest, id: str = Path(..., description="Glueys own unique identifier of the shipment"), headers: dict = Depends(common_headers)) -> PrintLabelSyncResponse:
     return
 
-@router.post("/shipments/{id}/labels/async", description="Endpoint to have Gluey process labels, and book a collection, in the background. Printed labels will be pushed via webhook subscribers when available.", summary="Print Labels Async", tags=['Print'], status_code=status.HTTP_202_ACCEPTED)
+@router.post("/shipments/{id}/labels/async", description="Endpoint to have Gluey process labels, and book a collection, in the background. Printed labels will be pushed via webhook subscribers when available.", summary="Labels Async", tags=['Print'], status_code=status.HTTP_202_ACCEPTED)
 async def print_labels_async(request: PrintLabelRequest, id: str = Path(..., description="Glueys own unique identifier of the shipment"), headers: dict = Depends(common_headers)):
     return
 
