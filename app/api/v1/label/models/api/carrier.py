@@ -202,13 +202,15 @@ class ValueAddingService(BaseModel):
     name: str = Field(..., description="The carriers own name of the value added service, e.g. `PreNotice SMS`, `Hazmat`, `Cash on Delivery`.")
     gluey_classification: GlueyValueAddingServiceClass = Field(..., description=f"Gluey's generalised classification of the value added service to enable comparison across carriers and carrier services. It can be one of the following:\n{get_enum_description(GlueyValueAddingServiceClass, gluey_value_adding_service_class_descriptions)}")
 
-class CarrierService(BaseModel):
+class CarrierServiceBase(BaseModel):
     carrier_service_id: str = Field(..., description="Glueys ID of the carrier service as found in our carrier library, e.g. `standard_ground`, `express`, `home_delivery`.")
     name: str = Field(..., description="The name of the carrier service, e.g. `Express`, `Standard`, `Economy`, `Parcel`.")
-    direction: Direction = Field(..., description=f"The type of service this is. It can be one of the following:\n{get_enum_description(Direction, direction_descriptions)}")
     region: Region = Field(..., description=f"The region of the carrier service. It can be one of the following:\n{get_enum_description(Region, region_descriptions)}")
-    service_type: CarrierServiceType = Field(..., description=f"The type of service this is. It can be one of the following:\n{get_enum_description(CarrierServiceType, carrier_service_type_descriptions)}")
     restrictions: Optional[CarrierServiceRestrictions] = Field(None, description="The restrictions around weight, dimensions etc of parcels that can be allocated to the carrier service.")
+
+class CarrierService(CarrierServiceBase):
+    direction: Direction = Field(..., description=f"The type of service this is. It can be one of the following:\n{get_enum_description(Direction, direction_descriptions)}")
+    service_type: CarrierServiceType = Field(..., description=f"The type of service this is. It can be one of the following:\n{get_enum_description(CarrierServiceType, carrier_service_type_descriptions)}")
     value_adding_services: Optional[list[ValueAddingService]] = Field([], description="Value adding services to use in conjunction with the main carrier service, i.e. for 'home_delivery' this might be things such as 'cash_on_delivery', 'verification_signature', 'insurance' etc.")
 
 class Carrier(BaseModel):
