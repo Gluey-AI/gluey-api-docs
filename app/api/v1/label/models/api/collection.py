@@ -3,6 +3,7 @@ from enum import Enum
 from typing import Optional
 from pydantic import BaseModel, Field
 
+from app.api.v1.common.models.base_models import MetaData
 from app.api.v1.common.utils import get_enum_description
 
 class DeliveryFeature(str, Enum):
@@ -79,11 +80,11 @@ delivery_feature_descriptions = {
 }
 
 
-class CarrierCollectionTimeWindowBase(BaseModel):
+class CarrierTimeWindowBase(BaseModel):
     start: datetime = Field(..., description="The start date and time of the collection window. The datetime is in ISO 8601 format with time zone, e.g., `2024-07-12T09:00:00-04:00`.")
     end: datetime = Field(..., description="The end date and time of the collection window. The datetime is in ISO 8601 format with time zone, e.g., `2024-07-12T12:00:00-04:00`.")
 
-class CarrierCollectionTimeWindow(CarrierCollectionTimeWindowBase):
+class CarrierTimeWindow(CarrierTimeWindowBase):
     cost: Optional[float] = Field(None, description="If available. If there is any additional cost associated with the collection for this particular date / time / time window.")
     cost_currency: Optional[str] = Field(None, description="If available. The currency (in ISO Alpha-3) of the cost associated with the collection for this particular date / time / time window, e.g. `USD`.")
 
@@ -101,7 +102,7 @@ collection_status_descriptions = {
 class CarrierServiceCollectionDates(BaseModel):
     carrier_service_id: str = Field(..., description="Glueys ID of the carrier service as found in our carrier library, e.g. `2CPR`, `2VPR`, `home_delivery`.")
     carrier_service_name: str = Field(..., description="The name of the carrier service, e.g. `Xpect Medium Return`, `Xpect Large Return`, `Home Delivery`")
-    collection_time_windows: list[CarrierCollectionTimeWindow] = Field(..., description="A list of available collection time windows for the shipment.")
+    collection_time_windows: list[CarrierTimeWindow] = Field(..., description="A list of available collection time windows for the shipment.")
 
 class CollectionRequest(BaseModel):
     carrier_service_id: Optional[str] = Field(None, description="Optional. If you want to limit the collection request to a specific carrier service, provide the carrier service id, e.g. `2CPR`.")
@@ -109,3 +110,21 @@ class CollectionRequest(BaseModel):
 
 class ServiceAvailabilityRequest(BaseModel):
     features: Optional[list[DeliveryFeature]] = Field(None, description=f"A list of delivery features you can use to check if the carrier got a service that meet the required features. It can be one of the following:\n{get_enum_description(DeliveryFeature, delivery_feature_descriptions)}")
+
+class BookingResponse(BaseModel):
+    carrier_collection_id: Optional[str] = Field(None, description="If available. The carriers own unique identifier of this collection request.")
+    carrier_payment_url: Optional[str] = Field(None, description="If applicable and additional charges apply. The URL to the page where the collection can be paid.")
+    carrier_mangement_url: Optional[str] = Field(None, description="If available. The URL to the page where the collection can be managed by the shipper.")
+    carrier_meta_data: Optional[list[MetaData]] = Field(None, description="If available. Additional meta data provided by the carrier.")
+
+class BookingRequest(BaseModel):
+    time_window: Optional[CarrierTimeWindowBase] = Field(None, description="Optional. If you wish to book a collection for the parcel, provide a valid time window. Query endpoint `/shipments/{id}/carrier/collection` to get available time windows, or check Glueys portal for values you can hardcode.")
+
+class CarrierServiceDeliveryDates(BaseModel):
+    carrier_service_id: str = Field(..., description="Glueys ID of the carrier service as found in our carrier library, e.g. `2CPR`, `2VPR`, `home_delivery`.")
+    carrier_service_name: str = Field(..., description="The name of the carrier service, e.g. `Xpect Medium Return`, `Xpect Large Return`, `Home Delivery`")
+    delivery_time_windows: list[CarrierTimeWindow] = Field(..., description="A list of available delivery time windows for the shipment.")
+
+class DeliveryRequest(BaseModel):
+    carrier_service_id: Optional[str] = Field(None, description="Optional. If you want to limit the delivery request to a specific carrier service, provide the carrier service id, e.g. `2CPR`.")
+    delivery_dates: Optional[list[str]] = Field(None, description="Optional. If not specified Gluey will return available time windows for five (5) days in advance. Provide a list of dates you wish to query for when you want the shipment to be delivered. The dates must be in ISO 8601 format, e.g. `2024-07-12`.")

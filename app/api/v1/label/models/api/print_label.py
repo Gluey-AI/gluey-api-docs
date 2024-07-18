@@ -2,12 +2,10 @@ from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel, Field
 
-from app.api.v1.common.models.base_models import BaseCollectionTimeWindow, Document, GlueyApiServices, MetaData
-from app.api.v1.label.models.api.base_shipment_request import BaseItemRequestModel, BaseParcelRequestModel, BaseShipmentRequestModel
+from app.api.v1.common.models.base_models import Document
 from app.api.v1.label.models.api.base_shipment_response import BaseParcelResponseModel, BaseShipmentResponseModel
-from app.api.v1.label.models.api.carrier_request import BaseCarrierRequestModel, BaseCarrierServiceRequest
-from app.api.v1.label.models.api.collection import CarrierCollectionTimeWindow, CarrierCollectionTimeWindowBase
-from app.api.v1.label.models.api.dangerous_goods import ItemLevelDangerousGoods, ParcelLevelDangerousGoods, ShipmentLevelDangerousGoods
+from app.api.v1.label.models.api.carrier_request import BaseCarrierServiceRequest
+from app.api.v1.label.models.api.collection import CarrierTimeWindowBase
 from app.api.v1.label.models.api.shipment_response import ShipmentResponseModel
 from app.api.v1.label.models.base_models import Barcode, CommercialInvoice, LabelRequest, LabelResponseBaseModel, ParcelLockerResponseModel, QrCodeBaseModel
 
@@ -29,14 +27,7 @@ class ShipmentResponseModel(BaseShipmentResponseModel):
     eta: Optional[datetime] = Field(None, description="The estimated time of arrival for the shipment, if provided by the carrier. The date and time of the shipment is in ISO 8601 format and includes the UTC-offset, e.g. '2021-06-01T12:00:00+01:00'.")
     parcels: list[ParcelResponseModel] = Field([], description="A list of parcels included in the shipment")
 
-class BookingResponse(BaseModel):
-    carrier_collection_id: Optional[str] = Field(None, description="If available. The carriers own unique identifier of this collection request.")
-    carrier_payment_url: Optional[str] = Field(None, description="If applicable and additional charges apply. The URL to the page where the collection can be paid.")
-    carrier_mangement_url: Optional[str] = Field(None, description="If available. The URL to the page where the collection can be managed by the shipper.")
-    carrier_meta_data: Optional[list[MetaData]] = Field(None, description="If available. Additional meta data provided by the carrier.")
-
 class PrintLabelSyncResponse(BaseModel):
-    booking_details: Optional[BookingResponse] = Field(None, description="If a collection has been booked with the carrier, the details of the booking.")
     shipment: ShipmentResponseModel = Field(..., description="The shipment details, including the parcels, tracking numbers, barcodes and the labels.")
     documents: Optional[list[Document]] = Field([], description="Any documents that were requested by Gluey and / or returned from the carrier API.")
 
@@ -45,6 +36,6 @@ class AdditionalDocuments(BaseModel):
 
 class PrintLabelRequest(BaseModel):
     carrier_service_id: BaseCarrierServiceRequest = Field(..., description="The carrier service ID that should be used to generate the label, e.g. `ups_express`.")
-    book_collection: Optional[CarrierCollectionTimeWindowBase] = Field(None, description="Optional. If you wish to book a collection with the carrier, provide a valid time window. Query endpoint `/shipments/{id}/carrier/collection` to get available time windows, or check Glueys portal for values you can hardcode.")
+    book_delivery: Optional[CarrierTimeWindowBase] = Field(None, description="Optional. Primarily for outbound services. If you wish to book a specific delivery with the carrier, provide a valid time window. Query endpoint `/shipments/{id}/carrier/delivery` to get available time windows, or check Glueys portal for values you can hardcode.")
     label: LabelRequest = Field(..., description="The label requested, including the size and type. Only applicable to services where a label is generated, for paperless services this is not required.")
     additional_document_request: Optional[AdditionalDocuments] = Field(None, description="The additional documents you can request Gluey to generate for a shipment")
