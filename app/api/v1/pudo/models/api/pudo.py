@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field
 
 from app.api.v1.common.models.base_models import Dimensions, GeoLocation, MetaData
 from app.api.v1.common.utils import get_enum_description
+from app.api.v1.label.models.api.carrier import CarrierServiceBase
 
 class PudoPointType(str, Enum):
     LOCKER = 'locker'
@@ -191,6 +192,7 @@ class PudoEnvironmentalOptions(BaseModel):
 class PudoPoint(BaseModel):
     id: str = Field(..., description="The unique Gluey identifier for the PUDO point")
     carrier_id: str = Field(..., description="The unique carrier identifier for the PUDO point")
+    carrier_services: Optional[list[CarrierServiceBase]] = Field(None, description="If carrier have any restrictions on services available at the PUDO point")
     meta_data: Optional[list[MetaData]] = Field(None, description="Vary depending on carrier. Additional data from pudo integration that isn't part of the Gluey standard interface.")
     name: str = Field(..., description="The name of the PUDO point")
     type: PudoPointType = Field(..., description=f"The type of PUDO point. It can be one of the following:\n{get_enum_description(PudoPointType, pudo_point_type_descriptions)}")
