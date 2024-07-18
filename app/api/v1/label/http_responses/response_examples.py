@@ -1,6 +1,6 @@
-from app.api.v1.common.models.base_models import Dimensions, UnitOfMeasurement, UnitOfWeight, Weight
+from app.api.v1.common.models.base_models import Dimensions, MetaData, UnitOfMeasurement, UnitOfWeight, Weight
 from app.api.v1.label.models.api.carrier import CarrierService, CarrierServiceType, Direction, GlueyValueAddingServiceClass, Region, ValueAddingService, CarrierServiceRestrictions
-from app.api.v1.label.models.api.collection import CarrierCollectionTimeWindow, CarrierServiceCollectionDates
+from app.api.v1.label.models.api.collection import BookingResponse, CarrierServiceDeliveryDates, CarrierTimeWindow, CarrierServiceCollectionDates
 from app.api.v1.common.http_responses.payloads import http_502_response
 from app.api.v1.common.utils import generate_uuid, generate_short_uuid, generate_custom_uuid
 
@@ -9,19 +9,19 @@ collection_services = [
         carrier_service_id="2CPR",
         carrier_service_name="Xpect Medium Return",
         collection_time_windows=[
-            CarrierCollectionTimeWindow(
+            CarrierTimeWindow(
                 start="2024-07-12T09:00:00-04:00",
                 end="2024-07-12T12:00:00-04:00",
             ),
-            CarrierCollectionTimeWindow(
+            CarrierTimeWindow(
                 start="2024-07-12T14:30:00-04:00",
                 end="2024-07-12T17:30:00-04:00",
             ),
-            CarrierCollectionTimeWindow(
+            CarrierTimeWindow(
                 start="2024-07-13T09:00:00-04:00",
                 end="2024-07-13T12:00:00-04:00"
             ),
-            CarrierCollectionTimeWindow(
+            CarrierTimeWindow(
                 start="2024-07-13T14:30:00-04:00",
                 end="2024-07-13T17:30:00-04:00"
             )
@@ -31,23 +31,23 @@ collection_services = [
         carrier_service_id="2VPR",
         carrier_service_name="Xpect Large Return",
         collection_time_windows=[
-            CarrierCollectionTimeWindow(
+            CarrierTimeWindow(
                 start="2024-07-12T09:00:00-04:00",
                 end="2024-07-12T12:00:00-04:00",
                 cost=3.45,
                 cost_currency="GBP"
             ),
-            CarrierCollectionTimeWindow(
+            CarrierTimeWindow(
                 start="2024-07-12T14:30:00-04:00",
                 end="2024-07-12T17:30:00-04:00",
                 cost=3.45,
                 cost_currency="GBP"
             ),
-            CarrierCollectionTimeWindow(
+            CarrierTimeWindow(
                 start="2024-07-13T09:00:00-04:00",
                 end="2024-07-13T12:00:00-04:00"
             ),
-            CarrierCollectionTimeWindow(
+            CarrierTimeWindow(
                 start="2024-07-13T14:30:00-04:00",
                 end="2024-07-13T17:30:00-04:00"
             )
@@ -60,11 +60,11 @@ collection_services_day = [
         carrier_service_id="EXP",
         carrier_service_name="Express",
         collection_time_windows=[
-            CarrierCollectionTimeWindow(
+            CarrierTimeWindow(
                 start="2024-07-12T08:00:00-04:00",
                 end="2024-07-12T17:00:00-04:00",
             ),
-            CarrierCollectionTimeWindow(
+            CarrierTimeWindow(
                 start="2024-07-13T08:00:00-04:00",
                 end="2024-07-13T17:00:00-04:00"
             )
@@ -74,11 +74,11 @@ collection_services_day = [
         carrier_service_id="PRCSEL",
         carrier_service_name="Premium Select",
         collection_time_windows=[
-            CarrierCollectionTimeWindow(
+            CarrierTimeWindow(
                 start="2024-07-12T08:00:00-04:00",
                 end="2024-07-12T17:00:00-04:00",
             ),
-            CarrierCollectionTimeWindow(
+            CarrierTimeWindow(
                 start="2024-07-13T08:00:00-04:00",
                 end="2024-07-13T17:00:00-04:00"
             )
@@ -86,17 +86,104 @@ collection_services_day = [
     )
 ]
 
-# booking_success_example = BookingResponse(
-#     collection_status=CollectionStatus.BOOKED,
-#     carrier_collection_id=generate_custom_uuid(8),
-#     paymentUrl="https://checkout.stripe.com/pay/123e4567-e89b-12d3-a456-426614174000?amount=53.50&currency=USD",
-# )
+delivery_services = [
+    CarrierServiceDeliveryDates(
+        carrier_service_id="2CPR",
+        carrier_service_name="Xpect Medium Return",
+        delivery_time_windows=[
+            CarrierTimeWindow(
+                start="2024-07-12T09:00:00-04:00",
+                end="2024-07-12T12:00:00-04:00",
+            ),
+            CarrierTimeWindow(
+                start="2024-07-12T14:30:00-04:00",
+                end="2024-07-12T17:30:00-04:00",
+            ),
+            CarrierTimeWindow(
+                start="2024-07-13T09:00:00-04:00",
+                end="2024-07-13T12:00:00-04:00"
+            ),
+            CarrierTimeWindow(
+                start="2024-07-13T14:30:00-04:00",
+                end="2024-07-13T17:30:00-04:00"
+            )
+        ]
+    ),
+    CarrierServiceDeliveryDates(
+        carrier_service_id="2VPR",
+        carrier_service_name="Xpect Large Return",
+        delivery_time_windows=[
+            CarrierTimeWindow(
+                start="2024-07-12T09:00:00-04:00",
+                end="2024-07-12T12:00:00-04:00",
+                cost=3.45,
+                cost_currency="GBP"
+            ),
+            CarrierTimeWindow(
+                start="2024-07-12T14:30:00-04:00",
+                end="2024-07-12T17:30:00-04:00",
+                cost=3.45,
+                cost_currency="GBP"
+            ),
+            CarrierTimeWindow(
+                start="2024-07-13T09:00:00-04:00",
+                end="2024-07-13T12:00:00-04:00"
+            ),
+            CarrierTimeWindow(
+                start="2024-07-13T14:30:00-04:00",
+                end="2024-07-13T17:30:00-04:00"
+            )
+        ]
+    )
+]
 
-# booking_success_example_no_payment = BookingResponse(
-#     collection_status=CollectionStatus.BOOKED,
-#     carrier_collection_id=generate_custom_uuid(8),
-#     paymentUrl=None,
-# )
+delivery_services_day = [
+    CarrierServiceDeliveryDates(
+        carrier_service_id="EXP",
+        carrier_service_name="Express",
+        delivery_time_windows=[
+            CarrierTimeWindow(
+                start="2024-07-12T08:00:00-04:00",
+                end="2024-07-12T17:00:00-04:00",
+            ),
+            CarrierTimeWindow(
+                start="2024-07-13T08:00:00-04:00",
+                end="2024-07-13T17:00:00-04:00"
+            )
+        ]
+    ),
+    CarrierServiceDeliveryDates(
+        carrier_service_id="PRCSEL",
+        carrier_service_name="Premium Select",
+        delivery_time_windows=[
+            CarrierTimeWindow(
+                start="2024-07-12T08:00:00-04:00",
+                end="2024-07-12T17:00:00-04:00",
+            ),
+            CarrierTimeWindow(
+                start="2024-07-13T08:00:00-04:00",
+                end="2024-07-13T17:00:00-04:00"
+            )
+        ]
+    )
+]
+
+booking_success_example = BookingResponse(
+    carrier_collection_id=generate_custom_uuid(8),
+    carrier_payment_url="https://checkout.stripe.com/pay/123e4567-e89b-12d3-a456-426614174000?amount=53.50&currency=USD",
+    carrier_mangement_url="https://carrier.com/management/123e4567-e89b-12d3-a456-426614174000"
+)
+
+booking_success_example_no_payment = BookingResponse(
+    carrier_collection_id=generate_custom_uuid(8),
+    carrier_payment_url=None,
+    carrier_meta_data=[
+        MetaData(
+            key="vehicle_type",
+            value="van"
+        )
+    ]
+)
 
 collection_response_examples = {
     "am_pm": {
@@ -111,18 +198,31 @@ collection_response_examples = {
     }
 }
 
-# booking_response_examples = {
-#     "success": {
-#         "summary": "Booking Response - Success",
-#         "description": "Example response when the booking of a collection was successful but customer still has a pending payment with the carrier.",
-#         "value": booking_success_example.model_dump()
-#     },
-#     "success_no_payment": {
-#         "summary": "Booking Response - Success - No Payment",
-#         "description": "Example response when the booking of a collection was successful, and no further payment is required.",
-#         "value": booking_success_example_no_payment.model_dump()
-#     }
-# }
+delivery_response_examples = {
+    "am_pm": {
+        "summary": "Delivery Response - AM / PM",
+        "description": "Example response when the carrier support both AM and PM delivery times.",
+        "value": delivery_services
+    },
+    "whole_day": {
+        "summary": "Delivery Response - Dates only",
+        "description": "When the carrier only supports delivery dates, but no time window, the entire day is the delivery window.",
+        "value": delivery_services_day
+    }
+}
+
+booking_response_examples = {
+    "success": {
+        "summary": "Booking Response - Success",
+        "description": "Example response when the booking of a collection was successful but customer still has a pending payment with the carrier.",
+        "value": booking_success_example.model_dump()
+    },
+    "success_no_payment": {
+        "summary": "Booking Response - Success - No Payment",
+        "description": "Example response when the booking of a collection was successful, and no further payment is required.",
+        "value": booking_success_example_no_payment.model_dump()
+    }
+}
 
 carrier_services = [
     CarrierService(
@@ -274,6 +374,68 @@ http_responses_collection_times = {
     502: http_502_response
 }
 
+http_responses_delivery_times = {
+    200: {
+        "description": "Delivery time request succeeded",
+        "content": {
+            "application/json": {
+                "examples": delivery_response_examples
+            }
+        }
+    },
+    400: {
+        "description": "Bad Request - Payload malformed",
+        "content": {
+            "application/json": {
+                "example": {
+                    "detail": "Payload malformed."
+                }
+            }
+        }
+    },
+    401: {
+        "description": "Unauthorized",
+        "content": {
+            "application/json": {
+                "example": {
+                    "detail": "Not authenticated."
+                }
+            }
+        }
+    },
+    403: {
+        "description": "Forbidden",
+        "content": {
+            "application/json": {
+                "example": {
+                    "detail": "Not authorized to access this shipment."
+                }
+            }
+        }
+    },
+    406: {
+        "description": "Not Acceptable - JSON only responses supported",
+        "content": {
+            "application/json": {
+                "example": {
+                    "detail": "The requested resource is not available in a format that would be acceptable according to the Accept headers sent in the request."
+                }
+            }
+        }
+    },
+    500: {
+        "description": "Internal Server Error",
+        "content": {
+            "application/json": {
+                "example": {
+                    "detail": "Unfortunately something went wrong whilst processing your request. Please try again later."
+                }
+            }
+        }
+    },
+    502: http_502_response
+}
+
 http_responses_cancel = {
     401: {
         "description": "Unauthorized",
@@ -318,64 +480,64 @@ http_responses_cancel = {
     502: http_502_response
 }
 
-# http_responses_booking = {
-#     201: {
-#         "description": "Booking of collection was successful",
-#         "content": {
-#             "application/json": {
-#                 "examples": booking_response_examples
-#             }
-#         }
-#     },
-#     400: {
-#         "description": "Bad Request - Payload malformed",
-#         "content": {
-#             "application/json": {
-#                 "example": {
-#                     "detail": "Payload malformed."
-#                 }
-#             }
-#         }
-#     },
-#     401: {
-#         "description": "Unauthorized",
-#         "content": {
-#             "application/json": {
-#                 "example": {
-#                     "detail": "Not authenticated."
-#                 }
-#             }
-#         }
-#     },
-#     403: {
-#         "description": "Forbidden",
-#         "content": {
-#             "application/json": {
-#                 "example": {
-#                     "detail": "Not authorized to access this shipment."
-#                 }
-#             }
-#         }
-#     },
-#     406: {
-#         "description": "Not Acceptable - JSON only responses supported",
-#         "content": {
-#             "application/json": {
-#                 "example": {
-#                     "detail": "The requested resource is not available in a format that would be acceptable according to the Accept headers sent in the request."
-#                 }
-#             }
-#         }
-#     },
-#     500: {
-#         "description": "Internal Server Error",
-#         "content": {
-#             "application/json": {
-#                 "example": {
-#                     "detail": "Unfortunately something went wrong whilst processing your request. Please try again later."
-#                 }
-#             }
-#         }
-#     },
-#     502: http_502_response
-# }
+http_responses_booking = {
+    201: {
+        "description": "Booking of collection was successful",
+        "content": {
+            "application/json": {
+                "examples": booking_response_examples
+            }
+        }
+    },
+    400: {
+        "description": "Bad Request - Payload malformed",
+        "content": {
+            "application/json": {
+                "example": {
+                    "detail": "Payload malformed."
+                }
+            }
+        }
+    },
+    401: {
+        "description": "Unauthorized",
+        "content": {
+            "application/json": {
+                "example": {
+                    "detail": "Not authenticated."
+                }
+            }
+        }
+    },
+    403: {
+        "description": "Forbidden",
+        "content": {
+            "application/json": {
+                "example": {
+                    "detail": "Not authorized to access this shipment."
+                }
+            }
+        }
+    },
+    406: {
+        "description": "Not Acceptable - JSON only responses supported",
+        "content": {
+            "application/json": {
+                "example": {
+                    "detail": "The requested resource is not available in a format that would be acceptable according to the Accept headers sent in the request."
+                }
+            }
+        }
+    },
+    500: {
+        "description": "Internal Server Error",
+        "content": {
+            "application/json": {
+                "example": {
+                    "detail": "Unfortunately something went wrong whilst processing your request. Please try again later."
+                }
+            }
+        }
+    },
+    502: http_502_response
+}
