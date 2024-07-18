@@ -108,6 +108,15 @@ class CollectionRequest(BaseModel):
     carrier_service_id: Optional[str] = Field(None, description="Optional. If you want to limit the collection request to a specific carrier service, provide the carrier service id, e.g. `2CPR`.")
     collection_dates: Optional[list[str]] = Field(None, description="Optional. If not specified Gluey will return available time windows for five (5) days in advance. Provide a list of dates you wish to query for when you want the shipment to be collected. The dates must be in ISO 8601 format, e.g. `2024-07-12`.")    
 
+class CarrierServiceTransitTime(BaseModel):
+    carrier_service_id: str = Field(..., description="Glueys ID of the carrier service as found in our carrier library, e.g. `2CPR`, `2VPR`, `home_delivery`.")
+    carrier_service_name: str = Field(..., description="The name of the carrier service, e.g. `Xpect Medium Return`, `Xpect Large Return`, `Home Delivery`")
+    min_days: int = Field(..., description="Minimum estimated transit time in days")
+    max_days: int = Field(..., description="Maximum estimated transit time in days")
+
+class TransitTimeRequest(BaseModel):
+    carrier_service_id: Optional[str] = Field(None, description="Optional. If you want to limit the transit time request to a specific carrier service, provide the carrier service id, e.g. `2CPR`.")
+
 class ServiceAvailabilityRequest(BaseModel):
     features: Optional[list[DeliveryFeature]] = Field(None, description=f"A list of delivery features you can use to check if the carrier got a service that meet the required features. It can be one of the following:\n{get_enum_description(DeliveryFeature, delivery_feature_descriptions)}")
 
