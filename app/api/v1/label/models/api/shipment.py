@@ -4,7 +4,7 @@ from datetime import datetime
 
 from app.api.v1.common.models.base_models import BaseCollectionTimeWindow, Dimensions, MetaData, References, TrackingLevel, Value, Weight, tracking_level_descriptions
 from app.api.v1.common.utils import get_enum_description
-from app.api.v1.label.models.api.dangerous_goods import ShipmentLevelDangerousGoods
+from app.api.v1.label.models.api.dangerous_goods import ItemLevelDangerousGoods, ParcelLevelDangerousGoods, ShipmentLevelDangerousGoods
 from app.api.v1.label.models.base_models import Addresses, Barcode, ManifestStatus, PackageType, manifest_status_descriptions
 from app.api.v1.label.models.api.carrier import Carrier
 from app.api.v1.label.models.api.customs_clearance import CustomsClearance
@@ -20,8 +20,12 @@ class Item(BaseModel):
     hs_code: Optional[str] = Field(None, description="The Harmonized System (HS) code for the item. This is an internationally standardized system of names and numbers to classify traded products.")
     country_of_origin: Optional[str] = Field(None, description="The country where the item was produced or manufactured as a ISO 3166-1 alpha-2 ('US','GB','DE' etc) or alpha-3 ('USA', 'GBR', 'DEU') country code.")
     return_reason: Optional[str] = Field(None, description="The reason for the return of the item. This is typically a summary of the reason for the return, e.g. 'damaged', 'wrong size', 'changed my mind' etc.")
+    purchase_date: Optional[str] = Field(None, description="The date when the item was purchased, the date is in ISO 8601 format, e.g. `2021-06-01`. The date is used to determine return eligibility with some carriers.")
     sku: Optional[str] = Field(None, description="The Stock Keeping Unit (SKU) for the item. This is a unique identifier for the item in your inventory.")
+    upc: Optional[str] = Field(None, description="The Universal Product Code (UPC) for the item. This is a unique identifier for the item in your inventory.")
     item_url: Optional[str] = Field(None, description="A URL to a webpage with more information about the item, e.g. a product page on the webshop.")
+    images: Optional[list[str]] = Field(None, description="A list of URLs to images of the item. This can be used to send return partners photos of the item.")
+    dng_declaration: Optional[ItemLevelDangerousGoods] = Field(None, description="Details about the dangerous goods. Only applicable to dangerous goods shipments.")
 
 class Parcel(BaseModel):
     """Class representing a parcel in the shipment."""
@@ -34,6 +38,7 @@ class Parcel(BaseModel):
     dimensions: Optional[Dimensions] = Field(None, description="The dimensions of the parcel.")
     goods_description: Optional[str] = Field(None, description="A description of the goods in the parcel. This is typically a summary of the items in the parcel, e.g. 'electronics' or 'wearing appareal'.")
     package_type: Optional[PackageType] = Field(None, description="The type of package, e.g. 'box', 'envelope', 'pallet' etc.")
+    dng_declaration: Optional[ParcelLevelDangerousGoods] = Field(None, description="Details about dangerous goods in the parcel. Only applicable to dangerous goods shipments.")
     items: Optional[list[Item]] = Field(None, description="A list of items (e.g. T-shirts, electronics etc) contained in the parcel. Optional, but required for customs clearance and cross-border commerce.")
 
 class Shipment(BaseModel):
@@ -49,7 +54,7 @@ class Shipment(BaseModel):
     carrier: Carrier = Field(..., description="The carrier and carrier service assigned to this shipment.")
     carrier_tracking_id: Optional[str] = Field(None, description="If `tracking_level=shipment`. This is the carriers own tracking id for the shipment, and it means that for multi-parcel shipments the parcels are not individually trackable.")
     carrier_collection_id: Optional[str] = Field(None, description="If a collection has been booked with the carrier. This is the carriers own collection id for the shipment.")
-    collection_times: Optional[list[BaseCollectionTimeWindow]] = Field(None, description="A list of times when the shipment can be collected. How to use:\n- If you have a `specific collection time and date`, then provide a single collection time with only the `start` specified.\n- If you have a `single collection time window`, then provide a single collection time with both `start` and `end` specified.\n- If you have `multiple collection time windows` that are acceptable, and the carrier supports it, then provide multiple time windows where all have with both `start` and `end` specified.")
+    collection_times: Optional[BaseCollectionTimeWindow] = Field(None, description="A list of times when the shipment can be collected. How to use:\n- If you have a `specific collection time and date`, then provide a single collection time with only the `start` specified.\n- If you have a `single collection time window`, then provide a single collection time with both `start` and `end` specified.\n- If you have `multiple collection time windows` that are acceptable, and the carrier supports it, then provide multiple time windows where all have with both `start` and `end` specified.")
     dng_declaration: Optional[ShipmentLevelDangerousGoods] = Field(None, description="Optional. Shipment-level details are not mandatory for dangerous goods shipments, but `parcel-level` and `item-level` details are mandatory.")
     customs_clearance: Optional[CustomsClearance] = Field(None, description="Customs clearance details about the shipment. Only applicable to cross-border shipments.")
     references: References = Field(..., description="References for the shipment.")

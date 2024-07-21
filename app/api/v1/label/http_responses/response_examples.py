@@ -1,4 +1,4 @@
-from app.api.v1.common.models.base_models import Dimensions, MetaData, UnitOfMeasurement, UnitOfWeight, Weight
+from app.api.v1.common.models.base_models import Dimensions, MetaData, UnitOfMeasurement, UnitOfVolume, UnitOfWeight, Volume, Weight
 from app.api.v1.label.models.api.carrier import CarrierService, CarrierServiceType, Direction, GlueyValueAddingServiceClass, Region, ValueAddingService, CarrierServiceRestrictions
 from app.api.v1.label.models.api.collection import BookingResponse, CarrierServiceDeliveryDates, CarrierTimeWindow, CarrierServiceCollectionDates
 from app.api.v1.common.http_responses.payloads import http_502_response
@@ -230,7 +230,10 @@ carrier_services = [
         name="Xpect Medium Return",
         direction=Direction.RETURN,
         region=Region.DOMESTIC,
-        service_type=CarrierServiceType.PICKUP_DROPOFF_POINT
+        service_type=CarrierServiceType.PICKUP_DROPOFF_POINT,
+        restrictions=CarrierServiceRestrictions(
+            max_volume=Volume(value=0.1, unit=UnitOfVolume.M3),
+        )
     ),
     CarrierService(
         carrier_service_id="2VPR",

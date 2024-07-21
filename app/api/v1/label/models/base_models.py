@@ -131,12 +131,10 @@ class Addresses(BaseModel):
 class ManifestStatus(str, Enum):
     REQUIRED = 'required'
     OK = 'ok'
-    PENDING_GLUEY = 'pending_gluey'
 
 manifest_status_descriptions = {
     ManifestStatus.REQUIRED: "The carrier requires this shipment to be manifested and a separate call is needed to Gluey's manifesting / close-out endpoint.",
-    ManifestStatus.OK: "The shipment has been successfully manifested / closed-out or does not require it.",
-    ManifestStatus.PENDING_GLUEY: "The shipment is pending manifesting by Gluey."
+    ManifestStatus.OK: "The shipment has been successfully manifested / closed-out or does not require it."
 }
 
 class MethodOfShipment(str, Enum):
@@ -188,13 +186,13 @@ label_type_descriptions = {
 
 class LabelFormat(str, Enum):
     PDF = 'pdf'
-    JPEG = 'jpeg'
+    PNG = 'png'
     ZPL200 = 'zpl200'
     ZPL300 = 'zpl300'
 
 label_format_descriptions = {
     LabelFormat.PDF: "Portable Document Format",
-    LabelFormat.JPEG: "Joint Photographic Experts Group",
+    LabelFormat.PNG: "Portable Network Graphics",
     LabelFormat.ZPL200: "Zebra Programming Language 200 dpi",
     LabelFormat.ZPL300: "Zebra Programming Language 300 dpi"
 }
@@ -226,7 +224,7 @@ parcel_locker_pin_code_status_descriptions = {
 class LabelRequest(BaseModel):
     """Class representing a label requested."""
     format: LabelFormat = Field(..., description=f"The format of the label that is requested. It can be one of the following:\n{get_enum_description(LabelFormat, label_format_descriptions)}")
-    size: LabelSize = Field(..., description=f"The size of the label. If unspecified it defaults to '4x6' for Outbound carrier services, and 'A4' for return carrier services. It can be one of the following:\n{get_enum_description(LabelSize, label_size_descriptions)}")
+    size: Optional[LabelSize] = Field(None, description=f"The size of the label. If unspecified it defaults to '4x6' for Outbound carrier services, and 'A4' for return carrier services. It can be one of the following:\n{get_enum_description(LabelSize, label_size_descriptions)}")
 
 class Label(BaseModel):
     """Class representing a generated label."""
