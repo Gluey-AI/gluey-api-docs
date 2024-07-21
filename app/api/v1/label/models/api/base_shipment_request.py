@@ -16,10 +16,13 @@ class BaseItemRequestModel(BaseModel):
     hs_code: Optional[str] = Field(None, description="The Harmonized System (HS) code for the item. This is an internationally standardized system of names and numbers to classify traded products.")
     country_of_origin: Optional[str] = Field(None, description="The country where the item was produced or manufactured as a ISO 3166-1 alpha-2 ('US','GB','DE' etc) or alpha-3 ('USA', 'GBR', 'DEU') country code.")
     return_reason: Optional[str] = Field(None, description="The reason for the return of the item. This is typically a summary of the reason for the return, e.g. 'damaged', 'wrong size', 'changed my mind' etc.")
+    purchase_date: Optional[str] = Field(None, description="The date when the item was purchased, the date is in ISO 8601 format, e.g. `2021-06-01`. The date is used to determine return eligibility with some carriers.")
     sku: Optional[str] = Field(None, description="The Stock Keeping Unit (SKU) for the item. This is a unique identifier for the item in your inventory.")
+    upc: Optional[str] = Field(None, description="The Universal Product Code (UPC) for the item. This is a unique identifier for the item in your inventory.")
     image_urls: Optional[list[str]] = Field(None, description="A list of URLs to images of the item. This can be used to send return partners photos of the item.")
     item_url: Optional[str] = Field(None, description="A URL to a webpage with more information about the item, e.g. a product page on the webshop.")
-    dng_declaration: Optional[ParcelLevelDangerousGoods] = Field(None, description="Details about dangerous goods in the parcel. Only applicable to dangerous goods shipments.")
+    images: Optional[list[str]] = Field(None, description="A list of URLs to images of the item. This can be used to send return partners photos of the item.")
+    dng_declaration: Optional[ItemLevelDangerousGoods] = Field(None, description="Details about dangerous goods in the parcel. Only applicable to dangerous goods shipments.")
 
 class BaseParcelRequestModel(BaseModel):
     uuid_ref: Optional[str] = Field(None, description="Your own unique identifier for the parcel. This will be included in subsequent messages such as tracking events, label responses etc.")
@@ -50,10 +53,12 @@ class UpdateItemRequestModel(BaseModel):
     hs_code: Optional[str] = Field(None, description="The Harmonized System (HS) code for the item. This is an internationally standardized system of names and numbers to classify traded products.")
     country_of_origin: Optional[str] = Field(None, description="The country where the item was produced or manufactured as a ISO 3166-1 alpha-2 ('US','GB','DE' etc) or alpha-3 ('USA', 'GBR', 'DEU') country code.")
     return_reason: Optional[str] = Field(None, description="The reason for the return of the item. This is typically a summary of the reason for the return, e.g. 'damaged', 'wrong size', 'changed my mind' etc.")
+    purchase_date: Optional[str] = Field(None, description="The date when the item was purchased, the date is in ISO 8601 format, e.g. `2021-06-01`. The date is used to determine return eligibility with some carriers.")
     sku: Optional[str] = Field(None, description="The Stock Keeping Unit (SKU) for the item. This is a unique identifier for the item in your inventory.")
+    upc: Optional[str] = Field(None, description="The Universal Product Code (UPC) for the item. This is a unique identifier for the item in your inventory.")
     image_urls: Optional[list[str]] = Field(None, description="A list of URLs to images of the item. This can be used to send return partners photos of the item.")
     item_url: Optional[str] = Field(None, description="A URL to a webpage with more information about the item, e.g. a product page on the webshop.")
-    dng_declaration: Optional[ParcelLevelDangerousGoods] = Field(None, description="Details about dangerous goods in the parcel. Only applicable to dangerous goods shipments.")
+    dng_declaration: Optional[ItemLevelDangerousGoods] = Field(None, description="Details about dangerous goods in the parcel. Only applicable to dangerous goods shipments.")
 
 class UpdateParcelRequestModel(BaseModel):
     id: str = Field(..., description="Gluey unique identifier for the parcel. This is the id that Gluey assigned to the parcel when it was created.")

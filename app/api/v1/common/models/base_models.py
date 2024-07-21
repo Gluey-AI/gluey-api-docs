@@ -74,11 +74,50 @@ unit_of_measurement_descriptions = {
     UnitOfMeasurement.YD: "Yard unit of measurement."
 }
 
+class UnitOfVolume(str, Enum):
+    """Enum representing the unit of volume."""
+
+    CM3 = 'cm3'
+    """Cubic centimeter unit of volume."""
+
+    IN3 = 'in3'
+    """Cubic inch unit of volume."""
+
+    M3 = 'm3'
+    """Cubic meter unit of volume."""
+
+    FT3 = 'ft3'
+    """Cubic foot unit of volume."""
+
+    MM3 = 'mm3'
+    """Cubic millimeter unit of volume."""
+
+    YD3 = 'yd3'
+    """Cubic yard unit of volume."""
+
+    OTHER = 'other'
+    """Any other unit of volume not covered by the above."""
+
+unit_of_volume_descriptions = {
+    UnitOfVolume.CM3: "Cubic centimeter unit of volume.",
+    UnitOfVolume.IN3: "Cubic inch unit of volume.",
+    UnitOfVolume.M3: "Cubic meter unit of volume.",
+    UnitOfVolume.FT3: "Cubic foot unit of volume.",
+    UnitOfVolume.MM3: "Cubic millimeter unit of volume.",
+    UnitOfVolume.YD3: "Cubic yard unit of volume.",
+    UnitOfVolume.OTHER: "Any other unit of volume not covered by the above."
+}
+
+class Volume(BaseModel):
+    """Class representing the volume of the parcel."""
+    value: float = Field(..., description="The volume of the parcel, e.g. 0.5, 1.0, 2.5 etc.")
+    unit: UnitOfVolume = Field(UnitOfVolume.M3, description="The unit of measurement for the volume. Default is 'm3' if left unspecified.")
+
 class Dimensions(BaseModel):
     """Class representing the dimensions of the parcel."""
     length: float = Field(..., description="The length of the parcel")
-    width: float = Field(..., description="The width of the parcel")
-    height: float = Field(..., description="The height of the parcel")
+    width: Optional[float] = Field(None, description="The width of the parcel")
+    height: Optional[float] = Field(None, description="The height of the parcel")
     unit: UnitOfMeasurement = Field(UnitOfMeasurement.CM, description="The unit of measurement for the dimensions. Default is 'cm' if left unspecified.")
 
 class Weight(BaseModel):

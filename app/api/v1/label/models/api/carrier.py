@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field
 from typing import Optional
 from enum import Enum
 
-from app.api.v1.common.models.base_models import Dimensions, MetaData, Weight
+from app.api.v1.common.models.base_models import Dimensions, MetaData, Volume, Weight
 from app.api.v1.common.utils import get_enum_description
 
 class GlueyValueAddingServiceClass(str, Enum):
@@ -190,6 +190,7 @@ class CarrierInstructions(BaseModel):
 class CarrierServiceRestrictions(BaseModel):
     max_weight: Optional[Weight] = Field(None, description="The weight restrictions for the parcels that can be shipped with this carrier service.")
     max_dims: Optional[Dimensions] = Field(None, description="The dimension restrictions for the parcels that can be shipped with this carrier service.")
+    max_volume: Optional[Volume] = Field(None, description="The volume restrictions for the parcels that can be shipped with this carrier service.")
     max_pieces: Optional[int] = Field(None, description="The maximum number of pieces allowed for the carrier service, e.g. 5 for 5 pieces / parcels.")
     max_value: Optional[float] = Field(None, description="The maximum value allowed for the carrier service, e.g. 1000.0 for £1000.")
     max_value_currency: Optional[str] = Field(None, description="The currency of the maximum value allowed for the carrier service in ISO-Alpha 3 country code, e.g. `GBP` for British Pounds.")

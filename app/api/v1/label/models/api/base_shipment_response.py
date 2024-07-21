@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field
 from typing import Optional
 from datetime import datetime
 
-from app.api.v1.common.models.base_models import TrackingLevel, tracking_level_descriptions
+from app.api.v1.common.models.base_models import MetaData, TrackingLevel, tracking_level_descriptions
 from app.api.v1.common.utils import get_enum_description
 from app.api.v1.label.models.base_models import ManifestStatus, manifest_status_descriptions
 
@@ -25,4 +25,5 @@ class BaseShipmentResponseModel(BaseModel):
     tracking_level: TrackingLevel = Field(..., description=f"Indicates if parcels can be individually trackable (i.e. the carrier support multi-parcel tracking) or if only the shipment itself can be tracked. It can be one of the following:\n{get_enum_description(TrackingLevel, tracking_level_descriptions)}")
     manifest_status: ManifestStatus = Field(..., description=f"The manifest status of the shipment. It can be one of the following:\n{get_enum_description(ManifestStatus, manifest_status_descriptions)}")
     manifest_id: Optional[str] = Field(None, description="The Gluey manifest id related to the shipment, if applicable and shipment is manifested.")
+    carrier_meta_data: Optional[list[MetaData]] = Field(None, description="Meta data received from the carrier.")
     parcels: list[BaseParcelResponseModel] = Field([], description="A list of parcels included in the shipment")
