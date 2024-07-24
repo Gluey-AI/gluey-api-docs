@@ -144,6 +144,48 @@ gluey_value_adding_service_class_descriptions = {
     GlueyValueAddingServiceClass.OTHER: "Any other value added service not covered by the above classifications."
 }
 
+class DeliveryFeature(str, Enum):
+    DANGEROUS_GOODS = "dangerous_goods"
+    WEEKEND_HOLIDAY = "weekend_holiday"
+    TEMP_CONTROLLED = "temp_controlled"
+    VERIFICATION = "verification"
+    PERISHABLE = "perishable"
+    FRAGILE = "fragile"
+    ADDITIONAL_INSURANCE = "additional_insurance"
+    CASH_ON_DELIVERY = "cash_on_delivery"
+    ECO_DELIVERY = "eco_delivery"
+    DISPOSE_PACKAGING = "dispose_packaging"
+    CUSTOMS_DUTIES_AND_TAXES = "customs_duties_and_taxes"
+    CUSTOM_CLEARANCE = "custom_clearance"
+    PHOTO_CONFIRMATION = "photo_confirmation"
+    SECURE = "secure"
+
+delivery_feature_descriptions = {
+    DeliveryFeature.DANGEROUS_GOODS: "The parcel contains dangerous goods (hazmat) and requires special handling, typical for chemicals, batteries, etc.",
+    DeliveryFeature.WEEKEND_HOLIDAY: "The parcel is requested to be delivered on a weekend or public holiday, typical for urgent deliveries.",
+    DeliveryFeature.TEMP_CONTROLLED: "The parcel requires temperature control during transport, including options like ambient, chilled, frozen, heated, dry ice, liquid nitrogen, or humidity control.",
+    DeliveryFeature.VERIFICATION: "The carrier needs to verify the receiver during delivery through methods such as signature, age check, or proof of identity.",
+    DeliveryFeature.PERISHABLE: "The parcel contains perishable items and needs special handling, typical for food, flowers, plants, etc.",
+    DeliveryFeature.FRAGILE: "The parcel contains fragile items and requires special handling, typical for glass, ceramics, electronics, artworks, etc.",
+    DeliveryFeature.ADDITIONAL_INSURANCE: "The parcel content should be insured during transport, typical for high-value goods.",
+    DeliveryFeature.CASH_ON_DELIVERY: "The driver should collect a payment from the receiver during delivery.",
+    DeliveryFeature.ECO_DELIVERY: "The carrier should deliver the parcel in an eco-friendly way, e.g., electric vehicle, hydrogen vehicle, electric bike, or other low-carbon transport.",
+    DeliveryFeature.DISPOSE_PACKAGING: "After delivery, the carrier should dispose of the packaging material, e.g., cardboard, plastic, foam, etc.",
+    DeliveryFeature.CUSTOMS_DUTIES_AND_TAXES: "The carrier should manage duties and taxes for the parcel, typical for international deliveries.",
+    DeliveryFeature.CUSTOM_CLEARANCE: "The carrier should handle custom clearance for international deliveries.",
+    DeliveryFeature.PHOTO_CONFIRMATION: "The carrier should take a photo of the delivered parcel as proof of delivery.",
+    DeliveryFeature.SECURE: "The parcel contains items that need secure handling such as passports, ID cards, keys, visas, and other types of legal documents."
+}
+
+class Labeling(str, Enum):
+    LABEL = 'label'
+    PAPERLESS = 'paperless'
+
+labeling_descriptions = {
+    Labeling.LABEL: "The carrier requires a physical label to be printed and attached to the parcel.",
+    Labeling.PAPERLESS: "The carrier service is paperless and does not require a physical label to be attached to the parcel."
+}
+
 class Region(str, Enum):
     DOMESTIC = 'domestic'
     INTERNATIONAL = 'international'
@@ -164,14 +206,14 @@ direction_descriptions = {
 
 
 class CarrierServiceType(str, Enum):
-    HOME_DELIVERY = 'home_delivery'
-    COLLECTION_AT_HOME = 'collection_at_home'
+    DELIVERY = 'delivery'
+    COLLECTION = 'collection'
     PICKUP_DROPOFF_POINT = 'pickup_dropoff_point'
     PARCEL_LOCKER = 'parcel_locker'
 
 carrier_service_type_descriptions = {
-    CarrierServiceType.HOME_DELIVERY: "The carrier service is a home delivery service, i.e. the parcel is delivered to the receiver's home address.",
-    CarrierServiceType.COLLECTION_AT_HOME: "The carrier service is a collection at home service, i.e. the parcel is collected from the sender's home address.",
+    CarrierServiceType.DELIVERY: "The carrier service is a delivery service, i.e. the parcel is delivered to the receiver's address.",
+    CarrierServiceType.COLLECTION: "The carrier service is a collection service, i.e. the parcel is collected from the sender's address.",
     CarrierServiceType.PICKUP_DROPOFF_POINT: "The carrier service is a pickup and dropoff point service, i.e. the parcel is dropped off at a designated location for the receiver to collect, or the receiver drops the parcel here.",
     CarrierServiceType.PARCEL_LOCKER: "The carrier service is a locker service, i.e. the parcel is delivered to a designated parcel locker for the receiver to collect."
 }
@@ -206,6 +248,8 @@ class ValueAddingService(BaseModel):
 class CarrierServiceBase(BaseModel):
     carrier_service_id: str = Field(..., description="Glueys ID of the carrier service as found in our carrier library, e.g. `standard_ground`, `express`, `home_delivery`.")
     name: str = Field(..., description="The name of the carrier service, e.g. `Express`, `Standard`, `Economy`, `Parcel`.")
+    features: list[DeliveryFeature] = Field(..., description=f"Additional features / capabilities the carrier service supports. It can be one of the following:\n{get_enum_description(DeliveryFeature, delivery_feature_descriptions)}")
+    labeling: Labeling = Field(..., description=f"The type of labeling required for the carrier service. It can be one of the following:\n{get_enum_description(Labeling, labeling_descriptions)}")
     region: Region = Field(..., description=f"The region of the carrier service. It can be one of the following:\n{get_enum_description(Region, region_descriptions)}")
     restrictions: Optional[CarrierServiceRestrictions] = Field(None, description="The restrictions around weight, dimensions etc of parcels that can be allocated to the carrier service.")
 

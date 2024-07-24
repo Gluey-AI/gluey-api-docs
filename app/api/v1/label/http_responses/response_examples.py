@@ -1,6 +1,6 @@
 from app.api.v1.common.models.base_models import Dimensions, MetaData, UnitOfMeasurement, UnitOfVolume, UnitOfWeight, Volume, Weight
-from app.api.v1.label.models.api.carrier import CarrierService, CarrierServiceType, Direction, GlueyValueAddingServiceClass, Region, ValueAddingService, CarrierServiceRestrictions
-from app.api.v1.label.models.api.collection import BookingResponse, CarrierServiceDeliveryDates, CarrierTimeWindow, CarrierServiceCollectionDates
+from app.api.v1.label.models.api.carrier import CarrierService, DeliveryFeature, Labeling, CarrierServiceType, Direction, GlueyValueAddingServiceClass, Region, ValueAddingService, CarrierServiceRestrictions
+from app.api.v1.label.models.api.collection import CarrierServiceDeliveryDates, CarrierTimeWindow, CarrierServiceCollectionDates
 from app.api.v1.common.http_responses.payloads import http_502_response
 from app.api.v1.common.utils import generate_uuid, generate_short_uuid, generate_custom_uuid
 
@@ -168,23 +168,6 @@ delivery_services_day = [
     )
 ]
 
-booking_success_example = BookingResponse(
-    carrier_collection_id=generate_custom_uuid(8),
-    carrier_payment_url="https://checkout.stripe.com/pay/123e4567-e89b-12d3-a456-426614174000?amount=53.50&currency=USD",
-    carrier_mangement_url="https://carrier.com/management/123e4567-e89b-12d3-a456-426614174000"
-)
-
-booking_success_example_no_payment = BookingResponse(
-    carrier_collection_id=generate_custom_uuid(8),
-    carrier_payment_url=None,
-    carrier_meta_data=[
-        MetaData(
-            key="vehicle_type",
-            value="van"
-        )
-    ]
-)
-
 collection_response_examples = {
     "am_pm": {
         "summary": "Collection Response - AM / PM",
@@ -211,23 +194,14 @@ delivery_response_examples = {
     }
 }
 
-booking_response_examples = {
-    "success": {
-        "summary": "Booking Response - Success",
-        "description": "Example response when the booking of a collection was successful but customer still has a pending payment with the carrier.",
-        "value": booking_success_example.model_dump()
-    },
-    "success_no_payment": {
-        "summary": "Booking Response - Success - No Payment",
-        "description": "Example response when the booking of a collection was successful, and no further payment is required.",
-        "value": booking_success_example_no_payment.model_dump()
-    }
-}
-
 carrier_services = [
     CarrierService(
         carrier_service_id="2CPR",
         name="Xpect Medium Return",
+        features=[
+            DeliveryFeature.DANGEROUS_GOODS
+        ],
+        labeling=Labeling.LABEL,
         direction=Direction.RETURN,
         region=Region.DOMESTIC,
         service_type=CarrierServiceType.PICKUP_DROPOFF_POINT,
@@ -238,12 +212,16 @@ carrier_services = [
     CarrierService(
         carrier_service_id="2VPR",
         name="Xpect Large Return",
+        features=[
+            DeliveryFeature.ECO_DELIVERY
+        ],
+        labeling=Labeling.PAPERLESS,
         direction=Direction.RETURN,
         region=Region.DOMESTIC,
-        service_type=CarrierServiceType.COLLECTION_AT_HOME,
+        service_type=CarrierServiceType.COLLECTION,
         restrictions=CarrierServiceRestrictions(
             max_weight=Weight(value=30, unit=UnitOfWeight.KG),
-            max_dims=Dimensions(length=100, width=100, height=210, unit=UnitOfMeasurement.CM)
+            max_dims=Dimensions(length=100, unit=UnitOfMeasurement.CM)
         ),
         value_adding_services=[
             ValueAddingService(
@@ -440,68 +418,6 @@ http_responses_delivery_times = {
 }
 
 http_responses_cancel = {
-    401: {
-        "description": "Unauthorized",
-        "content": {
-            "application/json": {
-                "example": {
-                    "detail": "Not authenticated."
-                }
-            }
-        }
-    },
-    403: {
-        "description": "Forbidden",
-        "content": {
-            "application/json": {
-                "example": {
-                    "detail": "Not authorized to access this shipment."
-                }
-            }
-        }
-    },
-    406: {
-        "description": "Not Acceptable - JSON only responses supported",
-        "content": {
-            "application/json": {
-                "example": {
-                    "detail": "The requested resource is not available in a format that would be acceptable according to the Accept headers sent in the request."
-                }
-            }
-        }
-    },
-    500: {
-        "description": "Internal Server Error",
-        "content": {
-            "application/json": {
-                "example": {
-                    "detail": "Unfortunately something went wrong whilst processing your request. Please try again later."
-                }
-            }
-        }
-    },
-    502: http_502_response
-}
-
-http_responses_booking = {
-    201: {
-        "description": "Booking of collection was successful",
-        "content": {
-            "application/json": {
-                "examples": booking_response_examples
-            }
-        }
-    },
-    400: {
-        "description": "Bad Request - Payload malformed",
-        "content": {
-            "application/json": {
-                "example": {
-                    "detail": "Payload malformed."
-                }
-            }
-        }
-    },
     401: {
         "description": "Unauthorized",
         "content": {

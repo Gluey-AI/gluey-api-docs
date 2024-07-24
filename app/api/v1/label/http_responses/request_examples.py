@@ -1,4 +1,4 @@
-from app.api.v1.label.models.api.collection import CollectionRequest, DeliveryRequest, ServiceAvailabilityRequest,DeliveryFeature
+from app.api.v1.label.models.api.collection import CollectionRequest, DeliveryRequest, ServiceAvailabilityRequest, Restrictions, DeliveryFeature
 from app.api.v1.common.utils import generate_uuid, generate_short_uuid, generate_custom_uuid
 
 request_collection_times_ups = CollectionRequest(
@@ -68,16 +68,19 @@ request_delivery_time_no_dates = DeliveryRequest(
 )
 
 availability_request = ServiceAvailabilityRequest(
+    skip_restrictions=[
+        Restrictions.WEIGHT,
+        Restrictions.VOLUME
+    ],
     features=[
-        DeliveryFeature.ADDITIONAL_INSURANCE,
         DeliveryFeature.DANGEROUS_GOODS
     ]
 )
 
 service_availability_request_examples = {
     "with_dangerous_goods": {
-        "summary": "Service Availability Request - Dangerous Goods",
-        "description": "Request all available carrier services for a specific shipment that supports dangerous goods and additional insurance.",
+        "summary": "Service Availability Request - Skip restrictions and check features",
+        "description": "Skip checking weight and volume restrictions and only request services that support dangerous goods.",
         "value": availability_request.model_dump()
     }
 }
