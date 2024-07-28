@@ -1,4 +1,5 @@
 
+from datetime import datetime
 from enum import Enum
 from typing import Optional
 
@@ -152,13 +153,12 @@ class HarmonisedEventCodeDetail(BaseModel):
     freetext_detail: Optional[str] = Field(None, description="Additional detail in free text form about the tracking event provided by the carrier / Gluey.")
 
 class TrackingEventDateTime(BaseModel):
-    created_utc: str = Field(..., description="The date and time in Coordinated Universal Time (UTC+00:00) when the tracking event was created in the Gluey system. The date and time of the tracking event is in ISO 8601 format and includes the UTC-offset, e.g. '2021-06-01T12:00:00+00:00'.")
-    carrier_utc: str = Field(..., description="Local time for the carrier when the tracking event took place. The date and time of the tracking event is in ISO 8601 format and includes the UTC-offset, e.g. '2021-06-01T12:00:00-05:00', '2021-06-01T15:00:00+03:00' or '2021-06-01T15:00:00+00:00'.")
+    created_utc: datetime = Field(..., description="The date and time in Coordinated Universal Time (UTC+00:00) when the tracking event was created in the Gluey system. The date and time of the tracking event is in ISO 8601 format and includes the UTC-offset, e.g. '2021-06-01T12:00:00+00:00'.")
+    carrier_utc: datetime = Field(..., description="Local time for the carrier when the tracking event took place. The date and time of the tracking event is in ISO 8601 format and includes the UTC-offset, e.g. '2021-06-01T12:00:00-05:00', '2021-06-01T15:00:00+03:00' or '2021-06-01T15:00:00+00:00'.")
 
 class TrackingEventCodes(BaseModel):
     gluey: GlueyEventCodeDetail = Field(..., description="Glueys own tracking event codes and descriptions, i.e. the codes and descriptions that Gluey uses to harmonise between our and the carriers event codes.")
     carrier: CarrierEventCodeDetail = Field(..., description="The original carrier specific tracking event codes and descriptions, i.e. the codes and descriptions provided by the carrier.")
-    harmonised: Optional[HarmonisedEventCodeDetail] = Field(None, description="The harmonised tracking event codes and descriptions, i.e. if you are using translations in Gluey to translate between the carrier's codes and your own set of codes.")
 
 class TrackingEventDeliveryConfirmation(BaseModel):
     """Class representing the delivery confirmation of the shipment / parcel."""

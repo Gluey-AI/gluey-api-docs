@@ -11,7 +11,7 @@ class TrackingLevel(str, Enum):
 
 tracking_level_descriptions = {
     TrackingLevel.SHIPMENT: "The carrier only supports shipment-level tracking events, and hence parcels are not individually trackable (e.g. if one parcel gets lost-in-transit you will not know which one based on only the tracking events).",
-    TrackingLevel.PARCEL: "The carrier supports parcel-level tracking events, and tracking will be available for each individual parcel."
+    TrackingLevel.PARCEL: "The carrier supports parcel-level tracking events, which means that in addition to shipment-level tracking events each individual parcel will also have tracking events associated to them."
 }
 
 class Value(BaseModel):

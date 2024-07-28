@@ -124,8 +124,10 @@ class DeliveryAddress(BaseAddress):
     geo: Optional[GeoLocation] = Field(None, description="The geographical location of the address.")
 
 class Addresses(BaseModel):
-    from_address: DeliveryAddress = Field(None, description="Optional. Alternative address from where the shipment is from / collected / picked up.")
-    to_address: DeliveryAddress = Field(..., description="The address of the to / recipient / receiver / consignee to where the shipment is delivered")
+    from_address_pudo_id: Optional[str] = Field(None, description="For PUDO service only. The Gluey ID of the PUDO location where the shipment / parcel is dropped off. Typical for return services.")
+    from_address: Optional[DeliveryAddress] = Field(None, description="The address from where the shipment is sent from, e.g. collected / picked up.")
+    to_address: Optional[DeliveryAddress] = Field(None, description="The address of the to / recipient / receiver / consignee to where the shipment is delivered")
+    to_address_pudo_id: Optional[str] = Field(None, description="For PUDO service only. The Gluey ID of the PUDO location in where the shipment / parcel is delivered to. Typical for outbound services.")
     undeliverable_address: Optional[DeliveryAddress] = Field(None, description="Optional. Alternative address to where the shipment / parcels that cannot be delivered are returned. Typically visible as the sender / return-to address on the label.")
 
 class ManifestStatus(str, Enum):
