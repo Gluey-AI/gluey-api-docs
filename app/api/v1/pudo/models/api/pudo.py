@@ -190,9 +190,10 @@ class PudoEnvironmentalOptions(BaseModel):
     eco_friendly_packaging: Optional[bool] = Field(None, description="Indicates if eco-friendly packaging options are available")
 
 class PudoPoint(BaseModel):
-    id: str = Field(..., description="The unique Gluey identifier for the PUDO point")
+    id: str = Field(..., description="Glueys identifier for the PUDO point")
+    carrier_location_id: str = Field(..., description="The carriers unique location identifier for the PUDO point")
     carrier_id: str = Field(..., description="The unique carrier identifier for the PUDO point")
-    carrier_services: Optional[list[CarrierServiceBase]] = Field(None, description="If carrier have any restrictions on services available at the PUDO point")
+    carrier_services: Optional[list[CarrierServiceBase]] = Field(None, description="Should the carrier have any restrictions on services available at the PUDO point, this is a list of the services that can be used at the PUDO point.")
     meta_data: Optional[list[MetaData]] = Field(None, description="Vary depending on carrier. Additional data from pudo integration that isn't part of the Gluey standard interface.")
     name: str = Field(..., description="The name of the PUDO point")
     type: PudoPointType = Field(..., description=f"The type of PUDO point. It can be one of the following:\n{get_enum_description(PudoPointType, pudo_point_type_descriptions)}")

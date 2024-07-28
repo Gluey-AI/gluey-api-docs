@@ -7,5 +7,5 @@ from app.api.v1.label.models.api.carrier_request import BaseCarrierRequestModel
 
 class CreateShipmentRequest(BaseModel):
     gluey_services: Optional[GlueyApiServices] = Field(None, description="Gluey convenience services you would like executed as part of the api calls, e.g. address correction, dimension conversion, weight conversion etc")
-    carrier: BaseCarrierRequestModel = Field(..., description="The carrier that should move this parcel.")
+    carrier: BaseCarrierRequestModel = Field(..., description="The carrier that should move this shipment / parcel(s).")
     shipment: BaseShipmentRequestModel = Field(..., description="The shipment details, including the parcels and their contents.")

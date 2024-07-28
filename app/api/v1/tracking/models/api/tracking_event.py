@@ -18,13 +18,13 @@ class TrackingData(BaseModel):
     shipping_cost_currency: Optional[str] = Field(None, description="Available depending on carrier, if carrier provides shipping cost data. The currency of the shipping cost in ISO Alpha-3 format, e.g. 'USD', 'GBP', 'EUR' etc.")
     delivery_confirmation: Optional[TrackingEventDeliveryConfirmation] = Field(None, description="Available depending on carrier, if carrier provides delivery confirmation.")
     co2_footprint_kg: Optional[float] = Field(None, description="Available depending on carrier, if carrier provides carbon footprint data. The carbon footprint of the shipment in kg, e.g. '0.53'.")   
-    events: Optional[list[TrackingEvent]] = Field([], description="Available depending on carrier, if carrier support parcel-level tracking event. Otherwise shipment-level events will be provided.")
+    events: list[TrackingEvent] = Field(..., description="Tracking events that have been received.")
 
 class TrackingEventParcel(BaseModel):
     id: str = Field(..., description="The ID of the parcel that the tracking event is related to.")
     uuid_ref: Optional[str] = Field(None, description="Your own unique identifier for the parcel.")
     meta_data: Optional[list[MetaData]] = Field(None, description="Meta data tags you assigned when it was created in Gluey.")
-    carrier_tracking_id: Optional[str] = Field(None, description="Only available when `tracking_level=parcel`. This is the carriers own tracking id for the parcel")
+    carrier_tracking_id: str = Field(None, description="This is the carriers own tracking id for the parcel")
     condition: ParcelCondition = Field(ParcelCondition.UNKNOWN, description="The current condition of the parcel as reported by the carrier.")
     carrier_weight_dims: Optional[TrackingEventPhysicalData] = Field(None, description="Physical data (i.e. weight and dimensions) of the parcel that the carrier have captured whilst processing the parcel in their facilities.")
-    tracking_data: Optional[TrackingData] = Field(None, description="Available if `tracking_level=parcel`. The tracking data for the individual parcel.")
+    tracking_data: TrackingData = Field(..., description="The tracking data for the individual parcel.")

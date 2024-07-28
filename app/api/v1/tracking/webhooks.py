@@ -1,14 +1,16 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Body, Depends, status
 
 from app.api.v1.common.headers import common_headers
 from app.api.v1.tracking.models.webhooks.subscribe import SubscribeTrackingWebhook
 from app.api.v1.tracking.models.webhooks.tracking_event import TrackingWebhookEvent
+from app.api.v1.tracking.http_responses.requests import webhook_post_examples
 
 
 webhook_router = APIRouter()
 
 @webhook_router.post("/webhook/tracking", summary="Tracking Event Webhook", description="How the webhook messages with Tracking Events will look like that you receive from Gluey.", status_code=status.HTTP_200_OK)
-async def receive_webhook(payload: list[TrackingWebhookEvent]):
+async def receive_webhook(
+    payload: list[TrackingWebhookEvent] = Body(..., openapi_examples=webhook_post_examples)):
     return
 
 webhook_subscription_router = APIRouter()

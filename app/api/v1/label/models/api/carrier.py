@@ -68,7 +68,8 @@ class GlueyValueAddingServiceClass(str, Enum):
     DISPOSE_PACKAGING = "dispose_packaging"
     DISPOSE_OLD_ITEM = "dispose_old_item"
     CUSTOMS_DUTIES_AND_TAXES = "customs_duties_and_taxes"
-    CUSTOM_CLEARANCE = "customs_clearance"
+    CUSTOMS_CLEARANCE = "customs_clearance"
+    CUSTOMS_CLEARANCE_COMMERCIAL = "customs_clearance_commercial"
     PHOTO_CONFIRMATION = "photo_confirmation"
     SECURE = "secure"
     CONFIDENTIAL = "confidential"
@@ -136,7 +137,8 @@ gluey_value_adding_service_class_descriptions = {
     GlueyValueAddingServiceClass.DISPOSE_PACKAGING: "After delivery, the carrier should dispose of the packaging material, e.g. cardboard, plastic, foam etc.",
     GlueyValueAddingServiceClass.DISPOSE_OLD_ITEM: "After delivery, the carrier should dispose of an old item being replaced, e.g. old appliance, furniture etc.",
     GlueyValueAddingServiceClass.CUSTOMS_DUTIES_AND_TAXES: "The carrier should manage duties and taxes for the parcel, typical for international deliveries.",
-    GlueyValueAddingServiceClass.CUSTOM_CLEARANCE: "The carrier should handle custom clearance for international deliveries.",
+    GlueyValueAddingServiceClass.CUSTOMS_CLEARANCE: "The carrier should handle custom clearance for international deliveries.",
+    GlueyValueAddingServiceClass.CUSTOMS_CLEARANCE_COMMERCIAL: "The carrier should specifically do a commercial customs clearance for international deliveries (i.e. B2B clearance). Typically means the carrier will required commercial invoices, certificates of origin etc.",
     GlueyValueAddingServiceClass.PHOTO_CONFIRMATION: "The carrier should take a photo of the delivered parcel as proof of delivery.",
     GlueyValueAddingServiceClass.SECURE: "The parcel contains items that needs secure handling such as passports, ID cards, keys, visas and other types of legal documents.",
     GlueyValueAddingServiceClass.CONFIDENTIAL: "The parcel contains confidential information and needs secure handling.",
@@ -156,7 +158,8 @@ class DeliveryFeature(str, Enum):
     ECO_DELIVERY = "eco_delivery"
     DISPOSE_PACKAGING = "dispose_packaging"
     CUSTOMS_DUTIES_AND_TAXES = "customs_duties_and_taxes"
-    CUSTOM_CLEARANCE = "custom_clearance"
+    CUSTOMS_CLEARANCE = "customs_clearance"
+    CUSTOMS_CLEARANCE_COMMERCIAL = "customs_clearance_commercial"
     PHOTO_CONFIRMATION = "photo_confirmation"
     SECURE = "secure"
 
@@ -172,7 +175,8 @@ delivery_feature_descriptions = {
     DeliveryFeature.ECO_DELIVERY: "The carrier should deliver the parcel in an eco-friendly way, e.g., electric vehicle, hydrogen vehicle, electric bike, or other low-carbon transport.",
     DeliveryFeature.DISPOSE_PACKAGING: "After delivery, the carrier should dispose of the packaging material, e.g., cardboard, plastic, foam, etc.",
     DeliveryFeature.CUSTOMS_DUTIES_AND_TAXES: "The carrier should manage duties and taxes for the parcel, typical for international deliveries.",
-    DeliveryFeature.CUSTOM_CLEARANCE: "The carrier should handle custom clearance for international deliveries.",
+    DeliveryFeature.CUSTOMS_CLEARANCE: "The carrier should handle custom clearance for international deliveries.",
+    DeliveryFeature.CUSTOMS_CLEARANCE_COMMERCIAL: "The carrier should specifically do a commercial customs clearance for international deliveries (i.e. B2B clearance). Typically means the carrier will required commercial invoices, certificates of origin etc.",
     DeliveryFeature.PHOTO_CONFIRMATION: "The carrier should take a photo of the delivered parcel as proof of delivery.",
     DeliveryFeature.SECURE: "The parcel contains items that need secure handling such as passports, ID cards, keys, visas, and other types of legal documents."
 }
@@ -204,14 +208,15 @@ direction_descriptions = {
     Direction.RETURN: "The carrier service is of type return and used to move a parcel from the receiver back to the shipper."
 }
 
-
 class CarrierServiceType(str, Enum):
+    AGGREGATOR_SERVICE = 'aggregator_service'
     DELIVERY = 'delivery'
     COLLECTION = 'collection'
     PICKUP_DROPOFF_POINT = 'pickup_dropoff_point'
     PARCEL_LOCKER = 'parcel_locker'
 
 carrier_service_type_descriptions = {
+    CarrierServiceType.AGGREGATOR_SERVICE: "The carrier service is a carrier aggregator service, i.e. the carrier is an aggregator of multiple carriers. Typically they would sell your their own service and then use a third-party carrier to actually deliver the parcel.",    
     CarrierServiceType.DELIVERY: "The carrier service is a delivery service, i.e. the parcel is delivered to the receiver's address.",
     CarrierServiceType.COLLECTION: "The carrier service is a collection service, i.e. the parcel is collected from the sender's address.",
     CarrierServiceType.PICKUP_DROPOFF_POINT: "The carrier service is a pickup and dropoff point service, i.e. the parcel is dropped off at a designated location for the receiver to collect, or the receiver drops the parcel here.",
