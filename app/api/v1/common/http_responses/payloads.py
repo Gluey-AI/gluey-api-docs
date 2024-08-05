@@ -13,14 +13,23 @@ class ErrorCode(str, Enum):
     AUTHENTICATION_FAILURE = "authentication_failure"
     AUTHORIZATION_FAILURE = "authorization_failure"
     BAD_REQUEST = "bad_request"
+    CARRIER_DATA_ERROR = "carrier_data_error"
     CONTACT_MISSING = "contact_missing"
+    COUNTRY_NOT_SUPPORTED = "country_not_supported"
     DATA_VALIDATION_ERROR = "data_validation_error"
     DUPLICATE_REQUEST = "duplicate_request"
     EMAIL_MISSING = "email_missing"
     INTERNAL_SERVER_ERROR = "internal_server_error"
     INVALID_TRACKING_NUMBER = "invalid_tracking_number"
+    ITEMS_MISSING = "items_missing"
     ITEM_DESCRIPTION_TOO_LONG = "item_description_too_long"
+    ITEM_INFO_MISSING_DESCRIPTION = "item_info_missing_description"
+    ITEM_INFO_MISSING_COUNTRY_OF_ORIGIN = "item_info_missing_country_of_origin"
+    ITEM_INFO_MISSING_VALUE = "item_info_missing_value"
+    ITEM_INFO_MISSING_HS_CODE = "item_info_missing_hs_code"
+    ITEM_INFO_MISSING_QUANTITY = "item_info_missing_quantity"
     LABEL_GENERATION_ERROR = "label_generation_error"
+    LABEL_GENERATION_ERROR_GLUEY = "label_generation_error_gluey"
     META_DATA_ERROR = "meta_data_error"
     MOBILE_NUMBER_MISSING = "mobile_number_missing"
     NO_IMPLEMENTATION = "no_implementation"
@@ -28,6 +37,8 @@ class ErrorCode(str, Enum):
     PACKAGE_WEIGHT_ERROR = "package_weight_error"
     PAST_BOOKING_CUTOFF_TIME = "past_booking_cutoff_time"
     PAST_CANCEL_CUTOFF_TIME = "past_cancel_cutoff_time"
+    POSTCODE_NOT_SUPPORTED = "post_code_not_supported"
+    SERVICE_NOT_SUPPORTED = "service_not_supported"
     RATE_LIMIT_EXCEEDED = "rate_limit_exceeded"
     TIMEOUT = "timeout"
     OTHER = "other"
@@ -40,22 +51,33 @@ error_code_descriptions = {
     ErrorCode.AUTHENTICATION_FAILURE: "Authentication with the Carrier API failed.",
     ErrorCode.AUTHORIZATION_FAILURE: "Authorization with the Carrier API failed.",
     ErrorCode.BAD_REQUEST: "The request to the Carrier API was malformed or incorrect.",
+    ErrorCode.CARRIER_DATA_ERROR: "The carrier has provided faulty data to Gluey for local label implementation.",
     ErrorCode.CONTACT_MISSING: "The contact information is missing.",
+    ErrorCode.COUNTRY_NOT_SUPPORTED: "The country is not supported by the Carrier / Service.",
     ErrorCode.DATA_VALIDATION_ERROR: "The data provided is invalid or does not meet the Carrier API's requirements.",
     ErrorCode.DUPLICATE_REQUEST: "A request with the same data has already been made.",
     ErrorCode.EMAIL_MISSING: "The email address is missing.",
     ErrorCode.INTERNAL_SERVER_ERROR: "Internal server error in the Carrier API.",
     ErrorCode.INVALID_TRACKING_NUMBER: "The tracking number provided is invalid.",
+    ErrorCode.ITEMS_MISSING: "The items are missing and required by carrier.",
     ErrorCode.ITEM_DESCRIPTION_TOO_LONG: "The the description of one of the items is too long.",
+    ErrorCode.ITEM_INFO_MISSING_DESCRIPTION: "The description is missing for one of the items.",
+    ErrorCode.ITEM_INFO_MISSING_COUNTRY_OF_ORIGIN: "The country of origin is missing for one of the items.",
+    ErrorCode.ITEM_INFO_MISSING_VALUE: "The unit value is missing for one of the items.",
+    ErrorCode.ITEM_INFO_MISSING_HS_CODE: "The HS code is missing for one of the items.",
+    ErrorCode.ITEM_INFO_MISSING_QUANTITY: "The quantity is missing for one of the items.",
     ErrorCode.LABEL_GENERATION_ERROR: "Error occurred while generating the label.",
+    ErrorCode.LABEL_GENERATION_ERROR_GLUEY: "Error occurred while generating the label in Gluey.",
     ErrorCode.META_DATA_ERROR: "The carrier meta data provided is incorrect.",
     ErrorCode.MOBILE_NUMBER_MISSING: "The mobile number is missing.",
-    ErrorCode.NO_IMPLEMENTATION: "The Carrier API does not have any endpoint implemented for this operation.",
+    ErrorCode.NO_IMPLEMENTATION: "The Carrier does not have any implementation for this operation.",
     ErrorCode.PACKAGE_SIZE_ERROR: "The package size is invalid or exceeds the carrier's limits.",
     ErrorCode.PACKAGE_WEIGHT_ERROR: "The package weight is invalid or exceeds the carrier's limits.",
     ErrorCode.PAST_BOOKING_CUTOFF_TIME: "The request to book the collection was made after the cutoff time.",
     ErrorCode.PAST_CANCEL_CUTOFF_TIME: "The request to cancel the collection was made after the cutoff time.",
+    ErrorCode.POSTCODE_NOT_SUPPORTED: "The post code is not supported by the Carrier / Service.",
     ErrorCode.RATE_LIMIT_EXCEEDED: "The rate limit for the Carrier API has been exceeded.",
+    ErrorCode.SERVICE_NOT_SUPPORTED: "The service is not supported by the Carrier / Service for this account.",
     ErrorCode.TIMEOUT: "The Carrier API timed out.",
     ErrorCode.OTHER: "An error occurred in the Carrier API which Gluey were note able to classify."
 }
