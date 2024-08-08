@@ -1,4 +1,5 @@
 milestone,event,sub_event,detailed_explanation
+start,start,gluey_test,Only in test environement. Event which is created in Gluey's test environment each time a label is printed in order to test webhook connectivity for tracking.
 start,order_created,acknowledged_by_carrier,The carrier has sent a tracking event acknowledging that the shipment / parcel has been successfully created in their system.
 start,order_created,shipping_label,A shipping label has been created for the parcel by the carrier.
 start,order_created,locker_pin,A pin code for a parcel locker has been created indicating where a customer can drop off / collect their parcel.
