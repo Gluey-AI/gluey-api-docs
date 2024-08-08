@@ -147,38 +147,86 @@ gluey_value_adding_service_class_descriptions = {
 }
 
 class DeliveryFeature(str, Enum):
-    DANGEROUS_GOODS = "dangerous_goods"
-    WEEKEND_HOLIDAY = "weekend_holiday"
-    TEMP_CONTROLLED = "temp_controlled"
-    VERIFICATION = "verification"
-    PERISHABLE = "perishable"
-    FRAGILE = "fragile"
     ADDITIONAL_INSURANCE = "additional_insurance"
+    AGGREGATOR_SERVICE = "aggregator_service"
+    BEFORE_NOON = "before_noon"
     CASH_ON_DELIVERY = "cash_on_delivery"
-    ECO_DELIVERY = "eco_delivery"
-    DISPOSE_PACKAGING = "dispose_packaging"
-    CUSTOMS_DUTIES_AND_TAXES = "customs_duties_and_taxes"
+    COLLECTION = "collection"
     CUSTOMS_CLEARANCE = "customs_clearance"
     CUSTOMS_CLEARANCE_COMMERCIAL = "customs_clearance_commercial"
+    CUSTOMS_DUTIES_AND_TAXES = "customs_duties_and_taxes"
+    DANGEROUS_GOODS = "dangerous_goods"
+    DISPOSE_PACKAGING = "dispose_packaging"
+    ECO_DELIVERY = "eco_delivery"
+    EXPRESS = "express"
+    FRAGILE = "fragile"
+    GOVERNMENT = "government"
+    HIGH_VALUE = "high_value"
+    ITEM_EXCHANGE = "item_exchange"
+    MILITARY = "military"
+    NEXT_DAY = "next_day"
+    ONLY_DELIVERY_ADDRESS = "only_delivery_address"
+    OUTBOUND = "outbound"
+    PARCEL_LOCKER = "parcel_locker"
+    PERISHABLE = "perishable"
     PHOTO_CONFIRMATION = "photo_confirmation"
+    POSTAL = "postal"
+    PROOF_OF_DELIVERY = "proof_of_delivery"
+    PUDO_DROP_OFF = "pudo_drop_off"
+    PUDO_PICKUP = "pudo_pickup"
+    PUDO_PICKUP_DROP_OFF = "pudo_pickup_drop_off"
+    PRIORITY = "priority"
+    RETURNS = "returns"
+    SAME_DAY = "same_day"
+    SCHEDULED_SATURDAY_DELIVERY = "scheduled_saturday_delivery"
     SECURE = "secure"
+    TEMP_CONTROLLED = "temp_controlled"
+    TWENTY_FOUR_HOUR = "24_hour"
+    FOURTY_EIGHT_HOUR = "48_hour"
+    SEVENTY_TWO_HOUR = "72_hour"
+    VERIFICATION = "verification"
+    WEEKEND_DELIVERY = "weekend_delivery"
 
 delivery_feature_descriptions = {
-    DeliveryFeature.DANGEROUS_GOODS: "The parcel contains dangerous goods (hazmat) and requires special handling, typical for chemicals, batteries, etc.",
-    DeliveryFeature.WEEKEND_HOLIDAY: "The parcel is requested to be delivered on a weekend or public holiday, typical for urgent deliveries.",
-    DeliveryFeature.TEMP_CONTROLLED: "The parcel requires temperature control during transport, including options like ambient, chilled, frozen, heated, dry ice, liquid nitrogen, or humidity control.",
-    DeliveryFeature.VERIFICATION: "The carrier needs to verify the receiver during delivery through methods such as signature, age check, or proof of identity.",
-    DeliveryFeature.PERISHABLE: "The parcel contains perishable items and needs special handling, typical for food, flowers, plants, etc.",
-    DeliveryFeature.FRAGILE: "The parcel contains fragile items and requires special handling, typical for glass, ceramics, electronics, artworks, etc.",
-    DeliveryFeature.ADDITIONAL_INSURANCE: "The parcel content should be insured during transport, typical for high-value goods.",
-    DeliveryFeature.CASH_ON_DELIVERY: "The driver should collect a payment from the receiver during delivery.",
-    DeliveryFeature.ECO_DELIVERY: "The carrier should deliver the parcel in an eco-friendly way, e.g., electric vehicle, hydrogen vehicle, electric bike, or other low-carbon transport.",
-    DeliveryFeature.DISPOSE_PACKAGING: "After delivery, the carrier should dispose of the packaging material, e.g., cardboard, plastic, foam, etc.",
-    DeliveryFeature.CUSTOMS_DUTIES_AND_TAXES: "The carrier should manage duties and taxes for the parcel, typical for international deliveries.",
-    DeliveryFeature.CUSTOMS_CLEARANCE: "The carrier should handle custom clearance for international deliveries.",
-    DeliveryFeature.CUSTOMS_CLEARANCE_COMMERCIAL: "The carrier should specifically do a commercial customs clearance for international deliveries (i.e. B2B clearance). Typically means the carrier will required commercial invoices, certificates of origin etc.",
-    DeliveryFeature.PHOTO_CONFIRMATION: "The carrier should take a photo of the delivered parcel as proof of delivery.",
-    DeliveryFeature.SECURE: "The parcel contains items that need secure handling such as passports, ID cards, keys, visas, and other types of legal documents."
+    DeliveryFeature.ADDITIONAL_INSURANCE: "The carrier service should offer additional insurance coverage.",
+    DeliveryFeature.AGGREGATOR_SERVICE: "Only show carrier services that is an aggregator service, i.e. the carrier is an aggregator of multiple carriers where they sell their own service but use a third-party carrier to actually deliver the parcel.",
+    DeliveryFeature.BEFORE_NOON: "Only show carrier services where delivery is before noon (12:00 PM midday).",
+    DeliveryFeature.CASH_ON_DELIVERY: "Only show carrier services that offer cash on delivery payments.",
+    DeliveryFeature.COLLECTION: "Only show carrier services that offer parcel collection from a specified location.",
+    DeliveryFeature.CUSTOMS_CLEARANCE: "Only show carrier services that handle customs clearance for international deliveries.",
+    DeliveryFeature.CUSTOMS_CLEARANCE_COMMERCIAL: "Only show carrier services that handle commercial customs clearance for international B2B deliveries.",
+    DeliveryFeature.CUSTOMS_DUTIES_AND_TAXES: "Only show carrier services that manage customs duties and taxes for international deliveries.",
+    DeliveryFeature.DANGEROUS_GOODS: "Only show carrier services that handle dangerous goods.",
+    DeliveryFeature.DISPOSE_PACKAGING: "Only show carrier services that offer packaging disposal after delivery.",
+    DeliveryFeature.ECO_DELIVERY: "Only show carrier services that offer eco-friendly delivery options.",
+    DeliveryFeature.EXPRESS: "Only show carrier services that offer express delivery.",
+    DeliveryFeature.FRAGILE: "Only show carrier services that handle fragile items.",
+    DeliveryFeature.GOVERNMENT: "Only show carrier services that support deliveries to government entities or agencies.",
+    DeliveryFeature.HIGH_VALUE: "Only show carrier services that securely handle high-value items.",
+    DeliveryFeature.ITEM_EXCHANGE: "Only show carrier services that offer item exchange during delivery.",
+    DeliveryFeature.MILITARY: "Only show carrier services that support deliveries to military locations or personnel.",
+    DeliveryFeature.NEXT_DAY: "Only show carrier services that offer next-day delivery.",
+    DeliveryFeature.ONLY_DELIVERY_ADDRESS: "Only show carrier services that restrict delivery to a specific address without any safe-drop, neighbor delivery etc.",
+    DeliveryFeature.OUTBOUND: "Only show carrier services that handle outbound deliveries.",
+    DeliveryFeature.PARCEL_LOCKER: "Only show carrier services that deliver to secure parcel lockers.",
+    DeliveryFeature.PERISHABLE: "Only show carrier services that handle perishable items.",
+    DeliveryFeature.PHOTO_CONFIRMATION: "Only show carrier services that provide photo confirmation as proof of delivery.",
+    DeliveryFeature.POSTAL: "Only show carrier services that use postal delivery.",
+    DeliveryFeature.PROOF_OF_DELIVERY: "Only show carrier services that provide proof of delivery, such as a signature or electronic confirmation.",
+    DeliveryFeature.PUDO_DROP_OFF: "Only show carrier services that offer drop-off at Pick-Up/Drop-Off (PUDO) locations, typically for returns.",
+    DeliveryFeature.PUDO_PICKUP: "Only show carrier services that offer pickup from Pick-Up/Drop-Off (PUDO) locations, typically for outbound.",
+    DeliveryFeature.PUDO_PICKUP_DROP_OFF: "Only show carrier services that offer both pickup and drop-off at Pick-Up/Drop-Off (PUDO) locations.",
+    DeliveryFeature.PRIORITY: "Only show carrier services that offer priority delivery.",
+    DeliveryFeature.RETURNS: "Only show carrier services that offer return services.",
+    DeliveryFeature.SAME_DAY: "Only show carrier services that offer same-day delivery.",
+    DeliveryFeature.SCHEDULED_SATURDAY_DELIVERY: "Only show carrier services that offer scheduled Saturday delivery.",
+    DeliveryFeature.SECURE: "Only show carrier services that offer secure delivery for sensitive items.",
+    DeliveryFeature.TEMP_CONTROLLED: "Only show carrier services that offer temperature-controlled delivery.",
+    DeliveryFeature.TWENTY_FOUR_HOUR: "Only show carrier services that deliver within 24 hours of dispatch.",
+    DeliveryFeature.FOURTY_EIGHT_HOUR: "Only show carrier services that deliver within 48 hours of dispatch.",
+    DeliveryFeature.SEVENTY_TWO_HOUR: "Only show carrier services that deliver within 72 hours of dispatch.",
+    DeliveryFeature.VERIFICATION: "Only show carrier services that require receiver verification during delivery, e.g. signature, age check etc.",
+    DeliveryFeature.WEEKEND_DELIVERY: "Only show carrier services that also offer delivery on weekends, i.e. Monday all through to Saturday / Sunday."
 }
 
 class Labeling(str, Enum):

@@ -199,6 +199,7 @@ carrier_services = [
         carrier_service_id="2CPR",
         name="Xpect Medium Return",
         features=[
+            DeliveryFeature.COLLECTION,
             DeliveryFeature.DANGEROUS_GOODS
         ],
         labeling=Labeling.LABEL,
@@ -213,7 +214,8 @@ carrier_services = [
         carrier_service_id="2VPR",
         name="Xpect Large Return",
         features=[
-            DeliveryFeature.ECO_DELIVERY
+            DeliveryFeature.ECO_DELIVERY,
+            DeliveryFeature.PROOF_OF_DELIVERY
         ],
         labeling=Labeling.PAPERLESS,
         direction=Direction.RETURN,
