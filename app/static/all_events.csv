@@ -11,6 +11,7 @@ collection,despatch,carrier_notified,The 3PL have sent despatch advice to a carr
 collection,scheduled,pickup_requested,A pickup has been requested with the carrier and we are awaiting their confirmation to accept the requested date and time. Alternatively should a specific date and time not have been requested then we are awaiting for the date and time to be communicated by the carrier.
 collection,scheduled,with_specific_time,The shipment / parcel is scheduled by the carrier to be picked up on a specific date and time.
 collection,scheduled,without_specific_time,The shipment / parcel is scheduled by the carrier to be picked up - but they have not given a specific date and time (e.g. they might have given a date range / day range like Mon-Wed).
+collection,attempt,other,The carrier have sent a tracking event indicating a collection attempt was made for the shipment / parcel.
 collection,change,cancelled,The collection has been cancelled
 collection,change,date,The collection date has been changed
 collection,vehicle,dispatch,The carrier have dispatched a vehicle to collect the shipment / parcel.
@@ -24,6 +25,7 @@ collection,collected,from_pudo,The shipment / parcel has been picked up from a d
 collection,collected,from_parcel_locker,The shipment / parcel has been picked up from a parcel locker.
 collection,collected,from_post_office,The shipment / parcel has been picked up from a post office.
 collection,collected,from_customer,The shipment / parcel has been picked up directly from the customer.
+in_transit,carrier,,The carrier have sent a tracking event indicating the shipment / parcel is in transit.
 in_transit,arrived_at_carrier_facility,other,The carrier have sent a tracking event indicating the parcel have arrived at one of the carriers facilities but without sufficient detail to determine what sub_event category it fits.
 in_transit,arrived_at_carrier_facility,sortation_hub,The shipment / parcel has arrived at one of the carriers sortation hubs / regional distribution centres. This is typically a larger sortation centre where parcels gets sorted to be hauled to a smaller local depot before the final mile.
 in_transit,arrived_at_carrier_facility,cross_docking_hub,The shipment / parcel has arrived at a cross-docking hub to be reloaded onto a new vehicle.
@@ -48,6 +50,7 @@ return_centre,inspection,faulty_empty,The shipment / parcel has been inspected a
 return_centre,inspection,faulty_unknown_objects,The shipment / parcel has been inspected and there are unknown objects included in it.
 return_centre,inspection,faulty_other,The shipment / parcel has been inspected and there are some othe faulty with it.
 return_centre,departed,other,The shipment / parcel have departed the returns processing centre
+delivery,admin,other,The shipment / parcel has received an administrative update from the carrier.
 delivery,out_for_delivery,other,The shipment / parcel is out for delivery.
 delivery,notification,other,The carrier have notified the customer about the delivery.
 delivery,notification,email,The carrier have emailed the customer with details about the delivery.
@@ -98,6 +101,7 @@ return_to_sender,in_transit,return_in_transit,The parcel is in transit back to t
 return_to_sender,customs_clearance,customs_check,The parcel is undergoing customs clearance procedures.
 return_to_sender,carrier_facility,return_depot,The parcel has arrived at the carrier's return depot.
 return_to_sender,delivery,returned_to_sender,The parcel has been successfully returned to the sender.
+admin,other,,A general administrative update from the carrier.
 exception,delivery,other,The carrier have sent a tracking event indicating the shipment / parcel have had a delivery exception but without sufficient detail to determine what sub_event category it fits.
 exception,delivery,pudo_unavailable,The shipment / parcel could not be delivered to the PUDO location because it was unavailable.
 exception,delivery,seized_by_law_enforcement,The shipment / parcel was seized by law enforcement.
