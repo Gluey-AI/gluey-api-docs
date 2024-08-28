@@ -1,0 +1,197 @@
+milestone,event,sub_event,detailed_explanation
+order,created,gluey_test,Only available in test environement. Event which is created in Gluey's test environment each time a label is printed in order to test webhook connectivity for tracking.
+order,created,,The carrier has sent a tracking event acknowledging that the shipment / parcel has been successfully created in their system.
+order,cancelled,,The carrier has sent a tracking event acknowledging that the shipment / parcel has been cancelled in their system.
+order,pick_pack,started,The 3PL have started the pick and pack in the warehouse.
+order,pick_pack,completed,The 3PL have completed the pick and pack in the warehouse.
+order,despatched,,The 3PL have sent despatch advice to a carrier.
+collection,requested,,A pickup has been requested with the carrier and we are awaiting their confirmation to accept the requested date and time. Alternatively should a specific date and time not have been requested then we are awaiting for the date and time to be communicated by the carrier.
+collection,scheduled,,A pickup has been scheduled for the shipment / parcel.
+collection,cancelled,,The carrier has sent a tracking event acknowledging that the collection has been cancelled.
+collection,change,,The carrier has sent a tracking event acknowledging that the collection has been changed.
+collection,change,date,The collection date has been changed
+collection,vehicle,dispatch,The carrier have dispatched a vehicle to collect the shipment / parcel.
+collection,vehicle,en_route,The dispatched vehicle is enroute to the pickup location.
+collection,attempt,,The carrier have sent a tracking event indicating a collection attempt was made for the shipment / parcel.
+collection,attempt,refused_by_sender,The carrier have sent a tracking event indicating a collection attempt was made for the shipment / parcel but the sender refused to hand over the parcel.
+collection,attempt,refused_by_carrier,The carrier refused to collect the parcel.
+collection,attempt,sender_missing_information,The carrier was unable to collect the parcel because the sender was missing some information.
+collection,attempt,unable_to_reach_contact,The carrier was unable to collect becasue they could not reach the contact person at the collection address.
+collection,attempt,unable_to_access_location,The carrier was unable to collect the parcel because they could not access the location.
+collection,attempt,goods_not_ready,The carrier was unable to collect the parcel because the goods were not ready.
+collection,dropped_by_customer,,"The parcel was dropped by the customer to a location designated by the carrier."
+collection,dropped_by_customer,at_depot,"The parcel was dropped by the customer at the carriers depot."
+collection,dropped_by_customer,at_pudo,"The parcel is ready for pickup at a drop-off location, i.e. the parcel have been left by the customer at a PUDO location."
+collection,dropped_by_customer,at_parcel_locker,"The parcel is ready for pickup at a parcel locker, i.e. the parcel have been left by the customer at a parcel locker."
+collection,collected,,The shipment / parcel has been collected by the carrier.
+collection,collected,from_pudo,The shipment / parcel has been picked up from a drop-off location.
+collection,collected,from_parcel_locker,The shipment / parcel has been picked up from a parcel locker.
+in_transit,en_route_to_carrier_facility,,The parcel is collected and enroute to the carrier facility.
+in_transit,arrived_at_carrier_facility,,The carrier have sent a tracking event indicating the parcel have arrived at one of the carriers facilities.
+in_transit,processed_at_carrier_facility,,The carrier have sent a tracking event indicating the parcel have been processed at one of the carriers facilities.
+in_transit,processed_at_carrier_facility,assigned_to_delivery_vehicle,The shipment / parcel have been processed and assigned to a vehicle for delivery.
+in_transit,processed_at_carrier_facility,parcel_consolidated,The shipment / parcel have been consolidated with other parcels at the facility.
+in_transit,processed_at_carrier_facility,parcel_repaired,The parcel broke down and was repaired by the carrier.
+in_transit,processed_at_carrier_facility,label_reprinted,The parcel label has been reprinted
+in_transit,departed_carrier_facility,,The carrier have sent a tracking event indicating the shipment / parcel have departed one of the carriers facilities.
+in_transit,carrier_network,,The carrier have sent a tracking event indicating the shipment / parcel is in transit in their network.
+in_transit,carrier_network,handed_to_another_carrier,The carrier have sent a tracking event indicating they have handed over the parcel to another carrier.
+in_transit,airport,en_route,The shipment / parcel is enroute to an airport for a domestic flight.
+in_transit,airport,take_off,The shipment / parcel have taken off on a domestic flight.
+in_transit,airport,landing,The shipment / parcel have landed on a domestic airport.
+return_centre,arrived,,The shipment / parcel have arrived at the returns processing centre
+return_centre,inspection_started,,The inspection of the return shipment / parcel have started.
+return_centre,inspection_approved,,The return shipment / parcel have been inspected and approved by the return centre.
+return_centre,inspection_failed,items_missing,The return shipment / parcel has been inspected and items are missing that should have been included in the parcel.
+return_centre,inspection_failed,items_damaged,The return shipment / parcel has been inspected and items included in the parcel are damaged.
+return_centre,inspection_failed,wrong_items,"The return shipment / parcel has been inspected and the wrong items from the original order were returned, i.e. the customer registered a return for one item but returned another."
+return_centre,inspection_failed,empty_parcel,The return shipment / parcel has been inspected and there are no items at all in it.
+return_centre,inspection_failed,unknown_objects,The return shipment / parcel has been inspected and there are unknown objects included in it.
+return_centre,inspection_failed,other,The shipment / parcel has been inspected and there are some other fault with it.
+return_centre,departed,,The return shipment / parcel have departed the returns processing centre
+delivery,admin,,The shipment / parcel has received an non-critical administrative update from the carrier.
+delivery,out_for_delivery,,The shipment / parcel is out for delivery.
+delivery,notification,,The carrier have notified the customer about the delivery.
+delivery,notification,email,The carrier have emailed the customer with details about the delivery.
+delivery,notification,text,The carrier have texted the customer with details about the delivery.
+delivery,notification,voice,The carrier have called the customer with details about the delivery.
+delivery,notification,letter,The carrier have sent a letter to the customer with details about the delivery.
+delivery,change,,The customer / carrier have changed the delivery details.
+delivery,change,address,The delivery address has been changed by the customer / carrier.
+delivery,change,local_place,"There has been a change to the local place of delivery (e.g. chose safe place, neighbour, instructions to drop at front door instead of back door)."
+delivery,change,date,The delivery date has been changed by the customer / carrier.
+delivery,change,service,The delivery service has been changed by the customer / carrier (e.g. from standard to express).
+delivery,change,additional_charges,The carrier have added additional charges to the delivery.
+delivery,attempt,,The carrier have sent a tracking event indicating a delivery attempt was made for the shipment / parcel but with out sufficient detail to determine what sub_event category it fits.
+delivery,attempt,left_notice,"The delivery attempt was made, and a notice was left for the recipient to arrange re-delivery or pickup."
+delivery,attempt,recipient_no_longer_lives_here,The delivery was attempted but receiver no longer lives at the address
+delivery,attempt,refused_by_recipient,The delivery was attempted but the recipient refused to take the parcel.
+delivery,attempt,recipient_unavailable,"The delivery attempt was made, but there was no answer at the address (e.g. called receiver / used buzzer but nobody answered)."
+delivery,attempt,no_safe_location,Delivery attempted but there was no safe location to leave the parcel.
+delivery,attempt,incorrect_address,Delivery failed because the address was wrong.
+delivery,attempt,due_to_security,Delivery failed because of security issues.
+delivery,attempt,unable_to_access_location,"The delivery attempt was made, but access to the address was restricted (e.g., gated community, locked building, store closed, denied access to warehouse)."
+delivery,attempt,no_receiving_staff,"The delivery attempt was made, but no receiving staff was available at the warehouse."
+delivery,attempt,incorrect_address,"The delivery attempt was made, but the address was incorrect."
+delivery,attempt,restricted_access_hours,The delivery attempt was made outside the warehouse's receiving hours.
+delivery,attempt,partial_delivery_only,"The delivery attempt was made, but only a partial delivery could be made due to space or capacity issues."
+delivery,attempt,paperwork_incomplete,"The delivery attempt was made, but the necessary paperwork was incomplete."
+delivery,attempt,security_check_failed,"The delivery attempt was made, but the delivery failed due to security check issues at the warehouse."
+delivery,attempt,warehouse_full,"The delivery attempt was made, but the warehouse was full and unable to receive more shipments."
+delivery,delivered,,The carrier have sent a tracking event indicating the shipment / parcel have been delivered but without sufficient detail to determine what sub_event category it fits.
+delivery,delivered,to_depot,The shipment / parcel has been delivered to a local depot where the receiver can collect it from.
+delivery,delivered,with_signature,The shipment / parcel has been delivered and signed for.
+delivery,delivered,left_with_neighbor,The shipment / parcel has been left with a neighbor.
+delivery,delivered,left_in_safe_place,The shipment / parcel has been left in a safe place like your porch.
+delivery,delivered,parcel_locker,The shipment / parcel has been placed in a parcel locker ready for pickup.
+delivery,delivered,pudo_point,The shipment / parcel have been delivered to a pickup / dropoff location.
+delivery,delivered,post_office,The shipment / parcel have been delivered to a local post office.
+post_delivery,proof,proof_of_delivery,The carrier have sent a proof of delivery event.
+post_delivery,proof,photo_of_location,The carrier have sent a photo of the location where the parcel was delivered.
+post_delivery,refused,by_recipient,The receiver refused to accept the shipment / parcel whilst collecting it.
+post_delivery,collected,by_recipient,"The shipment / parcel have been collected by the receiver from its final delivery point (e.g. the receiver have collected the parcel from a locker, pudo location or similar)."
+post_delivery,rating,,The receiver have given a rating of their delivery experience.
+post_delivery,rating,nps,The receiver have given a NPS (Net Promoter Score) to rate their delivery experience
+post_delivery,claim,,A claim has been issued for the shipment / parcel.
+return_to_sender,initiated,,The parcel could not be delivered and the RTS (Return-to-sender) process have been initiated.
+return_to_sender,initiated,undeliverable,The carrier attempted to delivery the parcel but failed and the RTS process have been initiated.
+return_to_sender,initiated,not_collected,The parcel was not collected by the recipient from the PUDO points or parcel locker and the RTS process have been initiated.
+return_to_sender,pending,,The parcel is pending being returned to the sender.
+return_to_sender,pending,held_waiting_for_instructions,The parcel is being held at the local depot awaiting further instructions.
+return_to_sender,pending,preparing_for_return,The parcel is being prepared to be returned to the sender.
+return_to_sender,in_transit,,The parcel is in transit back to the sender.
+return_to_sender,customs,,The parcel is undergoing customs clearance procedures.
+return_to_sender,carrier_facility,,The parcel has an event from the carriers return depot.
+return_to_sender,carrier_facility,arrived,The parcel has arrived at the carrier's return depot.
+return_to_sender,carrier_facility,processed,The parcel has been processed at the carrier's return depot.
+return_to_sender,carrier_facility,departed,The parcel has departed the carrier's return depot.
+return_to_sender,delivered,,The parcel has been successfully returned to the sender.
+return_to_sender,delivered,collect_at_carrier,The parcel is ready for collection at the carrier's return depot.
+exception,other,,The carrier have sent a tracking event indicating an exception has happened.
+exception,delivery,,The carrier have sent a tracking event indicating the shipment / parcel have had a delivery exception.
+exception,delivery,parcel_not_received,The carrier have sent a tracking event indicating that they have not yet received the parcel.
+exception,delivery,seized_by_law_enforcement,The shipment / parcel was seized by law enforcement.
+exception,shipment_rejected,,The shipment / parcel delivery was rejected for another unnamed reason.
+exception,shipment_rejected,prohibited_items,The parcel was rejected because it contains items that are prohibited for this service / country by the carrier.
+exception,shipment_rejected,oversized,The parcel is too large / heavy to be delivered with the selected carrier service.
+exception,shipment_rejected,duplicate_label,The shipment / parcel was rejected because the label was a duplicate of another shipment / parcel.
+exception,shipment_rejected,data_error,The shipment / parcel was rejected due to an error in the data we sent them.
+exception,shipment_rejected,bad_packaging,The shipment / parcel was rejected because it was poorly packaged.
+exception,shipment_rejected,hazmat,The shipment / parcel was rejected because it contains hazardous materials.
+exception,shipment_rejected,address_error,The shipment / parcel delivery was rejected because the address was incorrect.
+exception,shipment_rejected,area_not_serviced,The shipment / parcel delivery was rejected because the carrier does not deliver to that area.
+exception,shipment_rejected,other,The shipment / parcel delivery was rejected for another unnamed reason.
+exception,delay,,The shipment / parcel delivery is delayed for some other reason.
+exception,delay,due_to_carrier,The shipment / parcel delivery is delayed because carrier issues.
+exception,delay,due_to_road_works,The shipment / parcel delivery is delayed because of road works.
+exception,delay,due_to_weather,The shipment / parcel delivery is delayed because of bad weather.
+exception,delay,due_to_sender,The shipment / parcel delivery is delayed because of the sender.
+exception,delay,due_to_recipient,The shipment / parcel delivery is delayed because of the recipient.
+exception,delay,due_to_misroute,The shipment / parcel was accidentally sent in the wrong direction by the carrier and this cause a delay.
+exception,delay,due_to_data,The shipment / parcel was is delayed because of incomplete / wrong data sent to the carrier.
+exception,damage_loss,parcel_damaged,The shipment / parcel got damaged while being delivered.
+exception,damage_loss,parcel_destroyed,The shipment / parcel was destroyed during delivery.
+exception,damage_loss,lost_in_transit,The shipment / parcel got lost during delivery.
+exception,carrier_hub,other,An exception occurred at the carrier hub but without sufficient detail to determine what type of exception it is.
+exception,held_at_hub,,The shipment / parcel is held at a hub for some other reason.
+exception,held_at_hub,hazmat,The shipment / parcel is held at a hub because it contains hazardous materials that are not accepted by the carrier.
+exception,held_at_hub,bad_address,The shipment / parcel is held at a hub because the address is incorrect.
+exception,held_at_hub,missing_information,The shipment / parcel is held at a hub because it is missing some information.
+exception,held_at_hub,prohibited_items,The shipment / parcel is held because it has something that is not allowed.
+exception,destroyed,,The shipment / parcel was destroyed by the carrier for some reason.
+in_transit,departure_airport,,The carrier has sent a tracking event acknowledging that the shipment / parcel is at the origin airport but without sufficient detail to determine what sub_event category it fits.
+in_transit,departure_airport,en_route,The shipment / parcel is enroute to the departure (origin) airport for an international flight.
+in_transit,departure_airport,handed_over,The shipment / parcel have been handed over to an airline from where it will depart the origin country. This event is typically triggered from the carrier side to denote they have left the parcel with the airline at the airport.
+in_transit,departure_airport,take_off,The shipment / parcel have departed the airport in the origin country (i.e. the flight itself have taken off).
+in_transit,stopover_airport,,The carrier has sent a tracking event acknowledging that the shipment / parcel is at a stopover airport but without sufficient detail to determine what sub_event category it fits.
+in_transit,stopover_airport,landing,The shipment / parcel have arrived at a stopover airport (i.e. the flight itself have landed).
+in_transit,stopover_airport,take_off,The shipment / parcel have departed the stopover airport (i.e. the flight itself have taken off).
+in_transit,destination_airport,,The carrier has sent a tracking event acknowledging that the shipment / parcel is at the destination airport but without sufficient detail to determine what sub_event category it fits.
+in_transit,destination_airport,landing,The shipment / parcel have arrived at the final airport (i.e. the flight itself have landed).
+in_transit,destination_airport,collected,The shipment / parcel have been collected at the destination airport.
+in_transit,departure_seaport,,The carrier has sent a tracking event acknowledging that the shipment / parcel is at the origin sea port but without sufficient detail to determine what sub_event category it fits.
+in_transit,departure_seaport,en_route,The shipment / parcel is enroute to the departure (origin) sea port for an international voyage.
+in_transit,departure_seaport,handed_over,The shipment / parcel have been unloaded at the sea port / handed over to an shipping company from where it will depart the origin country. This event is typically triggered from the carrier side to denote they have left the parcel with the shipping company at the port.
+in_transit,departure_seaport,loaded_onto_vessel,The shipment / parcel have been loaded onto a naval vessel and is ready to set sail.
+in_transit,departure_seaport,set_sail,The shipment / parcel have departed the sea port in the origin country (i.e. the naval vessel itself have set sail).
+in_transit,stopover_seaport,,The carrier has sent a tracking event acknowledging that the shipment / parcel is at a stopover sea port but without sufficient detail to determine what sub_event category it fits.
+in_transit,stopover_seaport,docked,The shipment / parcel have arrived at a stopover sea port.
+in_transit,stopover_seaport,set_sail,The shipment / parcel have sailed from the stopover sea port.
+in_transit,destination_seaport,,The carrier has sent a tracking event acknowledging that the shipment / parcel is at the destination sea port but without sufficient detail to determine what sub_event category it fits.
+in_transit,destination_seaport,docked,The shipment / parcel have arrived at the destination (final) sea port.
+in_transit,destination_seaport,unloaded,The shipment / parcel have been collected at the destination sea port
+in_transit,destination_seaport,collected,The shipment / parcel have been collected at the destination sea port
+customs,broker,,The carrier has sent a tracking event acknowledging that the shipment / parcel is with a customs broker.
+customs,broker,arrived,The shipment / parcel have arrived at the customs broker facility.
+customs,broker,departed,The shipment / parcel have departed the customs broker facility.
+customs,broker,ready_for_export,The shipment / parcel is ready for export.
+customs,in_progress,,The customs clearance process has been initiated.
+customs,in_progress,awaiting_documentation,Customs are waiting for required documents to clear the parcel.
+customs,in_progress,documentation_submitted,The required documents have been submitted to customs.
+customs,in_progress,additional_information_provided,The additional information requested by customs has been provided.
+customs,in_progress,under_inspection,The parcel is being inspected by customs.
+customs,in_progress,valuation_under_review,Customs are reviewing the declared value of the parcel.
+customs,in_progress,valuation_approved,The declared value of the parcel has been approved by customs.
+customs,in_progress,valuation_adjusted,The declared value of the parcel has been adjusted by customs.
+customs,in_progress,duty_taxes_paid,Customs duty and taxes have been paid.
+customs,in_progress,compliance_check,The parcel is undergoing compliance checks.
+customs,in_progress,re_export_pending,The parcel is pending re-export.
+customs,in_progress,re_export_completed,The parcel has been re-exported from the country.
+customs,held,,The parcel is being held by customs for further checks for another reason.
+customs,held,additional_information_requested,Customs have requested additional information to process the parcel.
+customs,held,pending_duty_taxes_payment,Payment of customs duty and taxes is required.
+customs,held,certificate_of_origin,The parcel is held at customs due to missing / invalid certification of origin.
+customs,held,incomplete_documentation,The parcel is held at customs due to incomplete documentation.    
+customs,held,missing_documentation,The parcel is held at customs due to missing documents or information.
+customs,held,subject_to_restrictions,The parcel is held at customs due to restrictions on export / import of the item.
+customs,held,prohibited_items,The parcel is held at customs because it contains prohibited items.
+customs,held,incorrect_valuation,The parcel is held due to incorrect valuation declared.
+customs,exception,,Any other unspecified customs issue.
+customs,exception,delay,The clearance process is delayed due to customs issues.
+customs,exception,release_failed,The parcel failed to clear customs for unknown reasons.
+customs,exception,seized_by_customs,The parcel has been seized by customs.
+customs,finalising,compliance_approved,The parcel has passed compliance checks.
+customs,finalising,release_pending,The parcel is awaiting release after successful inspection or documentation verification.
+customs,cleared,released,The parcel has been released from customs and is ready for further transit.
+customs,special_cases,destroy_pending,The parcel is pending destruction due to non-compliance.
+customs,special_cases,destroy_completed,The parcel has been destroyed due to non-compliance.
