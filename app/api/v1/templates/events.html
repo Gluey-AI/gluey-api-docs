@@ -194,7 +194,7 @@
     <h1>Tracking Event Codes</h1>
     <p>To make integration easier and more scalable, Gluey harmonise all of the carrier's tracking event codes to our own set of codes. Should you wish to customise your application-layer based on specific carrier event codes Gluey does always pass through the original carrier event codes too for you to use.</p>
     <p>This section documents all the different codes you can expect to receive from us.</p>
-    <!-- <ul>
+    <ul>
         <li><span class="email-link" data-section="#outbound">Outbound</span> - All the different tracking events
             related to an outbound shipment. This also includes the exception codes that are shared between outbound and
             returns.</li>
@@ -205,16 +205,16 @@
             codes related to international shipments. You will receive this for both outbound and return shipments.</li>
         <li><span class="email-link" data-section="#all-events">All events</span> - A comprehensive list of all
             outbound, return, exception and international events that we have.</li>
-    </ul> -->
+    </ul>
     <h2 id="outbound">Structure of Event Codes</h2>
     <p>Since Gluey use three levels of event codes you can choose to map only the two first two (milestone + event) which gives ~30 event codes to map whilst the full mapping of all three levels (milestone + event + sub_event) is more than 150 different events. This reason for this categorisation is to give you as a customers maximum freedom and flexibility to decide the level of detail you deem most suitable for your application you build on top of Gluey. The different hierarchies are described below:</p>
     <ul>
-        <li><span class="blue-link-bold">milestone</span> - The top-level of the hierarchy and there exist nine different milestones that can take place during a delivery; <span class="blue-link">start</span>, <span class="blue-link">collection</span>, <span class="blue-link">in_transit</span>, <span class="blue-link">customs</span>, <span class="blue-link">delivery</span>, <span class="blue-link">post_delivery</span>, <span class="blue-link">return_to_sender</span>,<span class="blue-link">exception</span> and <span class="blue-link">return_centre</span>. This is a very broad definition that gives a sense of where in the operational journey a parcel currently is.</li>
+        <li><span class="blue-link-bold">milestone</span> - The top-level of the hierarchy and there exist nine different milestones that can take place during a delivery; <span class="blue-link">start</span>, <span class="blue-link">collection</span>, <span class="blue-link">in_transit</span>, <span class="blue-link">customs</span>, <span class="blue-link">delivery</span>, <span class="blue-link">post_delivery</span>, <span class="blue-link">return_to_sender</span>,<span class="blue-link">exception</span>,<span class="blue-link">admin</span> and <span class="blue-link">return_centre</span>. This is a very broad definition that gives a sense of where in the operational journey a parcel currently is.</li>
         <li><span class="blue-link-bold">event</span> - The second-level of the hierarchy, and a more granular description of what have happened within a milestone. For example for the milestone <span class="blue-link">delivery</span> two events are <span class="blue-link">attempt</span> and <span class="blue-link">delivered</span> where the first one indicates the shipment / parcel have had an delivery attempt and the second one indicates the shipment / parcel has actually been delivered. It does however not have specificity as to why the attempt did not succeed, neither any detail around the actual delivered event such as if it was handed over to the recipient, or to a neighbour.</li>
         <li><span class="blue-link-bold">sub_event</span> - The third-level of the hierarchy, and the most granular description and which adds contextual detail and nuance to the 'event' which may or may no be interesting to you as a customer. For example for the milestone <span class="blue-link">delivery</span>, the event is <span class="blue-link">attempt</span> then the sub_event can be <span class="blue-link">recipient_unavailable</span> which indicates that a delivery attempt was made but did not succeed because they could not reach the recipient (e.g. called receiver / used buzzer but nobody answered).</li>
     </ul>
 
-    <!-- <h2 id="outbound">Outbound</h2>
+    <h2 id="outbound">Outbound</h2>
     <p>Below are all tracking events related to an outbound shipment, arranged according to Gluey's milestone, event and
         sub_event structure. Should you wish to review the tracking event codes in CSV or JSON format you can also do so
         by downloading the below files:</p>
@@ -357,7 +357,7 @@
         </div>
         {% endfor %}
     </div>
-    {% endfor %} -->
+    {% endfor %}
 
     <h2 id="all-events">Event codes</h2>
     <p>Below are a summary of all tracking events that you can receive across outbound, return shipments that are both domestic and international shipment.

@@ -11,6 +11,7 @@ collection,despatch,carrier_notified,The 3PL have sent despatch advice to a carr
 collection,scheduled,pickup_requested,A pickup has been requested with the carrier and we are awaiting their confirmation to accept the requested date and time. Alternatively should a specific date and time not have been requested then we are awaiting for the date and time to be communicated by the carrier.
 collection,scheduled,with_specific_time,The shipment / parcel is scheduled by the carrier to be picked up on a specific date and time.
 collection,scheduled,without_specific_time,The shipment / parcel is scheduled by the carrier to be picked up - but they have not given a specific date and time (e.g. they might have given a date range / day range like Mon-Wed).
+collection,attempt,other,The carrier have sent a tracking event indicating a collection attempt was made for the shipment / parcel.
 collection,change,cancelled,The collection has been cancelled
 collection,change,date,The collection date has been changed
 collection,vehicle,dispatch,The carrier have dispatched a vehicle to collect the shipment / parcel.
@@ -50,6 +51,17 @@ delivery,attempt,recipient_unavailable,"The delivery attempt was made, but there
 delivery,attempt,no_safe_location,Delivery attempted but there was no safe location to leave the parcel.
 delivery,attempt,incorrect_address,Delivery failed because the address was wrong.
 delivery,attempt,due_to_security,Delivery failed because of security issues.
+delivery,attempt,warehouse_closed,"The delivery attempt was made, but the warehouse was closed."
+delivery,attempt,access_denied,"The delivery attempt was made, but access to the warehouse was denied."
+delivery,attempt,no_receiving_staff,"The delivery attempt was made, but no receiving staff was available at the warehouse."
+delivery,attempt,incorrect_address,"The delivery attempt was made, but the address was incorrect."
+delivery,attempt,restricted_access_hours,The delivery attempt was made outside the warehouse's receiving hours.
+delivery,attempt,partial_delivery_only,"The delivery attempt was made, but only a partial delivery could be made due to space or capacity issues."
+delivery,attempt,left_notice,"The delivery attempt was made, and a notice was left for the warehouse to arrange re-delivery or pickup."
+delivery,attempt,paperwork_incomplete,"The delivery attempt was made, but the necessary paperwork was incomplete."
+delivery,attempt,security_check_failed,"The delivery attempt was made, but the delivery failed due to security check issues at the warehouse."
+delivery,attempt,warehouse_full,"The delivery attempt was made, but the warehouse was full and unable to receive more shipments."
+delivery,attempt,unresponsive_contact,"The delivery attempt was made, but the contact person at the warehouse was unresponsive."
 delivery,delivered,other,The carrier have sent a tracking event indicating the shipment / parcel have been delivered but without sufficient detail to determine what sub_event category it fits.
 delivery,delivered,to_depot,The shipment / parcel has been delivered to a local carrier depot where the receiver can collect it from.
 delivery,delivered,with_signature,The shipment / parcel has been delivered and signed for.
@@ -71,3 +83,4 @@ return_to_sender,in_transit,return_in_transit,The parcel is in transit back to t
 return_to_sender,customs_clearance,customs_check,The parcel is undergoing customs clearance procedures.
 return_to_sender,carrier_facility,return_depot,The parcel has arrived at the carrier's return depot.
 return_to_sender,delivery,returned_to_sender,The parcel has been successfully returned to the sender.
+admin,other,other,A general administrative update from the carrier.

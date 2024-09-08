@@ -96,6 +96,7 @@ milestone_icons = {
     "return_to_sender": "warehouse",
     "exception": "exclamation-circle",
     "return_centre": "undo",
+    "admin": "user-cog",
     "customs": "hand",
 }
 

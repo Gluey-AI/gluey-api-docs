@@ -17,6 +17,7 @@ exception,damage_loss,parcel_damaged,The shipment / parcel got damaged while bei
 exception,damage_loss,parcel_destroyed,The shipment / parcel was destroyed during delivery.
 exception,damage_loss,lost_in_transit,The shipment / parcel got lost during delivery.
 exception,carrier_hub,other,An exception occurred at the carrier hub but without sufficient detail to determine what type of exception it is.
+exception,held_at_hub,hazmat_not_accepted,The shipment / parcel is held at a hub because it contains hazardous materials that are not accepted by the carrier.
 exception,held_at_hub,bad_address,The shipment / parcel is held at a hub because the address is incorrect.
 exception,held_at_hub,missing_information,The shipment / parcel is held at a hub because it is missing some information.
 exception,held_at_hub,prohibited_items,The shipment / parcel is held because it has something that is not allowed.
