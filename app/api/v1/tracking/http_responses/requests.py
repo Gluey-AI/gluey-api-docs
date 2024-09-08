@@ -6,6 +6,7 @@ from app.api.v1.tracking.models.webhooks.tracking_event import OtherUpdates, Tra
 
 creation_date = datetime.now(timezone.utc)
 adjusted_minus_five_hours = creation_date - timedelta(hours=5)
+adjusted_minus_five_hours = adjusted_minus_five_hours.astimezone(timezone(timedelta(hours=1)))
 adjusted_plus_four_hours = creation_date.astimezone(timezone(timedelta(hours=4)))
 adjusted_plus_four_hours_one_minute = creation_date.astimezone(timezone(timedelta(hours=4, minutes=1)))
 
@@ -13,6 +14,7 @@ adjusted_plus_two_hours = creation_date.astimezone(timezone(timedelta(hours=2)))
 
 adjusted_plus_nine_hours = creation_date.astimezone(timezone(timedelta(hours=9)))
 adjusted_plus_five_days = creation_date + timedelta(days=5)
+adjusted_plus_five_days = adjusted_plus_five_days.astimezone(timezone(timedelta(hours=1)))
 
 shipment_level_event = [TrackingWebhookEvent(
     shipment_id="d1b82d77-526b-4a6d-a456-b97c1e34cafe",
@@ -24,8 +26,8 @@ shipment_level_event = [TrackingWebhookEvent(
     event=TrackingEvent(
         carrier_meta_data=[MetaData(key="grn_info", value="118045")],
         event_time=TrackingEventDateTime(
-            created_utc=adjusted_minus_five_hours,
-            carrier_utc=adjusted_plus_four_hours
+            created_utc=adjusted_minus_five_hours.replace(microsecond=0),
+            carrier_utc=adjusted_plus_four_hours.replace(microsecond=0)
         ),
         codes=TrackingEventCodes(
             gluey=GlueyEventCodeDetail(
@@ -56,8 +58,8 @@ TrackingWebhookEvent(
     event=TrackingEvent(
         carrier_meta_data=None,
         event_time=TrackingEventDateTime(
-            created_utc=adjusted_minus_five_hours,
-            carrier_utc=adjusted_plus_two_hours
+            created_utc=adjusted_minus_five_hours.replace(microsecond=0),
+            carrier_utc=adjusted_plus_two_hours.replace(microsecond=0)
         ),
         codes=TrackingEventCodes(
             gluey=GlueyEventCodeDetail(
@@ -97,8 +99,8 @@ parcel_level_events = [TrackingWebhookEvent(
     event=TrackingEvent(
         carrier_meta_data=[MetaData(key="grn_info", value="118045")],
         event_time=TrackingEventDateTime(
-            created_utc=adjusted_minus_five_hours,
-            carrier_utc=adjusted_plus_four_hours
+            created_utc=adjusted_minus_five_hours.replace(microsecond=0),
+            carrier_utc=adjusted_plus_four_hours.replace(microsecond=0)
         ),
         codes=TrackingEventCodes(
             gluey=GlueyEventCodeDetail(
@@ -133,8 +135,8 @@ TrackingWebhookEvent(
     event=TrackingEvent(
         carrier_meta_data=[MetaData(key="grn_info", value="118045")],
         event_time=TrackingEventDateTime(
-            created_utc=adjusted_minus_five_hours,
-            carrier_utc=adjusted_plus_four_hours_one_minute
+            created_utc=adjusted_minus_five_hours.replace(microsecond=0),
+            carrier_utc=adjusted_plus_four_hours_one_minute.replace(microsecond=0)
         ),
         codes=TrackingEventCodes(
             gluey=GlueyEventCodeDetail(
@@ -166,8 +168,8 @@ shipment_level_event_with_other = [TrackingWebhookEvent(
     event=TrackingEvent(
         carrier_meta_data=None,
         event_time=TrackingEventDateTime(
-            created_utc=adjusted_minus_five_hours,
-            carrier_utc=adjusted_plus_four_hours
+            created_utc=adjusted_minus_five_hours.replace(microsecond=0),
+            carrier_utc=adjusted_plus_four_hours.replace(microsecond=0)
         ),
         codes=TrackingEventCodes(
             gluey=GlueyEventCodeDetail(
@@ -200,8 +202,8 @@ TrackingWebhookEvent(
     event=TrackingEvent(
         carrier_meta_data=None,
         event_time=TrackingEventDateTime(
-            created_utc=adjusted_minus_five_hours,
-            carrier_utc=adjusted_plus_two_hours
+            created_utc=adjusted_minus_five_hours.replace(microsecond=0),
+            carrier_utc=adjusted_plus_two_hours.replace(microsecond=0)
         ),
         codes=TrackingEventCodes(
             gluey=GlueyEventCodeDetail(

@@ -4,19 +4,23 @@ start,order_created,acknowledged_by_carrier,The carrier has sent a tracking even
 start,order_created,shipping_label,A shipping label has been created by the parcel carrier.
 start,order_created,locker_pin,A pin code for a parcel locker has been created indicating where a customer can drop off / collect their parcel.
 start,order_created,qrcode,A qr code has been generated that the customer can use for a paperless return.
+start,order_created,customer_notification,The customer have been notified that the shipment / parcel have been created and is on its way.
 start,order_cancelled,other,The shipment / parcel / label have been cancelled
+collection,despatch,carrier_notified,The 3PL have sent despatch advice to a carrier
 collection,scheduled,pickup_requested,A pickup has been requested with the carrier and we are awaiting their confirmation to accept the requested date and time. Alternatively should a specific date and time not have been requested then we are awaiting for the date and time to be communicated by the carrier.
 collection,scheduled,with_specific_time,The shipment / parcel is scheduled by the carrier to be picked up on a specific date and time.
 collection,scheduled,without_specific_time,The shipment / parcel is scheduled by the carrier to be picked up - but they have not given a specific date and time (e.g. they might have given a date range / day range like Mon-Wed).
+collection,attempt,other,The carrier have sent a tracking event indicating a collection attempt was made for the shipment / parcel.
 collection,change,cancelled,The collection has been cancelled
 collection,change,date,The collection date has been changed
+collection,vehicle,dispatch,The carrier have dispatched a vehicle to collect the shipment / parcel.
+collection,vehicle,en_route,The dispatched vehicle is enroute to the pickup location.
 collection,dropped_by_customer,other,"The carrier has sent a tracking event acknowledging that the customer have dropped the shipment / parcel with them but without sufficient detail to determine what sub_event category it fits."
 collection,dropped_by_customer,at_pudo,"The parcel is ready for pickup at a drop-off location, i.e. the parcel have been left by the customer at a PUDO location."
 collection,dropped_by_customer,at_parcel_locker,"The parcel is ready for pickup at a parcel locker, i.e. the parcel have been left by the customer at a parcel locker."
 collection,dropped_by_customer,at_post_office,"The parcel is ready for pickup at the post office, i.e. the parcel have been left by the customer at a local post office."
-collection,vehicle,dispatch,The carrier have dispatched a vehicle to collect the shipment / parcel.
-collection,vehicle,en_route,The dispatched vehicle is enroute to the pickup location.
 collection,collected,other,The shipment / parcel has been collected but without sufficient detail to determine what sub_event category it fits.
+collection,collected,from_sender,"The shipment / parcel has been collected from the sender, e.g. from the retailer or 3PLs warehouse."
 collection,collected,from_pudo,The shipment / parcel has been picked up from a drop-off location.
 collection,collected,from_parcel_locker,The shipment / parcel has been picked up from a parcel locker.
 collection,collected,from_post_office,The shipment / parcel has been picked up from a post office.
@@ -46,7 +50,20 @@ return_centre,inspection,faulty_empty,The shipment / parcel has been inspected a
 return_centre,inspection,faulty_unknown_objects,The shipment / parcel has been inspected and there are unknown objects included in it.
 return_centre,inspection,faulty_other,The shipment / parcel has been inspected and there are some othe faulty with it.
 return_centre,departed,other,The shipment / parcel have departed the returns processing centre
+delivery,admin,other,The shipment / parcel has received an administrative update from the carrier.
+delivery,out_for_delivery,other,The shipment / parcel is out for delivery.
+delivery,notification,other,The carrier have notified the customer about the delivery.
+delivery,notification,email,The carrier have emailed the customer with details about the delivery.
+delivery,notification,text,The carrier have texted the customer with details about the delivery.
+delivery,notification,voice,The carrier have called the customer with details about the delivery.
+delivery,notification,letter,The carrier have sent a letter to the customer with details about the delivery.
+delivery,change,address,The delivery address has been changed by the customer
+delivery,change,date,The delivery date has been changed by the customer
+delivery,change,service,The delivery service has been changed by the customer (e.g. from standard to express)
 delivery,attempt,other,A delivery attempt was made.
+delivery,attempt,access_restricted,"The delivery attempt was made, but access to the address was restricted (e.g., gated community, locked building)."
+delivery,attempt,incorrect_address,Delivery failed because the address was wrong.
+delivery,attempt,due_to_security,Delivery failed because of security issues.
 delivery,attempt,warehouse_closed,"The delivery attempt was made, but the warehouse was closed."
 delivery,attempt,access_denied,"The delivery attempt was made, but access to the warehouse was denied."
 delivery,attempt,no_receiving_staff,"The delivery attempt was made, but no receiving staff was available at the warehouse."
@@ -59,3 +76,7 @@ delivery,attempt,security_check_failed,"The delivery attempt was made, but the d
 delivery,attempt,warehouse_full,"The delivery attempt was made, but the warehouse was full and unable to receive more shipments."
 delivery,attempt,unresponsive_contact,"The delivery attempt was made, but the contact person at the warehouse was unresponsive."
 delivery,delivered,other,The carrier have sent a tracking event indicating the shipment / parcel have been delivered to the destination.
+delivery,delivered,to_depot,The shipment / parcel has been delivered to a local depot where the receiver can collect it from.
+post_delivery,rating,nps,The receiver have given a NPS (Net Promoter Score) to rate their delivery experience
+post_delivery,rating,other,The receiver have given a rating of their delivery experience.
+admin,other,other,A general administrative update from the carrier.

@@ -16,6 +16,7 @@ collection,change,cancelled,The collection has been cancelled
 collection,change,date,The collection date has been changed
 collection,vehicle,dispatch,The carrier have dispatched a vehicle to collect the shipment / parcel.
 collection,vehicle,en_route,The dispatched vehicle is enroute to the pickup location.
+collection,dropped_by_customer,other,"The carrier has sent a tracking event acknowledging that the customer have dropped the shipment / parcel with them but without sufficient detail to determine what sub_event category it fits."
 collection,dropped_by_customer,at_pudo,"The parcel is ready for pickup at a drop-off location, i.e. the parcel have been left by the customer at a PUDO location."
 collection,dropped_by_customer,at_parcel_locker,"The parcel is ready for pickup at a parcel locker, i.e. the parcel have been left by the customer at a parcel locker."
 collection,dropped_by_customer,at_post_office,"The parcel is ready for pickup at the post office, i.e. the parcel have been left by the customer at a local post office."
@@ -25,7 +26,7 @@ collection,collected,from_pudo,The shipment / parcel has been picked up from a d
 collection,collected,from_parcel_locker,The shipment / parcel has been picked up from a parcel locker.
 collection,collected,from_post_office,The shipment / parcel has been picked up from a post office.
 collection,collected,from_customer,The shipment / parcel has been picked up directly from the customer.
-in_transit,carrier,,The carrier have sent a tracking event indicating the shipment / parcel is in transit.
+in_transit,carrier,other,The carrier have sent a tracking event indicating the shipment / parcel is in transit.
 in_transit,arrived_at_carrier_facility,other,The carrier have sent a tracking event indicating the parcel have arrived at one of the carriers facilities but without sufficient detail to determine what sub_event category it fits.
 in_transit,arrived_at_carrier_facility,sortation_hub,The shipment / parcel has arrived at one of the carriers sortation hubs / regional distribution centres. This is typically a larger sortation centre where parcels gets sorted to be hauled to a smaller local depot before the final mile.
 in_transit,arrived_at_carrier_facility,cross_docking_hub,The shipment / parcel has arrived at a cross-docking hub to be reloaded onto a new vehicle.
@@ -101,7 +102,7 @@ return_to_sender,in_transit,return_in_transit,The parcel is in transit back to t
 return_to_sender,customs_clearance,customs_check,The parcel is undergoing customs clearance procedures.
 return_to_sender,carrier_facility,return_depot,The parcel has arrived at the carrier's return depot.
 return_to_sender,delivery,returned_to_sender,The parcel has been successfully returned to the sender.
-admin,other,,A general administrative update from the carrier.
+admin,other,other,A general administrative update from the carrier.
 exception,delivery,other,The carrier have sent a tracking event indicating the shipment / parcel have had a delivery exception but without sufficient detail to determine what sub_event category it fits.
 exception,delivery,pudo_unavailable,The shipment / parcel could not be delivered to the PUDO location because it was unavailable.
 exception,delivery,seized_by_law_enforcement,The shipment / parcel was seized by law enforcement.
