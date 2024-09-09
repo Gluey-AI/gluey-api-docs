@@ -31,7 +31,7 @@ class GeoLocation(BaseModel):
 
 class Contact(BaseModel):
     """Class representing a contact person."""
-    name: str = Field(..., description="The name of the contact person")
+    name: Optional[str] = Field(None, description="Optional. The name of the contact person if other than `from_address.name` or `to_address.name`.")
     email: Optional[str] = Field(None, description="The email address of the contact person")
     mobile: Optional[str] = Field(None, description="The mobile phone number of the contact person")
 
