@@ -1,4 +1,4 @@
-milestone,event,sub_event,detailed_explanation
+milestone,code,sub_code,detailed_explanation
 in_transit,departure_airport,other,The carrier has sent a tracking event acknowledging that the shipment / parcel is at the origin airport but without sufficient detail to determine what sub_event category it fits.
 in_transit,departure_airport,en_route,The shipment / parcel is enroute to the departure (origin) airport for an international flight.
 in_transit,departure_airport,handed_over,The shipment / parcel have been handed over to an airline from where it will depart the origin country. This event is typically triggered from the carrier side to denote they have left the parcel with the airline at the airport.

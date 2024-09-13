@@ -1,4 +1,4 @@
-milestone,event,sub_event,detailed_explanation
+milestone,code,sub_code,detailed_explanation
 exception,delivery,other,The carrier have sent a tracking event indicating the shipment / parcel have had a delivery exception but without sufficient detail to determine what sub_event category it fits.
 exception,delivery,pudo_unavailable,The shipment / parcel could not be delivered to the PUDO location because it was unavailable.
 exception,delivery,seized_by_law_enforcement,The shipment / parcel was seized by law enforcement.

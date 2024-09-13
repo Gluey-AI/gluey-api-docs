@@ -1,4 +1,4 @@
-milestone,event,sub_event,detailed_explanation
+milestone,code,sub_code,detailed_explanation
 order,created,gluey_test,Only available in test environement. Event which is created in Gluey's test environment each time a label is printed in order to test webhook connectivity for tracking.
 order,created,,The carrier has sent a tracking event acknowledging that the shipment / parcel has been successfully created in their system.
 order,cancelled,,The carrier has sent a tracking event acknowledging that the shipment / parcel has been cancelled in their system.
