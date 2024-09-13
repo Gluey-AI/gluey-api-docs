@@ -115,8 +115,8 @@ def read_csv_stream_for_json(file_like):
     for row in reader:
         data.append({
             "milestone": row['milestone'],
-            "event": row['event'],
-            "sub_event": row['sub_event'] or "No Sub Event",
+            "code": row['code'],
+            "sub_code": row['sub_code'] or "No Sub Event",
             "description": row['detailed_explanation']
         })
     return data
@@ -128,8 +128,8 @@ def read_csv_for_json(file_path: str):
         for row in reader:
             data.append({
                 "milestone": row['milestone'],
-                "event": row['event'],
-                "sub_event": row['sub_event'] or "No Sub Event",
+                "code": row['code'],
+                "sub_code": row['sub_code'] or "No Sub Event",
                 "description": row['detailed_explanation']
             })
     return data
@@ -140,10 +140,10 @@ def read_csv(file_path: str):
         reader = csv.DictReader(csvfile)
         for row in reader:
             milestone = row['milestone']
-            event = row['event']
-            sub_event = row['sub_event'] or "No Sub Event"
+            code = row['code']
+            sub_code = row['sub_code'] or "No Sub Event"
             explanation = row['detailed_explanation']
-            data[milestone][event][sub_event] = explanation
+            data[milestone][code][sub_code] = explanation
     return data
 
 def combine_csv_files_in_memory(primary_file: str, international_file: str, exception_file: str):
