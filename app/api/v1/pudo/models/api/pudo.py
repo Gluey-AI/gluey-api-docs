@@ -134,8 +134,8 @@ class ContactInformation(BaseModel):
 
 class BusinessHours(BaseModel):
     day_of_week: DayOfWeek = Field(..., description="The day of the week, e.g., 'monday', 'tuesday'")
-    open_time: str = Field(..., description="The opening time, e.g., '09:00'")
-    close_time: str = Field(..., description="The closing time, e.g., '17:00'")
+    open_time: Optional[str]= Field(None, description="The opening time, e.g., '09:00'. null if closed all day.")
+    close_time: Optional[str] = Field(None, description="The closing time, e.g., '17:00'. null if closed all day.")
 
 class PudoFacilities(BaseModel):
     car_parking: Optional[bool] = Field(None, description="Indicates if parking for a car is available at the PUDO point")
