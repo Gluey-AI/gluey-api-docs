@@ -12,6 +12,7 @@ from app.api.v1.label.models.base_models import Addresses, PackageType, package_
 class BaseItemRequestModel(BaseModel):
     uuid_ref: Optional[str] = Field(None, description="Your own unique identifier for the item.")
     meta_data: Optional[list[MetaData]] = Field(None, description="Optional. Meta data tags with non-standard information about the items a carrier might require.")
+    descriptive_attributes: Optional[list[MetaData]] = Field(None, description="Optional. Descriptive attributes of the item, such as `Size` for key, and `Large` for value.")
     description: str = Field(..., description="A description of the item, e.g. 'Blue Printed T-shirt', 'Samsung Xperia 1 III' etc.")
     quantity: int = Field(..., description="The quantity of this particular item in the parcel. If there are 2 T-shirts, then the quantity is 2.")
     unit_value: Optional[Value] = Field(None, description="The monetary value of a single item. If total value is $100 and quantity is 2, then the unit value is $50.00")
