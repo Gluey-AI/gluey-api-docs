@@ -13,6 +13,7 @@ class Item(BaseModel):
     """Class representing an item included in each parcel."""
     id: str = Field(..., description="Glueys unique identifier for the item.")
     uuid_ref: Optional[str] = Field(None, description="Your own unique identifier for the item.")
+    meta_data: Optional[list[MetaData]] = Field(None, description="Optional. Meta data tags with non-standard information about the items a carrier might require.")
     description: str = Field(..., description="A description of the item, e.g. 'Blue Printed T-shirt', 'Samsung Xperia 1 III' etc.")
     quantity: int = Field(..., description="The quantity of this particular item in the parcel. If there are 2 T-shirts, then the quantity is 2.")
     unit_value: Value = Field(..., description="The monetary value of a single item. If total value is $100 and quantity is 2, then the unit value is $50.00")
