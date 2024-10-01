@@ -113,8 +113,8 @@ package_type_descriptions = {
 
 
 class Barcode(BaseModel):
-    primary: str = Field(..., description="The primary barcode on the parcel. This is typically the carriers tracking id, but could also be another unique identifier for the parcel.")
-    secondary: Optional[str] = Field(None, description="The secondary barcode on the parcel, if available.")
+    primary: str = Field(..., description="The primary qr code / barcode. This is typically the carriers tracking id, but could also be another unique identifier.")
+    secondary: Optional[str] = Field(None, description="The secondary qr code / barcode, if available.")
 
 class DeliveryAddress(BaseAddress):
     name: str = Field(..., description="The name of the recipient such as an individual, company or organization")

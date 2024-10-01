@@ -140,7 +140,7 @@ class GlueyEventCodeDetail(BaseModel):
     milestone: GlueyMilestone = Field(..., description="The Gluey milestone classification of the tracking event, e.g., 'start', 'collection', 'return_centre' etc.")
     code: str = Field(..., description="The code of the tracking event, e.g. 'delivered'. See menu on the left-side under 'Tracking Event Codes' for all available codes.")
     sub_code: str = Field(..., description="The subcode of the tracking event, e.g. 'with_signature', 'left_with_neighbor'. See menu on the left-side under 'Tracking Event Codes' for all available codes.")
-    freetext_detail: Optional[str] = Field(None, description="Additional detail in free text form about the tracking event provided by Gluey.")
+    freetext_detail: str = Field(..., description="Additional detail in free text form about the tracking event provided by Gluey.")
 
 class CarrierEventCodeDetail(BaseModel):
     code: str = Field(..., description="The code of the tracking event, e.g. 'DLV' for the carrier.")
