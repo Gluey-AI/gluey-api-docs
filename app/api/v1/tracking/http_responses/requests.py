@@ -33,7 +33,8 @@ shipment_level_event = [TrackingWebhookEvent(
             gluey=GlueyEventCodeDetail(
                 milestone=GlueyMilestone.COLLECTION,
                 code="collected",
-                sub_code="other"
+                sub_code="other",
+                freetext_detail="Collected"
             ),
             carrier=CarrierEventCodeDetail(
                 code="GC",
@@ -65,7 +66,8 @@ TrackingWebhookEvent(
             gluey=GlueyEventCodeDetail(
                 milestone=GlueyMilestone.IN_TRANSIT,
                 code="carrier",
-                sub_code="other"
+                sub_code="other",
+                freetext_detail="In transit in carrier network"
             ),
             carrier=CarrierEventCodeDetail(
                 code="275",
@@ -106,7 +108,8 @@ parcel_level_events = [TrackingWebhookEvent(
             gluey=GlueyEventCodeDetail(
                 milestone=GlueyMilestone.COLLECTION,
                 code="collected",
-                sub_code="other"
+                sub_code="other",
+                freetext_detail="Collected from sender"
             ),
             carrier=CarrierEventCodeDetail(
                 code="GC",
@@ -142,7 +145,8 @@ TrackingWebhookEvent(
             gluey=GlueyEventCodeDetail(
                 milestone=GlueyMilestone.COLLECTION,
                 code="collected",
-                sub_code="other"
+                sub_code="other",
+                freetext_detail="Collected from pickup point"
             ),
             carrier=CarrierEventCodeDetail(
                 code="GC",
@@ -175,7 +179,8 @@ shipment_level_event_with_other = [TrackingWebhookEvent(
             gluey=GlueyEventCodeDetail(
                 milestone=GlueyMilestone.COLLECTION,
                 code="collected",
-                sub_code="other"
+                sub_code="other",
+                freetext_detail="Collected from pickup point"
             ),
             carrier=CarrierEventCodeDetail(
                 code="GC",
@@ -209,7 +214,8 @@ TrackingWebhookEvent(
             gluey=GlueyEventCodeDetail(
                 milestone=GlueyMilestone.IN_TRANSIT,
                 code="processed_at_carrier_facility",
-                sub_code="sortation_hub"
+                sub_code="sortation_hub",
+                freetext_detail="Scaned to container"
             ),
             carrier=CarrierEventCodeDetail(
                 code="SH25",
