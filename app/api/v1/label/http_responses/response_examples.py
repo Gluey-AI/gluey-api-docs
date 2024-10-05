@@ -251,7 +251,7 @@ carrier_services = [
                 id="INS",
                 name="Insurance",
                 gluey_classification=GlueyValueAddingServiceClass.INSURANCE,
-                additional_data_needed=[
+                additional_data=[
                     ValueAddedServiceData(
                         key="insurance_value_gbp",
                         data_type="float",
