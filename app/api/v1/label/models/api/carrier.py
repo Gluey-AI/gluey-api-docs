@@ -293,10 +293,19 @@ class CarrierServiceRestrictions(BaseModel):
     max_insurance: Optional[float] = Field(None, description="The maximum additional insurance excess that the carrier allows for the carrier service, e.g. 1000.0 for £1000.")
     insurance_currency: Optional[str] = Field(None, description="The currency of the standard / max insurance value the carrier is covering with the carrier service, e.g. `GBP` for British Pounds.")
 
+class ValueAddedServiceData(BaseModel):
+    """Class representing additional data that is required to use the value added service"""
+    key: str = Field(..., description="The key / name of the additional data needed, e.g. 'insurance_excess_amount', 'insurance_excess_currency'.")
+    data_type: str = Field(..., description="The data type of the additional data needed, e.g. 'float', 'string', 'integer' or 'enum'.")
+    example: str = Field(..., description="An example of the additional data needed, e.g. '1000.0', 'GBP', '5', 'High quality goods'.")
+    description: str = Field(..., description="A description of the type of additional data needed, e.g. for 'The monetary amount of additional insurance excess'.")
+    can_hardcode: bool = Field(..., description="Flag indicating if the data can be hardcoded, meaning it is not the type of data that will vary from one shipment order to another.")
+
 class ValueAddingService(BaseModel):
     id: str = Field(..., description="Glueys ID of the value adding service for a particular Carrier Service. This can typically be found in the library of carriers in Gluey is the carriers own ID of the value add, e.g. `signature`, `age_check`.")
     name: str = Field(..., description="The carriers own name of the value added service, e.g. `PreNotice SMS`, `Hazmat`, `Cash on Delivery`.")
     gluey_classification: GlueyValueAddingServiceClass = Field(..., description=f"Gluey's generalised classification of the value added service to enable comparison across carriers and carrier services. It can be one of the following:\n{get_enum_description(GlueyValueAddingServiceClass, gluey_value_adding_service_class_descriptions)}")
+    additional_data_needed: Optional[list[ValueAddedServiceData]] = Field(None, description="Any additional data used for this value-added service.")
 
 class CarrierServiceBase(BaseModel):
     carrier_service_id: str = Field(..., description="Glueys ID of the carrier service as found in our carrier library, e.g. `standard_ground`, `express`, `home_delivery`.")

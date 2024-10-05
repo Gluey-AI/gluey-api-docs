@@ -1,5 +1,5 @@
 from app.api.v1.common.models.base_models import Dimensions, MetaData, UnitOfMeasurement, UnitOfVolume, UnitOfWeight, Volume, Weight
-from app.api.v1.label.models.api.carrier import CarrierService, DeliveryFeature, Labeling, CarrierServiceType, Direction, GlueyValueAddingServiceClass, Region, ValueAddingService, CarrierServiceRestrictions
+from app.api.v1.label.models.api.carrier import CarrierService, DeliveryFeature, Labeling, CarrierServiceType, Direction, GlueyValueAddingServiceClass, Region, ValueAddedServiceData, ValueAddingService, CarrierServiceRestrictions
 from app.api.v1.label.models.api.collection import CarrierServiceDeliveryDates, CarrierTimeWindow, CarrierServiceCollectionDates
 from app.api.v1.common.http_responses.payloads import http_502_response
 from app.api.v1.common.utils import generate_uuid, generate_short_uuid, generate_custom_uuid
@@ -230,6 +230,43 @@ carrier_services = [
                 id="2VPR-HZ",
                 name="Add on for dangerous goods",
                 gluey_classification=GlueyValueAddingServiceClass.DNG_HAZMAT,
+            )
+        ]
+    ),
+    CarrierService(
+        carrier_service_id="ON",
+        name="Parcel - Overnight",
+        features=[
+            DeliveryFeature.OUTBOUND,
+            DeliveryFeature.NEXT_DAY,
+            DeliveryFeature.PROOF_OF_DELIVERY
+        ],
+        labeling=Labeling.LABEL,
+        direction=Direction.OUTBOUND,
+        region=Region.DOMESTIC,
+        service_type=CarrierServiceType.DELIVERY,
+        restrictions=None,
+        value_adding_services=[
+            ValueAddingService(
+                id="INS",
+                name="Insurance",
+                gluey_classification=GlueyValueAddingServiceClass.INSURANCE,
+                additional_data_needed=[
+                    ValueAddedServiceData(
+                        key="insurance_value_gbp",
+                        data_type="float",
+                        example="199.99",
+                        description="The value of the insurance in GBP.",
+                        can_hardcode=False
+                    ),
+                    ValueAddedServiceData(
+                        key="insurance_description",
+                        data_type="string",
+                        example="Fragile and high-value art works",
+                        description="A description of the type of goods being insured",
+                        can_hardcode=True
+                    )
+                ]
             )
         ]
     )
