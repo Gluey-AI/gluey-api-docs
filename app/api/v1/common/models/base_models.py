@@ -188,6 +188,19 @@ class Document(BaseModel):
     source: DocumentSource = Field(..., description=f"The source of the document and who generated it. It can be one of the following:\n{get_enum_description(DocumentSource, document_source_descriptions)}")
     base64_document: str = Field(..., description="The document in base64 encoding.")
 
+class PaperlessLabelType(str, Enum):
+    QR_CODE = 'qr_code'
+    BARCODE = 'barcode'
+    TEXT_ONLY = 'text_only'
+    FULL_PAGE_DOCUMENT = 'full_page_document'
+
+paperless_type_descriptions = {
+    PaperlessLabelType.QR_CODE: "The paperless label you get as a response from the API is a QR code.",
+    PaperlessLabelType.BARCODE: "The paperless label you get as a response from the API is a barcode.",
+    PaperlessLabelType.TEXT_ONLY: "The paperless label you get as a response from the API is a text-only string.",
+    PaperlessLabelType.FULL_PAGE_DOCUMENT: "The paperless label you get as a response from the API is a full-page document, typically including instructions as well."
+}
+
 class References(BaseModel):
     """Class representing references for the shipment."""
     shipper: Optional[str] = Field(None, description="The reference number that the shipper / sender / consignor use for this shipment, typically an order reference or similar.")
