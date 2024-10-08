@@ -311,11 +311,13 @@ class PaperlessLabelType(str, Enum):
     QR_CODE = 'qr_code'
     BARCODE = 'barcode'
     TEXT_ONLY = 'text_only'
+    FULL_PAGE_DOCUMENT = 'full_page_document'
 
 paperless_type_descriptions = {
     PaperlessLabelType.QR_CODE: "The paperless label you get as a response from the API is a QR code.",
     PaperlessLabelType.BARCODE: "The paperless label you get as a response from the API is a barcode.",
-    PaperlessLabelType.TEXT_ONLY: "The paperless label you get as a response from the API is a text-only string."
+    PaperlessLabelType.TEXT_ONLY: "The paperless label you get as a response from the API is a text-only string.",
+    PaperlessLabelType.FULL_PAGE_DOCUMENT: "The paperless label you get as a response from the API is a full-page document, typically including instructions as well."
 }
 
 class CarrierServiceBase(BaseModel):
