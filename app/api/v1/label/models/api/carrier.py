@@ -2,7 +2,11 @@ from pydantic import BaseModel, Field
 from typing import Optional
 from enum import Enum
 
-from app.api.v1.common.models.base_models import Dimensions, MetaData, Volume, Weight
+from app.api.v1.common.models.base_models import (
+    Dimensions, MetaData, PaperlessLabelType,
+    Volume, Weight, paperless_type_descriptions
+)
+
 from app.api.v1.common.utils import get_enum_description
 
 class GlueyValueAddingServiceClass(str, Enum):
@@ -306,19 +310,6 @@ class ValueAddingService(BaseModel):
     name: str = Field(..., description="The carriers own name of the value added service, e.g. `PreNotice SMS`, `Hazmat`, `Cash on Delivery`.")
     gluey_classification: GlueyValueAddingServiceClass = Field(..., description=f"Gluey's generalised classification of the value added service to enable comparison across carriers and carrier services. It can be one of the following:\n{get_enum_description(GlueyValueAddingServiceClass, gluey_value_adding_service_class_descriptions)}")
     additional_data: Optional[list[ValueAddedServiceData]] = Field(None, description="Any additional data that are need for this value-added service.")
-
-class PaperlessLabelType(str, Enum):
-    QR_CODE = 'qr_code'
-    BARCODE = 'barcode'
-    TEXT_ONLY = 'text_only'
-    FULL_PAGE_DOCUMENT = 'full_page_document'
-
-paperless_type_descriptions = {
-    PaperlessLabelType.QR_CODE: "The paperless label you get as a response from the API is a QR code.",
-    PaperlessLabelType.BARCODE: "The paperless label you get as a response from the API is a barcode.",
-    PaperlessLabelType.TEXT_ONLY: "The paperless label you get as a response from the API is a text-only string.",
-    PaperlessLabelType.FULL_PAGE_DOCUMENT: "The paperless label you get as a response from the API is a full-page document, typically including instructions as well."
-}
 
 class CarrierServiceBase(BaseModel):
     carrier_service_id: str = Field(..., description="Glueys ID of the carrier service as found in our carrier library, e.g. `standard_ground`, `express`, `home_delivery`.")
