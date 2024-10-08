@@ -1,5 +1,5 @@
 from app.api.v1.common.models.base_models import Dimensions, MetaData, UnitOfMeasurement, UnitOfVolume, UnitOfWeight, Volume, Weight
-from app.api.v1.label.models.api.carrier import CarrierService, DeliveryFeature, Labeling, CarrierServiceType, Direction, GlueyValueAddingServiceClass, Region, ValueAddedServiceData, ValueAddingService, CarrierServiceRestrictions
+from app.api.v1.label.models.api.carrier import CarrierService, DeliveryFeature, Labeling, CarrierServiceType, Direction, GlueyValueAddingServiceClass, PaperlessLabelType, Region, ValueAddedServiceData, ValueAddingService, CarrierServiceRestrictions
 from app.api.v1.label.models.api.collection import CarrierServiceDeliveryDates, CarrierTimeWindow, CarrierServiceCollectionDates
 from app.api.v1.common.http_responses.payloads import http_502_response
 from app.api.v1.common.utils import generate_uuid, generate_short_uuid, generate_custom_uuid
@@ -203,6 +203,7 @@ carrier_services = [
             DeliveryFeature.DANGEROUS_GOODS
         ],
         labeling=Labeling.LABEL,
+        paperless_type=None,
         direction=Direction.RETURN,
         region=Region.DOMESTIC,
         service_type=CarrierServiceType.PICKUP_DROPOFF_POINT,
@@ -218,6 +219,7 @@ carrier_services = [
             DeliveryFeature.PROOF_OF_DELIVERY
         ],
         labeling=Labeling.PAPERLESS,
+        paperless_type=PaperlessLabelType.BARCODE,
         direction=Direction.RETURN,
         region=Region.DOMESTIC,
         service_type=CarrierServiceType.COLLECTION,
