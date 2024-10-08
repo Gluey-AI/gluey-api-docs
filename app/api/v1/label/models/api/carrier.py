@@ -307,11 +307,23 @@ class ValueAddingService(BaseModel):
     gluey_classification: GlueyValueAddingServiceClass = Field(..., description=f"Gluey's generalised classification of the value added service to enable comparison across carriers and carrier services. It can be one of the following:\n{get_enum_description(GlueyValueAddingServiceClass, gluey_value_adding_service_class_descriptions)}")
     additional_data: Optional[list[ValueAddedServiceData]] = Field(None, description="Any additional data that are need for this value-added service.")
 
+class PaperlessLabelType(str, Enum):
+    QR_CODE = 'qr_code'
+    BARCODE = 'barcode'
+    TEXT_ONLY = 'text_only'
+
+paperless_type_descriptions = {
+    PaperlessLabelType.QR_CODE: "The paperless label you get as a response from the API is a QR code.",
+    PaperlessLabelType.BARCODE: "The paperless label you get as a response from the API is a barcode.",
+    PaperlessLabelType.TEXT_ONLY: "The paperless label you get as a response from the API is a text-only string."
+}
+
 class CarrierServiceBase(BaseModel):
     carrier_service_id: str = Field(..., description="Glueys ID of the carrier service as found in our carrier library, e.g. `standard_ground`, `express`, `home_delivery`.")
     name: str = Field(..., description="The name of the carrier service, e.g. `Express`, `Standard`, `Economy`, `Parcel`.")
     features: list[DeliveryFeature] = Field(..., description=f"Additional features / capabilities the carrier service supports. It can be one of the following:\n{get_enum_description(DeliveryFeature, delivery_feature_descriptions)}")
     labeling: Labeling = Field(..., description=f"The type of labeling required for the carrier service. It can be one of the following:\n{get_enum_description(Labeling, labeling_descriptions)}")
+    paperless_type: Optional[PaperlessLabelType] = Field(None, description=f"If `labeling=paperless` this is the type of paperless label the carrier service provide. It can be one of the following:\n{get_enum_description(PaperlessLabelType, paperless_type_descriptions)}")
     region: Region = Field(..., description=f"The region of the carrier service. It can be one of the following:\n{get_enum_description(Region, region_descriptions)}")
     restrictions: Optional[CarrierServiceRestrictions] = Field(None, description="The restrictions around weight, dimensions etc of parcels that can be allocated to the carrier service.")
 
