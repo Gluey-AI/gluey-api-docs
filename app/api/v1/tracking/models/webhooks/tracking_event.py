@@ -23,15 +23,16 @@ class TrackingEvent(BaseModel):
     location: TrackingEventLocation = Field(..., description="The location of the tracking event in one or more of the four main ways in which the carrier provide address information in the tracking event, e.g. carrier_location_coding, address, what3words and geo (lat, lng).")
     other: Optional[OtherUpdates] = Field(None, description="Other updates various updates to the shipment / parcel that the carrier have provided.")
 
+class TrackableReferenceUpdate(BaseModel):
+    new_carrier_tracking_id: str = Field(..., description="The new carrier tracking id the carrier has assigned.")
+    new_carrier_tracking_url: Optional[str] = Field(None, description="If available. The new carrier tracking url the carrier has assigned.")
+
 class TrackingEventParcel(BaseModel):
     carrier_tracking_id: str = Field(None, description="This is the carriers own tracking id for the parcel as it was assigned in Gluey when the parcel was created.")
+    carrier_tracking_update: Optional[TrackableReferenceUpdate] = Field(None, description="In case the carrier have updated the tracking id (e.g. over-labelled at their hub, generated tracking number at sortation facility etc) , this property will contain the new tracking id and new tracking url. Once the update has taken place, this field will be populated with the new tracking id and url for each subsequent event being sent, but no change will be done to the original `carrier_tracking_id`.")
     parcel_id: str = Field(..., description="Glueys ID of the parcel that the tracking event is related to.")
     parcel_uuid_ref: Optional[str] = Field(None, description="Your own unique identifier for the parcel, if assigned during shipment creation.")
     parcel_meta_data: Optional[list[MetaData]] = Field(None, description="Optional. Meta data tags that was assigned to the parcel when the shipment was created.")
-
-class TrackableReferenceUpdate(BaseModel):
-    new_carrier_tracking_id: str = Field(..., description="The new carrier tracking id for the shipment.")
-    new_carrier_tracking_url: Optional[str] = Field(None, description="If available. The new carrier tracking url for the shipment.")
 
 class TrackingWebhookEvent(BaseModel):
     shipment_id: str = Field(..., description="The Gluey ID of the shipment that the tracking event is related to.")
@@ -39,7 +40,7 @@ class TrackingWebhookEvent(BaseModel):
     shipment_meta_data: Optional[list[MetaData]] = Field(None, description="Optional. Meta data tags that was assigned to the shipment when it was created.")
     carrier_id: str = Field(..., description="The ID of the carrier that the shipment is associated with.")
     carrier_tracking_id: str = Field(..., description="This is the carriers own tracking id for the shipment.")
-    carrier_tracking_update: Optional[TrackableReferenceUpdate] = Field(None, description="In case the carrier have updated the tracking id, this field will contain the new tracking id and new tracking url. Once the update has taken place, this field will be populated with the new tracking id and url for each subsequent event being sent, but no change will be done to the original tracking id.")
+    carrier_tracking_update: Optional[TrackableReferenceUpdate] = Field(None, description="In case the carrier have updated the tracking id (e.g. over-labelled at their hub, generated tracking number at sortation facility etc) , this property will contain the new tracking id and new tracking url. Once the update has taken place, this field will be populated with the new tracking id and url for each subsequent event being sent, but no change will be done to the original `carrier_tracking_id`.")
     tracking_level: TrackingLevel = Field(..., description=f"Indicates if parcels can be individually trackable (i.e. the carrier support multi-parcel tracking) or if only the shipment itself can be tracked. It can be one of the following:\n{get_enum_description(TrackingLevel, tracking_level_descriptions)}")
     parcel: Optional[TrackingEventParcel] = Field(None, description="Only available when `tracking_level=parcel`. For multi-parcel shipments this means that this is a reference to the an individual parcel the tracking event is associated with.")
     event: TrackingEvent = Field(..., description="The tracking event that have been received for the shipment.")
