@@ -162,6 +162,89 @@ TrackingWebhookEvent(
     )
 )]
 
+parcel_level_events_with_update = [TrackingWebhookEvent(
+    shipment_id="d1b82d77-526b-4a6d-a456-b97c1e34cafe",
+    shipment_uuid_ref=None,
+    shipment_meta_data=[MetaData(key="hub_code", value="GWR5"), MetaData(key="zone", value="B")],
+    carrier_id="uk_carrier",
+    carrier_tracking_id="JD0002234001100999",
+    tracking_level=TrackingLevel.PARCEL,
+    parcel=TrackingEventParcel(
+        carrier_tracking_id="JD0002234001100998",
+        carrier_tracking_update=TrackableReferenceUpdate(
+            new_carrier_tracking_id="JD0002234001100555",
+            new_carrier_tracking_url="https://carrier.com/track/?ref=JD0002234001100555"
+        ),
+        parcel_id="49ffe1dc-d4bb-414f-8c97-5efa20202fb6",
+    ),
+    event=TrackingEvent(
+        carrier_meta_data=[MetaData(key="grn_info", value="118045")],
+        event_time=TrackingEventDateTime(
+            created_utc=adjusted_minus_five_hours.replace(microsecond=0),
+            carrier_utc=adjusted_plus_four_hours.replace(microsecond=0)
+        ),
+        codes=TrackingEventCodes(
+            gluey=GlueyEventCodeDetail(
+                milestone=GlueyMilestone.COLLECTION,
+                code="collected",
+                sub_code="other",
+                freetext_detail="Collected from sender"
+            ),
+            carrier=CarrierEventCodeDetail(
+                code="GC",
+                freetext_detail="Collected"
+            )
+        ),
+        location=TrackingEventLocation(
+            carrier_location_coding=CarrierLocationCode(
+                code="GATESHEAD SERVICE CENTRE"
+            )
+        ),
+        other=None
+    )
+),
+TrackingWebhookEvent(
+    shipment_id="d1b82d77-526b-4a6d-a456-b97c1e34cafe",
+    shipment_uuid_ref=None,
+    shipment_meta_data=[MetaData(key="hub_code", value="GWR5"), MetaData(key="zone", value="B")],
+    carrier_id="super_carrier",
+    carrier_tracking_id="JD0002234001100999",
+    tracking_level=TrackingLevel.PARCEL,
+    parcel=TrackingEventParcel(
+        carrier_tracking_id="JD0002234001100997",
+        carrier_tracking_update=TrackableReferenceUpdate(
+            new_carrier_tracking_id="JD0002234001100556",
+            new_carrier_tracking_url="https://carrier.com/track/?ref=JD0002234001100556"
+        ),
+        parcel_id="a2d7cf49-4ff5-495d-9d07-bbfc69afa5dd",
+    ),
+    event=TrackingEvent(
+        carrier_meta_data=[MetaData(key="grn_info", value="118045")],
+        event_time=TrackingEventDateTime(
+            created_utc=adjusted_minus_five_hours.replace(microsecond=0),
+            carrier_utc=adjusted_plus_four_hours_one_minute.replace(microsecond=0)
+        ),
+        codes=TrackingEventCodes(
+            gluey=GlueyEventCodeDetail(
+                milestone=GlueyMilestone.COLLECTION,
+                code="collected",
+                sub_code="other",
+                freetext_detail="Collected from pickup point"
+            ),
+            carrier=CarrierEventCodeDetail(
+                code="GC",
+                freetext_detail="Collected"
+            )
+        ),
+        location=TrackingEventLocation(
+            carrier_location_coding=CarrierLocationCode(
+                code="GATESHEAD SERVICE CENTRE"
+            )
+        ),
+        other=None
+    )
+)]
+
 shipment_level_event_with_other = [TrackingWebhookEvent(
     shipment_id="41752ba3-08b9-4a67-8766-756136214efe",
     shipment_uuid_ref=None,
@@ -302,6 +385,11 @@ webhook_post_examples = {
         "summary": "Parcel Level Events",
         "description": "Tracking events - Multi-parcel shipment where each parcel receives a tracking event.",
         "value": parcel_level_events
+    },
+    "multi_parcel_shipment_trackable": {
+        "summary": "Parcel Level Events where carrier has swapped the tracking id for one of the parcels.",
+        "description": "Example when carrier as swapped out the original tracking id for a new one, e.g. over-labelled at their hub, generated tracking number at sortation facility etc.",
+        "value": parcel_level_events_with_update
     },
     "other_updates": {
         "summary": "Shipment Level Events with Other Updates",
