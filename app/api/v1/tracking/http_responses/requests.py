@@ -2,7 +2,7 @@ from datetime import datetime, timedelta, timezone
 
 from app.api.v1.common.models.base_models import Dimensions, MetaData, TrackingLevel, UnitOfMeasurement, UnitOfWeight, Weight
 from app.api.v1.tracking.models.base_models import CarrierEventCodeDetail, CarrierLocationCode, GlueyEventCodeDetail, GlueyMilestone, LocationType, ParcelCondition, TrackingEventAddress, TrackingEventCodes, TrackingEventDateTime, TrackingEventLocation, TrackingEventPhysicalData
-from app.api.v1.tracking.models.webhooks.tracking_event import OtherUpdates, TrackingEvent, TrackingEventParcel, TrackingWebhookEvent
+from app.api.v1.tracking.models.webhooks.tracking_event import OtherUpdates, TrackableReferenceUpdate, TrackingEvent, TrackingEventParcel, TrackingWebhookEvent
 
 creation_date = datetime.now(timezone.utc)
 adjusted_minus_five_hours = creation_date - timedelta(hours=5)
@@ -248,11 +248,55 @@ TrackingWebhookEvent(
     )
 )]
 
+shipment_level_event_with_trackable_ref_update = [TrackingWebhookEvent(
+    shipment_id="41752ba3-08b9-4a67-8766-756136214efe",
+    shipment_uuid_ref=None,
+    shipment_meta_data=None,
+    carrier_id="gb_carrier",
+    carrier_tracking_id="ABC000128B4C5",
+    carrier_tracking_update=TrackableReferenceUpdate(
+        new_carrier_tracking_id="DFT999128B111",
+        new_carrier_tracking_url="https://carrier.com/track/DFT999128B111"
+    ),
+    tracking_level=TrackingLevel.SHIPMENT,
+    event=TrackingEvent(
+        carrier_meta_data=None,
+        event_time=TrackingEventDateTime(
+            created_utc=adjusted_minus_five_hours.replace(microsecond=0),
+            carrier_utc=adjusted_plus_four_hours.replace(microsecond=0)
+        ),
+        codes=TrackingEventCodes(
+            gluey=GlueyEventCodeDetail(
+                milestone=GlueyMilestone.COLLECTION,
+                code="collected",
+                sub_code="other",
+                freetext_detail="Collected from pickup point"
+            ),
+            carrier=CarrierEventCodeDetail(
+                code="GC",
+                freetext_detail="Collected"
+            )
+        ),
+        location=TrackingEventLocation(
+            address=TrackingEventAddress(
+                name="Midlands DC",
+                city="Birmingham",
+                iso_country="GB"
+            )
+        )
+    )
+)]
+
 webhook_post_examples = {
     "single_parcel_shipment": {
         "summary": "Shipment Level Events",
         "description": "Tracking events - Shipment-level without association to a parcel.",
         "value": shipment_level_event
+    },
+    "shipment_trackable_ref": {
+        "summary": "Shipment where carrier has swapped tracking id.",
+        "description": "Example when carrier as swapped out the original tracking id for a new one, e.g. over-labelled at their hub, generated tracking number at sortation facility etc.",
+        "value": shipment_level_event_with_trackable_ref_update
     },
     "multi_parcel_shipment": {
         "summary": "Parcel Level Events",
