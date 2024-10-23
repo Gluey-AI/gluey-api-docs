@@ -85,7 +85,9 @@ error_code_descriptions = {
 class CarrierPayload(BaseModel):
     payload_media: str = Field(..., description="The media type of the payload, e.g. `application/xml`, `application/json`")
     payload_http_status_Code: int = Field(..., description="The original HTTP status code of the payload, e.g. 200, 400, 500. `Not recommended to use`. For example, a SOAP-api might give a 200 http status code whilst still failing due to data validation errors.")
-    payload_base64: str = Field(..., description="The base64 encoded payload, e.g. `9pj3wfolmucmnt7iw3r4n34ymcwp4+yctx6+94mqc3zxtc43tyew9f7hsduvknvlufhksmuygvmred748745698y09gfimcnv875mz489z`")
+    payload_error_message: str = Field(..., description="The error message from the carrier API.")
+    payload_base64: Optional[str] = Field(None, description="If available. The base64 encoded payload received by the carrier, e.g. `9pj3wfolmucmnt7iw3r4n34ymcwp4+yctx6+94mqc3zxtc43tyew9f7hsduvknvlufhksmuygvmred748745698y09gfimcnv875mz489z`")
+    payload_sent_base64: Optional[str] = Field(None, description="If available. The base64 encoded payload sent to the carrier, e.g. `9pj3wfolmucmnt7iw3r4n34ymcwp4+yctx6+94mqc3zxtc43tyew9f7hsduvknvlufhksmuygvmred748745698y09gfimcnv875mz489z`")
 
 class GlueyErrorClassification(BaseModel):
     error_code: ErrorCode = Field(..., description=f"Glueys own error code of the issue in the Carrier API. It can be one of the following:\n{get_enum_description(ErrorCode, error_code_descriptions)}")
@@ -105,6 +107,7 @@ error_state = CarrierApiError(
     carrier_payload=CarrierPayload(
         payload_media="application/xml",
         payload_http_status_Code=200,
+        payload_error_message="12002: Inval code.",
         payload_base64="9pj3wfolmucmnt7iw3r4n34ymcwp4+yctx6+94mqc3zxtc43tyew9f7hsduvknvlufhksmuygvmred748745698y09gfimcnv875mz489z"
     )
 )
